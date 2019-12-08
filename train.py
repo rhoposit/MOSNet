@@ -17,10 +17,18 @@ import utils
 import random
 random.seed(1984)
 
+
+
+
+import platform, sys
+print(platform.python_version())
+print(tf.__version__)
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--model", help="model to train with, CNN, BLSTM or CNN-BLSTM")
 parser.add_argument("--epoch", type=int, default=100, help="number epochs")
-parser.add_argument("--batch_size", type=int, default=64, help="number batch_size")
+parser.add_argument("--batch_size", type=int, default=8, help="number batch_size")
 
 args = parser.parse_args()
 
