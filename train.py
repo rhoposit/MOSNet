@@ -18,7 +18,6 @@ import random
 
 myseed = 1984
 np.random.seed(myseed)
-tf.set_random_seed(myseed)
 random.seed(myseed)
 
 import platform, sys
