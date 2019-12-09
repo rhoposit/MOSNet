@@ -86,7 +86,7 @@ def data_generator_DS(file_list, bin_root, batch_size=1):
         if index+batch_size >= len(file_list):
             index = 0
             random.shuffle(file_list)
-         yield feat, [mos]
+        yield feat, [mos]
 
 
 def data_generator(file_list, bin_root, frame=False, batch_size=1):
