@@ -48,7 +48,7 @@ print('training with features: {}'.format(args.feats))
 # 1 = INFO messages are not printed
 # 2 = INFO and WARNING messages are not printed
 # 3 = INFO, WARNING, and ERROR messages are not printed
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # or any {'0', '1', '2'}
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'  # or any {'0', '1', '2'}
 
 tf.debugging.set_log_device_placement(False)
 # set memory growth
@@ -130,8 +130,8 @@ CALLBACKS = [
 
 if args.feats == 'orig':
     # data generator
-    train_data = utils.data_generator(train_list, BIN_DIR, frame=True, batch_size=BATCH_SIZE)
-    valid_data = utils.data_generator(valid_list, BIN_DIR, frame=True, batch_size=BATCH_SIZE)
+    train_data = utils.data_generator(train_list, BIN_DIR, frame=False, batch_size=BATCH_SIZE)
+    valid_data = utils.data_generator(valid_list, BIN_DIR, frame=False, batch_size=BATCH_SIZE)
 if args.feats == 'deepspectrum':
     train_data = utils.data_generator_DS(train_list, BIN_DIR, batch_size=BATCH_SIZE)
     valid_data = utils.data_generator_DS(valid_list, BIN_DIR, batch_size=BATCH_SIZE)
