@@ -67,8 +67,8 @@ if gpus:
 
         
 # set dir
-DATA_DIR = './data_'+data
-BIN_DIR = os.path.join(DATA_DIR, feats)
+DATA_DIR = './data_'+args.data
+BIN_DIR = os.path.join(DATA_DIR, args.feats)
 OUTPUT_DIR = './output'
 
 EPOCHS = args.epoch
