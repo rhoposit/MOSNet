@@ -68,6 +68,27 @@ def pad(array, reference_shape):
 
     return result
 
+
+def data_generator_DS(file_list, bin_root, batch_size=1):
+    index=0
+    while True:          
+        filename = [file_list[index+x].split(',')[0].split('.')[0] for x in range(batch_size)] 
+        for i in range(len(filename)):
+            DS = np.load(i)
+            if i == 0:
+                feat = DS
+            else:
+                feat = np.append(feat, DS, axis=0)
+        mos = [float(file_list[x+index].split(',')[1]) for x in range(batch_size)]
+        mos = np.asarray(mos).reshape([batch_size])
+        index += batch_size  
+        # ensure next batch won't out of range
+        if index+batch_size >= len(file_list):
+            index = 0
+            random.shuffle(file_list)
+         yield feat, [mos]
+
+
 def data_generator(file_list, bin_root, frame=False, batch_size=1):
     index=0
     while True:

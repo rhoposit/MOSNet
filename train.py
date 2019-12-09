@@ -15,10 +15,11 @@ from tensorflow import keras
 import model
 import utils
 import random
-random.seed(1984)
 
-
-
+myseed = 1984
+np.random.seed(myseed)
+tf.set_random_seed(myseed)
+random.seed(myseed)
 
 import platform, sys
 print(platform.python_version())
@@ -29,6 +30,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--model", help="model to train with, CNN, BLSTM or CNN-BLSTM")
 parser.add_argument("--epoch", type=int, default=100, help="number epochs")
 parser.add_argument("--batch_size", type=int, default=8, help="number batch_size")
+parser.add_argument("--data", help="data: VC, LA")
+parser.add_argument("--feats", help="feats: orig, deepspectrum")
+
 
 args = parser.parse_args()
 
@@ -38,6 +42,8 @@ if not args.model:
 
 print('training with model architecture: {}'.format(args.model))   
 print('epochs: {}\nbatch_size: {}'.format(args.epoch, args.batch_size))
+print('training with data: {}'.format(args.data))   
+print('training with features: {}'.format(args.feats))   
 
 # 0 = all messages are logged (default behavior)
 # 1 = INFO messages are not printed
@@ -62,8 +68,8 @@ if gpus:
 
         
 # set dir
-DATA_DIR = './data'
-BIN_DIR = os.path.join(DATA_DIR, 'bin')
+DATA_DIR = './data_'+data
+BIN_DIR = os.path.join(DATA_DIR, feats)
 OUTPUT_DIR = './output'
 
 EPOCHS = args.epoch
@@ -123,9 +129,16 @@ CALLBACKS = [
         verbose=1)
 ]
 
-# data generator
-train_data = utils.data_generator(train_list, BIN_DIR, frame=True, batch_size=BATCH_SIZE)
-valid_data = utils.data_generator(valid_list, BIN_DIR, frame=True, batch_size=BATCH_SIZE)
+if args.feats == 'orig':
+    # data generator
+    train_data = utils.data_generator(train_list, BIN_DIR, frame=True, batch_size=BATCH_SIZE)
+    valid_data = utils.data_generator(valid_list, BIN_DIR, frame=True, batch_size=BATCH_SIZE)
+if args.feats == 'deepspectrum':
+    train_data = utils.data_generator_DS(train_list, BIN_DIR, batch_size=BATCH_SIZE)
+    valid_data = utils.data_generator_DS(valid_list, BIN_DIR, batch_size=BATCH_SIZE)
+
+
+
 
 tr_steps = int(NUM_TRAIN/BATCH_SIZE)
 val_steps = int(NUM_VALID/BATCH_SIZE)
