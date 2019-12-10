@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import argparse
 import tensorflow as tf
 import keras
-import model
+import model_keras
 import utils
 import random
 
