@@ -99,9 +99,9 @@ CALLBACKS = [
         save_best_only=True,
         monitor='val_loss',
         verbose=1),
-    keras.callbacks.TensorBoard(
-        log_dir=os.path.join(OUTPUT_DIR,'tensorboard.log'),
-        update_freq='epoch'), 
+#    keras.callbacks.TensorBoard(
+#        log_dir=os.path.join(OUTPUT_DIR,'tensorboard.log'),
+#        update_freq='epoch'), 
     keras.callbacks.EarlyStopping(
         monitor='val_loss',
         mode='min',
