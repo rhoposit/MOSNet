@@ -124,8 +124,6 @@ if args.feats == 'deepspectrum':
 tr_steps = int(NUM_TRAIN/BATCH_SIZE)
 val_steps = int(NUM_VALID/BATCH_SIZE)
 
-print("train 0 shape: ", train_data[0].shape)
-print("train 1 shape: ", train_data[1].shape)
 
 
 # start fitting model
