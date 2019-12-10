@@ -1,7 +1,7 @@
 from __future__ import print_function, division
 import warnings
 warnings.filterwarnings('ignore')
-rom numpy.random import seed
+from numpy.random import seed
 seed(1984)
 from tensorflow import set_random_seed
 set_random_seed(1984)
