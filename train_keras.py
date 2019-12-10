@@ -78,18 +78,18 @@ test_list= mos_list[-NUM_TEST:]
 print('{} for training; {} for valid; {} for testing'.format(NUM_TRAIN, NUM_TEST, NUM_VALID))        
 # init model
 if args.model == 'CNN':
-    MOSNet = model.CNN()
-elif args.model == 'BLSTM':
-    MOSNet = model.BLSTM()
-elif args.model == 'CNN-BLSTM':
-    MOSNet = model.CNN_BLSTM()
+    MOSNet = model_keras.CNN()
+#elif args.model == 'BLSTM':
+#    MOSNet = model_keras.BLSTM()
+#elif args.model == 'CNN-BLSTM':
+#    MOSNet = model_keras.CNN_BLSTM()
 else:
     raise ValueError('please specify model to train with, CNN, BLSTM or CNN-BLSTM')
 
 model = MOSNet.build()
 
 model.compile(
-    optimizer=tf.keras.optimizers.Adam(1e-4),
+    optimizer=keras.optimizers.Adam(1e-4),
     loss={'avg':'mse',
           'frame':'mse'},)
     
