@@ -1,7 +1,8 @@
 from __future__ import print_function, division
 import warnings
 warnings.filterwarnings('ignore')
-from numpy.random import seed
+import numpy as np
+from np.random import seed
 myseed = 1984
 np.random.seed(myseed)
 random.seed(myseed)
