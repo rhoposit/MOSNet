@@ -2,9 +2,9 @@ from __future__ import print_function, division
 import warnings
 warnings.filterwarnings('ignore')
 from numpy.random import seed
-seed(1984)
-from tensorflow import set_random_seed
-set_random_seed(1984)
+myseed = 1984
+np.random.seed(myseed)
+random.seed(myseed)
 
 import keras
 from keras.models import Model
