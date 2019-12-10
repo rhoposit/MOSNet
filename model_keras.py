@@ -2,10 +2,13 @@ from __future__ import print_function, division
 import warnings
 warnings.filterwarnings('ignore')
 import numpy as np
-from numpy.random import seed
+
+import random
 myseed = 1984
+random.seed(myseed) 
 np.random.seed(myseed)
-random.seed(myseed)
+import tensorflow as tf
+tf.set_random_seed(myseed)
 
 import keras
 from keras.models import Model

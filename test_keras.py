@@ -9,11 +9,17 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-from keras
+import random
+myseed = 1984
+random.seed(myseed) 
+np.random.seed(myseed)
+import tensorflow as tf
+tf.set_random_seed(myseed)
+
+
+import keras
 import model_keras
 import utils   
-import random
-random.seed(1984) 
 
 # 0 = all messages are logged (default behavior)
 # 1 = INFO messages are not printed

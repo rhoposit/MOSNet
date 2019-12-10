@@ -16,9 +16,12 @@ import model_keras
 import utils
 import random
 
+import random
 myseed = 1984
+random.seed(myseed) 
 np.random.seed(myseed)
-random.seed(myseed)
+import tensorflow as tf
+tf.set_random_seed(myseed)
 
 import platform, sys
 print(platform.python_version())
