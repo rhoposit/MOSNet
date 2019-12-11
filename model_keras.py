@@ -12,6 +12,7 @@ import keras
 from keras.models import Model
 from keras.layers import Input, Dense, Dropout, Reshape, TimeDistributed, Flatten, GlobalAveragePooling1D, LSTM, Bidirectional
 from keras.layers.convolutional import Conv2D
+from keras.constraints import max_norm
 
 class CNN(object):
     
