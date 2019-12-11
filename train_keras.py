@@ -79,10 +79,10 @@ print('{} for training; {} for valid; {} for testing'.format(NUM_TRAIN, NUM_TEST
 # init model
 if args.model == 'CNN':
     MOSNet = model_keras.CNN()
-#elif args.model == 'BLSTM':
-#    MOSNet = model_keras.BLSTM()
-#elif args.model == 'CNN-BLSTM':
-#    MOSNet = model_keras.CNN_BLSTM()
+elif args.model == 'BLSTM':
+    MOSNet = model_keras.BLSTM()
+elif args.model == 'CNN-BLSTM':
+    MOSNet = model_keras.CNN_BLSTM()
 else:
     raise ValueError('please specify model to train with, CNN, BLSTM or CNN-BLSTM')
 
