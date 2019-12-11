@@ -55,7 +55,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'  # or any {'0', '1', '2'}
 # set dir
 DATA_DIR = './data_'+args.data
 BIN_DIR = os.path.join(DATA_DIR, args.feats)
-OUTPUT_DIR = './output_'+args.model+"_"+args.batch_size+"_"+args.data+"_"+args.feats
+OUTPUT_DIR = './output_'+args.model+"_"+str(args.batch_size)+"_"+args.data+"_"+args.feats
 
 EPOCHS = args.epoch
 BATCH_SIZE = args.batch_size
