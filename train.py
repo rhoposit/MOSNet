@@ -15,23 +15,12 @@ from tensorflow import keras
 import model
 import utils
 import random
-
-myseed = 1984
-np.random.seed(myseed)
-random.seed(myseed)
-
-import platform, sys
-print(platform.python_version())
-print(tf.__version__)
-
+random.seed(1984)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--model", help="model to train with, CNN, BLSTM or CNN-BLSTM")
 parser.add_argument("--epoch", type=int, default=100, help="number epochs")
-parser.add_argument("--batch_size", type=int, default=8, help="number batch_size")
-parser.add_argument("--data", help="data: VC, LA")
-parser.add_argument("--feats", help="feats: orig, deepspectrum")
-
+parser.add_argument("--batch_size", type=int, default=64, help="number batch_size")
 
 args = parser.parse_args()
 
@@ -41,14 +30,12 @@ if not args.model:
 
 print('training with model architecture: {}'.format(args.model))   
 print('epochs: {}\nbatch_size: {}'.format(args.epoch, args.batch_size))
-print('training with data: {}'.format(args.data))   
-print('training with features: {}'.format(args.feats))   
 
 # 0 = all messages are logged (default behavior)
 # 1 = INFO messages are not printed
 # 2 = INFO and WARNING messages are not printed
 # 3 = INFO, WARNING, and ERROR messages are not printed
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'  # or any {'0', '1', '2'}
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # or any {'0', '1', '2'}
 
 tf.debugging.set_log_device_placement(False)
 # set memory growth
@@ -67,8 +54,8 @@ if gpus:
 
         
 # set dir
-DATA_DIR = './data_'+args.data
-BIN_DIR = os.path.join(DATA_DIR, args.feats)
+DATA_DIR = './data'
+BIN_DIR = os.path.join(DATA_DIR, 'bin')
 OUTPUT_DIR = './output'
 
 EPOCHS = args.epoch
@@ -128,16 +115,9 @@ CALLBACKS = [
         verbose=1)
 ]
 
-if args.feats == 'orig':
-    # data generator
-    train_data = utils.data_generator(train_list, BIN_DIR, frame=True, batch_size=BATCH_SIZE)
-    valid_data = utils.data_generator(valid_list, BIN_DIR, frame=True, batch_size=BATCH_SIZE)
-if args.feats == 'deepspectrum':
-    train_data = utils.data_generator_DS(train_list, BIN_DIR, batch_size=BATCH_SIZE)
-    valid_data = utils.data_generator_DS(valid_list, BIN_DIR, batch_size=BATCH_SIZE)
-
-
-
+# data generator
+train_data = utils.data_generator(train_list, BIN_DIR, frame=True, batch_size=BATCH_SIZE)
+valid_data = utils.data_generator(valid_list, BIN_DIR, frame=True, batch_size=BATCH_SIZE)
 
 tr_steps = int(NUM_TRAIN/BATCH_SIZE)
 val_steps = int(NUM_VALID/BATCH_SIZE)

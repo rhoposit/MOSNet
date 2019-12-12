@@ -167,4 +167,3 @@ plt.title('LCC= {:.4f}, SRCC= {:.4f}, MSE= {:.4f}'.format(LCC[0][1], SRCC[0], MS
 #     plt.text(x-0.05, y+0.1, sys_ID, fontsize=8)
 plt.show()
 plt.savefig('./output/MOSNet_system_scatter_plot.png', dpi=150)
-
