@@ -130,8 +130,8 @@ CALLBACKS = [
 
 if args.feats == 'orig':
     # data generator
-    train_data = utils.data_generator(train_list, BIN_DIR, frame=False, batch_size=BATCH_SIZE)
-    valid_data = utils.data_generator(valid_list, BIN_DIR, frame=False, batch_size=BATCH_SIZE)
+    train_data = utils.data_generator(train_list, BIN_DIR, frame=True, batch_size=BATCH_SIZE)
+    valid_data = utils.data_generator(valid_list, BIN_DIR, frame=True, batch_size=BATCH_SIZE)
 if args.feats == 'deepspectrum':
     train_data = utils.data_generator_DS(train_list, BIN_DIR, batch_size=BATCH_SIZE)
     valid_data = utils.data_generator_DS(valid_list, BIN_DIR, batch_size=BATCH_SIZE)
