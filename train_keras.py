@@ -30,14 +30,14 @@ parser.add_argument("--feats", help="feats: orig, deepspectrum")
 parser.add_argument("--seed", type=int, default=1984, help="specify a seed")
 
 
+args = parser.parse_args()
+
+
 import random
 myseed = args.seed
 random.seed(myseed) 
 np.random.seed(myseed)
 
-
-
-args = parser.parse_args()
 
 if not args.model:
     raise ValueError('please specify model to train with, CNN, BLSTM or CNN-BLSTM')
