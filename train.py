@@ -61,7 +61,7 @@ if gpus:
 
         
 # set dir
-DATA_DIR = './data'+args.data
+DATA_DIR = './data_'+args.data
 BIN_DIR = os.path.join(DATA_DIR, args.feats)
 OUTPUT_DIR = './output_'+args.model+"_"+str(args.batch_size)+"_"+args.data+"_"+args.feats
 
