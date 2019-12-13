@@ -15,21 +15,28 @@ from tensorflow import keras
 import model
 import utils
 import random
-random.seed(1984)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--model", help="model to train with, CNN, BLSTM or CNN-BLSTM")
 parser.add_argument("--epoch", type=int, default=100, help="number epochs")
-parser.add_argument("--batch_size", type=int, default=64, help="number batch_size")
+parser.add_argument("--batch_size", type=int, default=8, help="number batch_size")
+parser.add_argument("--data", help="data: VC, LA")
+parser.add_argument("--feats", help="feats: orig, deepspectrum")
+parser.add_argument("--seed", type=int, default=1984, help="specify a seed")
 
 args = parser.parse_args()
+
+
+random.seed(args.seed)
+
 
 if not args.model:
     raise ValueError('please specify model to train with, CNN, BLSTM or CNN-BLSTM')
 
-
 print('training with model architecture: {}'.format(args.model))   
 print('epochs: {}\nbatch_size: {}'.format(args.epoch, args.batch_size))
+print('training with data: {}'.format(args.data))   
+print('training with features: {}'.format(args.feats))   
 
 # 0 = all messages are logged (default behavior)
 # 1 = INFO messages are not printed
@@ -54,9 +61,10 @@ if gpus:
 
         
 # set dir
-DATA_DIR = './data'
-BIN_DIR = os.path.join(DATA_DIR, 'bin')
-OUTPUT_DIR = './output'
+DATA_DIR = './data'+args.data
+BIN_DIR = os.path.join(DATA_DIR, args.feats)
+OUTPUT_DIR = './output_'+args.model+"_"+str(args.batch_size)+"_"+args.data+"_"+args.feats
+
 
 EPOCHS = args.epoch
 BATCH_SIZE = args.batch_size
@@ -171,14 +179,14 @@ plt.legend(loc='upper right')
 plt.xlabel('MOS')
 plt.ylabel('number') 
 plt.show()
-plt.savefig('./output/MOSNet_distribution.png', dpi=150)
+plt.savefig('./'+OUTPUT_DIR+'/MOSNet_distribution.png', dpi=150)
 
-MSE=np.mean((MOS_true-MOS_Predict)**2)
-print('[UTTERANCE] Test error= %f' % MSE)
 LCC=np.corrcoef(MOS_true, MOS_Predict)
 print('[UTTERANCE] Linear correlation coefficient= %f' % LCC[0][1])
 SRCC=scipy.stats.spearmanr(MOS_true.T, MOS_Predict.T)
 print('[UTTERANCE] Spearman rank correlation coefficient= %f' % SRCC[0])    
+MSE=np.mean((MOS_true-MOS_Predict)**2)
+print('[UTTERANCE] Test error= %f' % MSE)
     
 
 
@@ -192,7 +200,7 @@ plt.xlabel('True MOS')
 plt.ylabel('Predicted MOS')
 plt.title('LCC= {:.4f}, SRCC= {:.4f}, MSE= {:.4f}'.format(LCC[0][1], SRCC[0], MSE))
 plt.show()
-plt.savefig('./output/MOSNet_scatter_plot.png', dpi=150)
+plt.savefig('./'+OUTPUT_DIR+'/MOSNet_scatter_plot.png', dpi=150)
 
 
 # load vcc2018_system
@@ -204,12 +212,13 @@ mer_df = pd.merge(result_mean, sys_df, on='system_ID')
 sys_true = mer_df['mean']
 sys_predicted = mer_df['predict_mos']
 
-MSE=np.mean((sys_true-sys_predicted)**2)
-print('[SYSTEM] Test error= %f' % MSE)
 LCC=np.corrcoef(sys_true, sys_predicted)
 print('[SYSTEM] Linear correlation coefficient= %f' % LCC[0][1])
 SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
 print('[SYSTEM] Spearman rank correlation coefficient= %f' % SRCC[0])
+MSE=np.mean((sys_true-sys_predicted)**2)
+print('[SYSTEM] Test error= %f' % MSE)
+
 
 # Plotting scatter plot
 M=np.max([np.max(sys_predicted),5])
@@ -229,4 +238,4 @@ plt.title('LCC= {:.4f}, SRCC= {:.4f}, MSE= {:.4f}'.format(LCC[0][1], SRCC[0], MS
 #     y = mer_df['predict_mos'][i]
 #     plt.text(x-0.05, y+0.1, sys_ID, fontsize=8)
 plt.show()
-plt.savefig('./output/MOSNet_system_scatter_plot.png', dpi=150)
+plt.savefig('./'+OUTPUT_DIR+'/MOSNet_system_scatter_plot.png', dpi=150)
