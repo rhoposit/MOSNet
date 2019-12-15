@@ -16,11 +16,11 @@ HOP_LENGTH=256
 WIN_LENGTH=512
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--data", help="data: VC, LA")
-parser.add_argument("--feats", help="feats: orig, DS-image, xvec_, or CNN")
-parser.add_argument("--seed", type=int, default=1984, help="specify a seed")
-args = parser.parse_args()
+#parser = argparse.ArgumentParser()
+#parser.add_argument("--data", help="data: VC, LA")
+#parser.add_argument("--feats", help="feats: orig, DS-image, xvec_, or CNN")
+#parser.add_argument("--seed", type=int, default=1984, help="specify a seed")
+#args = parser.parse_args()
 
 random.seed(args.seed)
 
