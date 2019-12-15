@@ -128,10 +128,6 @@ def data_generator(file_list, bin_root, frame=False, batch_size=1):
             index = 0
             random.shuffle(file_list)
 
-        print("feat shape: ", feat.shape)
-        print("mos shape: ", mos.shape)
-        print("frame_mos shape: ", frame_mos.shape)
-    
         if frame:
             yield feat, [mos, frame_mos]
         else:
