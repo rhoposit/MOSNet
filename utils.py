@@ -22,7 +22,7 @@ WIN_LENGTH=512
 #parser.add_argument("--seed", type=int, default=1984, help="specify a seed")
 #args = parser.parse_args()
 
-random.seed(args.seed)
+#random.seed(args.seed)
 
 
 # dir
