@@ -1,4 +1,4 @@
-import sys
+ximport sys
 from collections import defaultdict
 import numpy as np
 
@@ -13,16 +13,21 @@ SYS_MOS = defaultdict(list)
 SYS_SPK = defaultdict(list)
 SPK_MOS = defaultdict(list)
 SPK_SYS = defaultdict(list)
+UTT_MOS = defaultdict(list)
+
+
 
 #spoofed,A07,LA_0028,LA_E_7151962.wav,5
 for line in data:
 	la_system = line.split(",")[1]
 	speaker = line.split(",")[2]
 	mos = int(line.split(",")[-1])
+        utt = line.split(",")[3]
         SYS_MOS[la_system].append(mos)
         SYS_SPK[la_system].append(speaker)
         SPK_MOS[speaker].append(mos)
         SPK_SYS[speaker].append(la_system)
+        UTT_MOS[utt].append(mos)
 
 for k,v in SYS_MOS.items():
         la_system = k
