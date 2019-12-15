@@ -69,7 +69,7 @@ OUTPUT_DIR = './output_'+args.model+"_"+str(args.batch_size)+"_"+args.data+"_"+a
 EPOCHS = args.epoch
 BATCH_SIZE = args.batch_size
 
-if data == "VC":
+if args.data == "VC":
     NUM_TRAIN = 13580
     NUM_TEST=4000
     NUM_VALID=3000
@@ -79,7 +79,7 @@ if data == "VC":
     random.shuffle(train_list)
     valid_list= mos_list[-(NUM_TEST+NUM_VALID):-NUM_TEST]
     test_list= mos_list[-NUM_TEST:]
-if data == "LA":
+if args.data == "LA":
     train_list = random.shuffle(utils.read_list(os.path.join(DATA_DIR,'train_list.txt')))
     valid_list = random.shuffle(utils.read_list(os.path.join(DATA_DIR,'valid_list.txt')))
     test_list = random.shuffle(utils.read_list(os.path.join(DATA_DIR,'test_list.txt')))
@@ -139,7 +139,7 @@ if args.feats == "DS-image":
     print("TODO: add a data generator for DS-image features")
 elif args.feats[:-1] == "xvec_":
     print("TODO: add a data generator for xvec features")
-elif args.feats[:-1] == "CNN":
+elif args.feats == "CNN":
     print("TODO: add a data generator for CNN features")
 
     
