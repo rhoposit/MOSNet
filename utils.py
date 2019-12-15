@@ -7,7 +7,6 @@ from tqdm import tqdm
 import tensorflow as tf
 from os.path import join
 import random
-random.seed(1984)
 
 FS = 16000
 FFT_SIZE = 512
@@ -15,10 +14,20 @@ SGRAM_DIM = FFT_SIZE // 2 + 1
 HOP_LENGTH=256
 WIN_LENGTH=512
 
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--data", help="data: VC, LA")
+parser.add_argument("--feats", help="feats: orig, DS-image, xvec_, or CNN")
+parser.add_argument("--seed", type=int, default=1984, help="specify a seed")
+args = parser.parse_args()
+
+random.seed(args.seed)
+
+
 # dir
-DATA_DIR = './data'
+DATA_DIR = './data_'+args.data
 AUDIO_DIR = join(DATA_DIR, 'wav')
-BIN_DIR = join(DATA_DIR, 'bin')
+BIN_DIR = join(DATA_DIR, 'orig')
 
 def get_spectrograms(sound_file, fs=FS, fft_size=FFT_SIZE): 
     # Loading sound file
