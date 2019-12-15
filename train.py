@@ -190,7 +190,7 @@ for i in tqdm(range(len(test_list))):
                     'true_mos': MOS_true[i], 
                     'predict_mos': MOS_Predict[i], 
                     'system_ID': sysid, 
-                    'speaker_ID': speakerid, 
+                    'speaker_ID': speakerid}, 
                     ignore_index=True)
     
     
