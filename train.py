@@ -80,9 +80,12 @@ if args.data == "VC":
     valid_list= mos_list[-(NUM_TEST+NUM_VALID):-NUM_TEST]
     test_list= mos_list[-NUM_TEST:]
 if args.data == "LA":
-    train_list = random.shuffle(utils.read_list(os.path.join(DATA_DIR,'train_list.txt')))
-    valid_list = random.shuffle(utils.read_list(os.path.join(DATA_DIR,'valid_list.txt')))
-    test_list = random.shuffle(utils.read_list(os.path.join(DATA_DIR,'test_list.txt')))
+    train_list = utils.read_list(os.path.join(DATA_DIR,'train_list.txt'))
+    valid_list = utils.read_list(os.path.join(DATA_DIR,'valid_list.txt'))
+    test_list = utils.read_list(os.path.join(DATA_DIR,'test_list.txt'))
+    random.shuffle(train_list)
+    random.shuffle(valid_list)
+    random.shuffle(test_list)
     NUM_TRAIN = len(train_list)
     NUM_TEST=len(valid_list)
     NUM_VALID=len(test_list)
