@@ -50,6 +50,7 @@ if __name__ == '__main__':
 
     mos_df = df[['audio_sample', 'MOS']].groupby(['audio_sample']).mean()
     sys_df = df[['system_ID', 'MOS']].groupby(['system_ID']).mean()
+    spk_df = df[['speaker_ID', 'MOS']].groupby(['speaker_ID']).mean()
     user_list = df['user_ID'].unique()
 
 
@@ -75,6 +76,12 @@ if __name__ == '__main__':
     sysLCCs = []
     sysSRCCs = []
 
+    spkMSEs = []
+    spkMAEs = []
+    spkRMSEs = []
+    spkLCCs = []
+    spkSRCCs = []
+    
     # start bootstraping
 
     for b in tqdm(range(BOOTSTRAP_ITER)):
@@ -106,12 +113,13 @@ if __name__ == '__main__':
         sub_mos = sub_df[['audio_sample', 'MOS']].groupby(['audio_sample']).mean()
         sub_tenmos = sub_df[['audio_group', 'MOS']].groupby(['audio_group']).mean()
         sub_sys = sub_df[['system_ID', 'MOS']].groupby(['system_ID']).mean()
-
+        sub_spk = sub_df[['speaker_ID', 'MOS']].groupby(['speaker_ID']).mean()
 
         # merge selected df with whole df
         merge_mos = pd.merge(sub_mos, mos_df, how='inner', on='audio_sample')
         merge_tenmos = pd.merge(sub_tenmos, g_mos_df, how='inner', on='audio_group')
         merge_sys = pd.merge(sub_sys, sys_df, how='inner', on='system_ID')
+        merge_spk = pd.merge(sub_spk, spk_df, how='inner', on='speaker_ID')
 
         # get two mos list
         mos1 = merge_mos.iloc[:,0].values
@@ -123,6 +131,10 @@ if __name__ == '__main__':
 
         sys1 = merge_sys.iloc[:,0].values
         sys2 = merge_sys.iloc[:,1].values
+
+        # get two mos list - speaker
+        spk1 = merge_spk.iloc[:,0].values
+        spk2 = merge_spk.iloc[:,1].values
 
 
         # calculate statistics for utterance, MSE, RMSE, MAE, rho, rho_s
@@ -171,6 +183,21 @@ if __name__ == '__main__':
         sysLCCs.append(slcc)
         sysSRCCs.append(ssrcc)  
 
+        # speaker level correlation
+        # calculate statistics, MSE, RMSE, MAE, rho, rho_s
+        smse = MSE(spk1, spk2)
+        srmse = sqrt(smse)
+        smae = MAE(spk1, spk2)
+        slcc = scipy.stats.pearsonr(spk1, spk2)[0]
+        ssrcc = scipy.stats.spearmanr(spk1, spk2)[0]
+
+        # add to list
+        spkMSEs.append(smse)
+        spkRMSEs.append(srmse)
+        spkMAEs.append(smae)
+        spkLCCs.append(slcc)
+        spkSRCCs.append(ssrcc)
+        
     MSEs = np.array(MSEs)
     RMSEs = np.array(RMSEs)
     MAEs = np.array(MAEs)
@@ -189,6 +216,11 @@ if __name__ == '__main__':
     sysLCCs = np.array(sysLCCs)
     sysSRCCs = np.array(sysSRCCs)
 
+    spkMSEs = np.array(spkMSEs)
+    spkRMSEs = np.array(spkRMSEs)
+    spkMAEs = np.array(spkMAEs)
+    spkLCCs = np.array(spkLCCs)
+    spkSRCCs = np.array(spkSRCCs)
 
     print('===========================================')
     print('============== utterance level ============')
@@ -219,4 +251,15 @@ if __name__ == '__main__':
     print('\tMAE\t{:.3f}\t{:.3f}\t{:.3f}\t{:.3f}'.format(sysMAEs.mean(), sysMAEs.std(), sysMAEs.min(), sysMAEs.max()))
     print('\tLCC\t{:.3f}\t{:.3f}\t{:.3f}\t{:.3f}'.format(sysLCCs.mean(), sysLCCs.std(), sysLCCs.min(), sysLCCs.max()))
     print('\tSRCC\t{:.3f}\t{:.3f}\t{:.3f}\t{:.3f}'.format(sysSRCCs.mean(), sysSRCCs.std(), sysSRCCs.min(), sysSRCCs.max()))
+
+    print('')
+    print('===========================================')
+    print('============== speaker level ===============')
+    print('===========================================')
+    print('\n\t\tMEAN\tSD\tMIN\tMAX')
+    print('\tMSE\t{:.3f}\t{:.3f}\t{:.3f}\t{:.3f}'.format(spkMSEs.mean(), spkMSEs.std(), spkMSEs.min(), spkMSEs.max()))
+    print('\tRMSE\t{:.3f}\t{:.3f}\t{:.3f}\t{:.3f}'.format(spkRMSEs.mean(), spkRMSEs.std(), spkRMSEs.min(), spkRMSEs.max()))
+    print('\tMAE\t{:.3f}\t{:.3f}\t{:.3f}\t{:.3f}'.format(spkMAEs.mean(), spkMAEs.std(), spkMAEs.min(), spkMAEs.max()))
+    print('\tLCC\t{:.3f}\t{:.3f}\t{:.3f}\t{:.3f}'.format(spkLCCs.mean(), spkLCCs.std(), spkLCCs.min(), spkLCCs.max()))
+    print('\tSRCC\t{:.3f}\t{:.3f}\t{:.3f}\t{:.3f}'.format(spkSRCCs.mean(), spkSRCCs.std(), spkSRCCs.min(), spkSRCCs.max()))
 

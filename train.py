@@ -150,15 +150,15 @@ tr_steps = int(NUM_TRAIN/BATCH_SIZE)
 val_steps = int(NUM_VALID/BATCH_SIZE)
 
 
-# start fitting model
-hist = model.fit_generator(train_data,
-                           steps_per_epoch=tr_steps,
-                           epochs=EPOCHS,
-                           callbacks=CALLBACKS,
-                           validation_data=valid_data,
-                           validation_steps=val_steps,
-                           verbose=1,)
-    
+## start fitting model
+#hist = model.fit_generator(train_data,
+#                           steps_per_epoch=tr_steps,
+#                           epochs=EPOCHS,
+#                           callbacks=CALLBACKS,
+#                           validation_data=valid_data,
+#                           validation_steps=val_steps,
+#                           verbose=1,)
+#    
 
 # plot testing result
 model.load_weights(os.path.join(OUTPUT_DIR,'mosnet.h5'),)   # Load the best model   
@@ -175,16 +175,17 @@ for i in tqdm(range(len(test_list))):
         filename=filepath[0].split('.')[0]
         sysid = ""
         speakerid = ""
+        mos=float(filepath[1])
     elif args.data == "LA":
         filepath=test_list[i].split(',')
         filename=filepath[2].split('.')[0]
         sysid = filepath[1]
         speakerid = filepath[0]
+        mos=float(filepath[3])
     
     _feat = utils.read(os.path.join(BIN_DIR,filename+'.h5'))
     _mag = _feat['mag_sgram']    
         
-    mos=float(filepath[1])
     
     [Average_score, Frame_score]=model.predict(_mag, verbose=0, batch_size=1)
     MOS_Predict[i]=Average_score
