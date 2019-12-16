@@ -53,13 +53,15 @@ for m in M:
     elif M_count <= train_M_num+valid_M_num+test_M_num:
         test_M[m] = []
 
-print(train_F)
-print(valid_F)
-print(test_F)
+print("Female disjoint speakers")
+print("Train", list(train_F.keys()))
+print("Valid", list(valid_F.keys()))
+print("Test", list(test_F.keys()))
 
-print(train_M)
-print(valid_M)
-print(test_M)
+print("Male disjoint speakers")
+print("Train", list(train_M.keys()))
+print("Valid", list(valid_M.keys()))
+print("Test", list(test_M.keys()))
 
 
 random.shuffle(data)
@@ -97,34 +99,34 @@ c = 0
 for k,v in train_F.items():
     TRAIN.extend(v)
     c += len(v)
-print(c)
+print("F-train", c)
 c = 0
 for k,v in train_M.items():
     TRAIN.extend(v)
     c += len(v)
-print(c)
+print("M-train", c)
 c = 0
 
 for k,v in valid_F.items():
     VALID.extend(v)
     c += len(v)
-print(c)
+print("F-valid", c)
 c = 0
 for k,v in valid_M.items():
     VALID.extend(v)
     c += len(v)
-print(c)
+print("M-valid", c)
 c = 0
 
 for k,v in test_F.items():
     TEST.extend(v)
     c += len(v)
-print(c)
+print("F-test", c)
 c = 0
 for k,v in test_M.items():
     TEST.extend(v)
     c += len(v)
-print(c)
+print("M-test",c)
 c = 0
 
 trainfile = "train_list.txt"
