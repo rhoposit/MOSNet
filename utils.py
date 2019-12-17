@@ -80,7 +80,7 @@ def pad(array, reference_shape):
     return result
 
 
-def data_generator_DS(file_list, bin_root, batch_size=1):
+def data_gen_rep(file_list, bin_root, batch_size=1):
     index=0
     while True:          
         filename = [file_list[index+x].split(',')[0].split('.')[0] for x in range(batch_size)] 

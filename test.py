@@ -14,7 +14,21 @@ from tensorflow import keras
 import model
 import utils   
 import random
-random.seed(1984) 
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--model", help="model to train with, CNN, BLSTM or CNN-BLSTM")
+parser.add_argument("--batch_size", type=int, default=8, help="number batch_size")
+parser.add_argument("--data", help="data: VC, LA")
+parser.add_argument("--feats", help="feats: orig, DS-image, xvec_, or CNN")
+parser.add_argument("--seed", type=int, default=1984, help="specify a seed")
+
+args = parser.parse_args()
+
+
+random.seed(args.seed)
+
+
 
 # 0 = all messages are logged (default behavior)
 # 1 = INFO messages are not printed
@@ -39,28 +53,36 @@ if gpus:
        
         
 # set dir
-DATA_DIR = './data'
-BIN_DIR = os.path.join(DATA_DIR, 'bin')
+DATA_DIR = './data_'+args.data
+BIN_DIR = os.path.join(DATA_DIR, args.feats)
+OUTPUT_DIR = './output_'+args.model+"_"+str(args.batch_size)+"_"+args.data+"_"+args.feats
 PRE_TRAINED_DIR = './pre_trained'
-OUTPUT_DIR = './output'
 
-
-NUM_TRAIN = 13580
-NUM_TEST=4000
-NUM_VALID=3000
+if args.data == "VC":
+    NUM_TRAIN = 13580
+    NUM_TEST=4000
+    NUM_VALID=3000
+    mos_list = utils.read_list(os.path.join(DATA_DIR,'mos_list.txt'))
+    random.shuffle(mos_list)
+    train_list= mos_list[0:-(NUM_TEST+NUM_VALID)]
+    random.shuffle(train_list)
+    valid_list= mos_list[-(NUM_TEST+NUM_VALID):-NUM_TEST]
+    test_list= mos_list[-NUM_TEST:]
+if args.data == "LA":
+    train_list = utils.read_list(os.path.join(DATA_DIR,'train_list.txt'))
+    valid_list = utils.read_list(os.path.join(DATA_DIR,'valid_list.txt'))
+    test_list = utils.read_list(os.path.join(DATA_DIR,'test_list.txt'))
+    random.shuffle(train_list)
+    random.shuffle(valid_list)
+    random.shuffle(test_list)
+    NUM_TRAIN = len(train_list)
+    NUM_TEST=len(valid_list)
+    NUM_VALID=len(test_list)
 
 
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
             
-mos_list = utils.read_list(os.path.join(DATA_DIR,'mos_list.txt'))
-random.shuffle(mos_list)
-
-train_list= mos_list[0:-(NUM_TEST+NUM_VALID)]
-random.shuffle(train_list)
-valid_list= mos_list[-(NUM_TEST+NUM_VALID):-NUM_TEST]
-test_list= mos_list[-NUM_TEST:]
-
 print('{} for training; {} for valid; {} for testing'.format(NUM_TRAIN, NUM_VALID, NUM_TEST))    
 
 # init model
