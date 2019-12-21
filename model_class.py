@@ -38,7 +38,8 @@ class CNN(object):
         dense1=Dense(64, activation='relu')(flatten)
         dense1=Dropout(0.3)(dense1)
 
-        average_score=layers.GlobalAveragePooling1D(name='avg')(dense1)
+        # make this layer suitable for classification
+        average_score=layers.GlobalAveragePooling1D(name='final')(dense1)
         
         model = Model(outputs=average_score, inputs=_input)
         
@@ -66,9 +67,7 @@ class FFN(object):
         d5 = Dense(64, activation='relu'))(d4)
         
         dropout=Dropout(0.3)(d6)
-
-        # make this last layer output suitable for MSE and regression
-        output = Dense(self.n_targets, name='avg')        
+        output = Dense(self.n_targets, activation='softmax', name='final')        
         model = Model(outputs=output, inputs=_input)
         
         return model

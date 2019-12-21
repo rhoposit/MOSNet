@@ -184,6 +184,7 @@ for i in tqdm(range(len(test_list))):
         mos=float(filepath[3])
     
     _feat = utils.read(os.path.join(BIN_DIR,filename+'.h5'))
+    # this line is quite a bit redundant - just don't return a dictionary here.. 
     _mag = _feat['mag_sgram']    
         
     

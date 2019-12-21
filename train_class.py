@@ -90,7 +90,11 @@ if args.data == "LA":
     NUM_TEST=len(valid_list)
     NUM_VALID=len(test_list)
     
-    
+
+# Prepare the relevant targets for categorical cross-entropy here
+# make the MOS categories one-hot vectors
+n_targets = 5
+
 
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
@@ -103,7 +107,7 @@ rep_dims = {'DS-image':4096, 'CNN':512, 'xvec_0':512, 'xvec_1':512, 'xvec_2':512
 # init model
 if args.model == 'CNN':
     dim = rep_dims[args.feats]
-    MOSNet = model_rep.CNN(dims)
+    MOSNet = model_rep.CNN(dims, n_targets)
 elif args.model == 'BLSTM':
     print("TODO: implement a BLSTM for representation learning")
     sys.exit()
@@ -117,7 +121,8 @@ model = MOSNet.build()
 
 model.compile(
     optimizer=tf.keras.optimizers.Adam(1e-4),
-    loss={'avg':'mse'})
+    loss={'final':'categorical_crossentropy'},
+    metrics='accuracy')
     
 CALLBACKS = [
     keras.callbacks.ModelCheckpoint(
@@ -177,7 +182,7 @@ for i in tqdm(range(len(test_list))):
         sysid = filepath[1]
         speakerid = filepath[0]
         mos=float(filepath[3])
-
+    
     _feat = utils.read_rep(os.path.join(BIN_DIR,filename+'.npy'))
     _rep = _feat['rep']    
         

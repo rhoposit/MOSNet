@@ -70,7 +70,13 @@ def read(file_path):
     
     return {
         'mag_sgram': mag_sgram,
-    }   
+    }
+
+
+def read_rep(file_path):
+
+    return {'rep' : np.load(file_path) }
+
 
 def pad(array, reference_shape):
     
