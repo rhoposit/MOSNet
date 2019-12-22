@@ -59,11 +59,11 @@ class FFN(object):
         re_input = layers.Reshape((-1, self.dims, 1), input_shape=(-1, self.dims))(_input)
         
         # Dense Layers
-        d1 = Dense(64, activation='relu'))(re_input)
-        d2 = Dense(64, activation='relu'))(d1)
-        d3 = Dense(64, activation='relu'))(d2)
-        d4 = Dense(64, activation='relu'))(d3)
-        d5 = Dense(64, activation='relu'))(d4)
+        d1 = Dense(64, activation='relu')(re_input)
+        d2 = Dense(64, activation='relu')(d1)
+        d3 = Dense(64, activation='relu')(d2)
+        d4 = Dense(64, activation='relu')(d3)
+        d5 = Dense(64, activation='relu')(d4)
         
         dropout=Dropout(0.3)(d6)
 
