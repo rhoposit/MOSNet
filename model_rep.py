@@ -12,7 +12,7 @@ class CNN(object):
         self.dims = dims
         
     def build(self):
-        _input = keras.Input(shape=(None, self.dims))
+        _input = keras.Input(shape=(self.dims))
         
         re_input = layers.Reshape((-1, self.dims, 1), input_shape=(-1, self.dims))(_input)
         
