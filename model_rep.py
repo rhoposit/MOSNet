@@ -18,19 +18,16 @@ class CNN(object):
     def build(self):
         
         _input = keras.Input(shape=(self.shape))
-        re_input = layers.BatchNormalization(input_shape=self.shape)(_input)
+#        re_input = layers.BatchNormalization(input_shape=self.shape)(_input)
         
         # CNN
-        conv1 = Conv1D(filters=16, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(re_input)
-        mp1 = MaxPooling1D(3)(conv1)
-        conv2 = Conv1D(filters=32, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(mp1)
-        mp2 = MaxPooling1D(3)(conv2)
-        conv3 = Conv1D(filters=64, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(mp2)
+        conv1 = Conv1D(filters=16, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(_input)
+        conv2 = Conv1D(filters=32, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv1)
+        conv3 = Conv1D(filters=64, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv2)
 #        conv4 = Conv1D(filters=128, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv3)
-        mp3 = MaxPooling1D(3)(conv3)
 
         # DNN
-        flatten = layers.Flatten()(mp3)
+#        flatten = layers.Flatten()(conv3)
 #        dense1=Dense(64, activation='relu')(flatten)
 #        dr=Dropout(self.dr)(dense1)
         dense2=Dense(1,activation='relu')(flatten)
