@@ -24,13 +24,13 @@ class CNN(object):
         conv1 = Conv1D(filters=16, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(_input)
         conv2 = Conv1D(filters=32, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv1)
         conv3 = Conv1D(filters=64, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv2)
-#        conv4 = Conv1D(filters=128, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv3)
+        conv4 = Conv1D(filters=128, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv3)
 
         # DNN
-#        flatten = layers.Flatten()(conv3)
+        flatten = layers.Flatten()(conv3)
 #        dense1=Dense(64, activation='relu')(flatten)
 #        dr=Dropout(self.dr)(dense1)
-        dense2=Dense(1,activation='relu')(conv3)
+        dense2=Dense(1,activation='relu')(flatten)
         
         model = Model(outputs=dense2, inputs=_input)
         
@@ -39,10 +39,11 @@ class CNN(object):
 
 class FFN(object):
     
-    def __init__(self, dims, n_targets):
+    def __init__(self, dims, n_targets, dr):
         print('CNN init')
         self.dims = dims
         self.n_targets
+        self.dr = dr
         
     def build(self):
         _input = keras.Input(shape=(None, self.dims))
@@ -57,7 +58,7 @@ class FFN(object):
         d4 = Dense(64, activation='relu')(d3)
         d5 = Dense(64, activation='relu')(d4)
         
-        dropout=Dropout(0.3)(d6)
+        dropout=Dropout(self.dr)(d6)
 
         # make this last layer output suitable for MSE and regression
         output = Dense(self.n_targets, name='avg')        
