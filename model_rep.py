@@ -29,9 +29,9 @@ class CNN(object):
 
         # DNN
         flatten = layers.Flatten()(mp)
-        dense1=Dense(64, activation='relu')(flatten)
-        dr=Dropout(self.dr)(dense1)
-        dense2=Dense(1,activation='relu')(dr)
+#        dense1=Dense(64, activation='relu')(flatten)
+#        dr=Dropout(self.dr)(dense1)
+        dense2=Dense(1,activation='relu')(flatten)
         
         model = Model(outputs=dense2, inputs=_input)
         
