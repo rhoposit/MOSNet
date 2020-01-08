@@ -18,19 +18,19 @@ class CNN(object):
     def build(self):
         
         _input = keras.Input(shape=(self.shape))
-#        re_input = layers.BatchNormalization(input_shape=self.shape)(_input)
+        re_input = layers.BatchNormalization(input_shape=self.shape)(_input)
         
         # CNN
-        conv1 = Conv1D(filters=16, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(_input)
+        conv1 = Conv1D(filters=16, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(re_input)
         conv2 = Conv1D(filters=32, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv1)
         conv3 = Conv1D(filters=64, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv2)
         conv4 = Conv1D(filters=128, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv3)
 
         # DNN
-        flatten = layers.Flatten()(conv3)
+#        flatten = layers.Flatten()(conv3)
 #        dense1=Dense(64, activation='relu')(flatten)
 #        dr=Dropout(self.dr)(dense1)
-        dense2=Dense(1,activation='relu')(flatten)
+        dense2=Dense(1,activation='relu')(conv4)
         
         model = Model(outputs=dense2, inputs=_input)
         
@@ -44,13 +44,11 @@ class FFN(object):
         self.dims = dims
         self.n_targets
         self.dr = dr
+        self.shape = (None, self.dims)
         
     def build(self):
-        _input = keras.Input(shape=(None, self.dims))
+        _input = keras.Input(shape=self.shape)
 
-        # this layer might be redundant or unecessary
-        re_input = layers.Reshape((-1, self.dims, 1), input_shape=(-1, self.dims))(_input)
-        
         # Dense Layers
         d1 = Dense(64, activation='relu')(re_input)
         d2 = Dense(64, activation='relu')(d1)
