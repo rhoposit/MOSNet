@@ -91,7 +91,7 @@ def data_gen_rep(file_list, bin_root, batch_size=1):
     while True:          
         filename = [file_list[index+x].split(',')[0].split('.')[0] for x in range(batch_size)] 
         for i in range(len(filename)):
-            DS = np.load(join(bin_root,filename[i]+'.h5'))
+            DS = np.load(join(bin_root,filename[i]+'.npy'))
             if i == 0:
                 feat = DS
             else:
