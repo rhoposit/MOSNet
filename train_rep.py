@@ -99,11 +99,13 @@ if not os.path.exists(OUTPUT_DIR):
 print('{} for training; {} for valid; {} for testing'.format(NUM_TRAIN, NUM_TEST, NUM_VALID))        
 rep_dims = {'DS-image':4096, 'CNN':512, 'xvec_0':512, 'xvec_1':512, 'xvec_2':512, 'xvec_3':512, 'xvec_4':512, 'xvec_5':512}
     
+l2_val = 0.01
+dr = 0.3
 
 # init model
 if args.model == 'CNN':
     dim = rep_dims[args.feats]
-    MOSNet = model_rep.CNN(dim)
+    MOSNet = model_rep.CNN(dim, l2_val, dr)
 elif args.model == 'BLSTM':
     print("TODO: implement a BLSTM for representation learning")
     sys.exit()
