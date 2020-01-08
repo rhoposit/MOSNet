@@ -91,7 +91,7 @@ def data_gen_rep(file_list, bin_root, batch_size=1):
     while True:          
         filename = [file_list[index+x].split(',')[0].split('.')[0] for x in range(batch_size)] 
         for i in range(len(filename)):
-            DS = np.load(i)
+            DS = np.load(filename[i])
             if i == 0:
                 feat = DS
             else:
@@ -104,7 +104,7 @@ def data_gen_rep(file_list, bin_root, batch_size=1):
             index = 0
             random.shuffle(file_list)
         print(feat.shape, mos.shape)
-        yield feat, mos
+        yield feat, [mos]
 
 
 def data_generator(file_list, bin_root, frame=False, batch_size=1):
