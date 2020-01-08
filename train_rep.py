@@ -118,7 +118,7 @@ else:
 model = MOSNet.build()
 
 model.compile(
-    optimizer=tf.keras.optimizers.Adam(1e-4),metrics=['mean_absolute_error']
+    optimizer=tf.keras.optimizers.Adam(1e-4),metrics=['mean_absolute_error'],
     loss="mse")
     
 CALLBACKS = [
