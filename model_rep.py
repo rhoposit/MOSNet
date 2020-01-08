@@ -24,8 +24,8 @@ class CNN(object):
         conv1 = Conv1D(filters=16, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(re_input)
         conv2 = Conv1D(filters=32, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv1)
         conv3 = Conv1D(filters=64, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv2)
-        conv4 = Conv1D(filters=128, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv3)
-        mp = MaxPooling1D(3)(conv4)
+#        conv4 = Conv1D(filters=128, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv3)
+        mp = MaxPooling1D(3)(conv3)
 
         # DNN
         flatten = layers.Flatten()(mp)
