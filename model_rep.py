@@ -29,11 +29,10 @@ class CNN(object):
         # DNN
         flatten = layers.Flatten()(conv4)
         dense1=Dense(64, activation='relu')(flatten)
-        dense1=Dropout(self.dr)(dense1)
-
-        average_score=layers.GlobalAveragePooling1D(name='avg')(dense1)
+        dr=Dropout(self.dr)(dense1)
+        dense2=Dense(1,activation='relu')(dr)
         
-        model = Model(outputs=average_score, inputs=_input)
+        model = Model(outputs=dense2, inputs=_input)
         
         return model
 

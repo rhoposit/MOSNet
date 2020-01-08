@@ -118,8 +118,8 @@ else:
 model = MOSNet.build()
 
 model.compile(
-    optimizer=tf.keras.optimizers.Adam(1e-4),
-    loss={'avg':'mse'})
+    optimizer=tf.keras.optimizers.Adam(1e-4),metrics=['mean_absolute_error']
+    loss="mse")
     
 CALLBACKS = [
     keras.callbacks.ModelCheckpoint(
