@@ -1,7 +1,7 @@
 import tensorflow
 from tensorflow import keras
 from tensorflow.keras import Model, layers
-from tensorflow.keras.layers import Dense, Dropout, Conv1D
+from tensorflow.keras.layers import Dense, Dropout, Conv1D, MaxPooling1D
 from tensorflow.keras.layers import LSTM, TimeDistributed, Bidirectional
 from tensorflow.keras.constraints import max_norm
 from tensorflow.keras import regularizers
@@ -25,9 +25,10 @@ class CNN(object):
         conv2 = Conv1D(filters=32, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv1)
         conv3 = Conv1D(filters=64, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv2)
         conv4 = Conv1D(filters=128, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv3)
+        mp = MaxPooling1D(m)(conv4)
 
         # DNN
-        flatten = layers.Flatten()(conv4)
+        flatten = layers.Flatten()(mp)
         dense1=Dense(64, activation='relu')(flatten)
         dr=Dropout(self.dr)(dense1)
         dense2=Dense(1,activation='relu')(dr)
