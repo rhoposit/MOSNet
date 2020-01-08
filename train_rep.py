@@ -103,7 +103,7 @@ rep_dims = {'DS-image':4096, 'CNN':512, 'xvec_0':512, 'xvec_1':512, 'xvec_2':512
 # init model
 if args.model == 'CNN':
     dim = rep_dims[args.feats]
-    MOSNet = model_rep.CNN(dims)
+    MOSNet = model_rep.CNN(dim)
 elif args.model == 'BLSTM':
     print("TODO: implement a BLSTM for representation learning")
     sys.exit()
