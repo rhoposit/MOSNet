@@ -152,8 +152,7 @@ hist = model.fit_generator(train_data,
                            epochs=EPOCHS,
                            callbacks=CALLBACKS,
                            validation_data=valid_data,
-                           validation_steps=val_steps,
-                           verbose=1)
+                           validation_steps=val_steps)
     
 
 # plot testing result
