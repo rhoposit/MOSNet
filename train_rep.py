@@ -139,8 +139,8 @@ CALLBACKS = [
 ]
 
 # data generator
-train_data = utils.data_gen_rep(train_list, BIN_DIR, frame=True, batch_size=BATCH_SIZE)
-valid_data = utils.data_gen_rep(valid_list, BIN_DIR, frame=True, batch_size=BATCH_SIZE)
+train_data = utils.data_gen_rep(train_list, BIN_DIR, batch_size=BATCH_SIZE)
+valid_data = utils.data_gen_rep(valid_list, BIN_DIR, batch_size=BATCH_SIZE)
 
     
 tr_steps = int(NUM_TRAIN/BATCH_SIZE)
