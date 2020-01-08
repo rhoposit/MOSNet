@@ -4,35 +4,26 @@ from tensorflow.keras import Model, layers
 from tensorflow.keras.layers import Dense, Dropout, Conv2D
 from tensorflow.keras.layers import LSTM, TimeDistributed, Bidirectional
 from tensorflow.keras.constraints import max_norm
+from keras import regularizers
 
 class CNN(object):
     
-    def __init__(self, dims):
+    def __init__(self, dims, l2_val):
         print('CNN init')
         self.dims = dims
+        self.l2_val
         
     def build(self):
-        _input = keras.Input(shape=(self.dims))
         
-        re_input = layers.Reshape((-1, self.dims, 1), input_shape=(-1, self.dims))(_input)
+        _input = keras.Input(shape=(self.dims))
+        re_input = layers.BatchNormalization(input_shape=self.dims)(_input)
         
         # CNN
-        conv1 = (Conv2D(16, (3,3), strides=(1, 1), activation='relu', padding='same'))(re_input)
-        conv1 = (Conv2D(16, (3,3), strides=(1, 1), activation='relu', padding='same'))(conv1)
-        conv1 = (Conv2D(16, (3,3), strides=(1, 3), activation='relu', padding='same'))(conv1)
-        
-        conv2 = (Conv2D(32, (3,3), strides=(1, 1), activation='relu', padding='same'))(conv1)
-        conv2 = (Conv2D(32, (3,3), strides=(1, 1), activation='relu', padding='same'))(conv2)
-        conv2 = (Conv2D(32, (3,3), strides=(1, 3), activation='relu', padding='same'))(conv2)
-        
-        conv3 = (Conv2D(64, (3,3), strides=(1, 1), activation='relu', padding='same'))(conv2)
-        conv3 = (Conv2D(64, (3,3), strides=(1, 1), activation='relu', padding='same'))(conv3)
-        conv3 = (Conv2D(64, (3,3), strides=(1, 3), activation='relu', padding='same'))(conv3)
-        
-        conv4 = (Conv2D(128, (3,3), strides=(1, 1), activation='relu', padding='same'))(conv3)
-        conv4 = (Conv2D(128, (3,3), strides=(1, 1), activation='relu', padding='same'))(conv4)
-        conv4 = (Conv2D(128, (3,3), strides=(1, 3), activation='relu', padding='same'))(conv4)
-        
+        conv1 = Conv1D(filters=16, kernel_size=3,input_shape=(self.dims),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(re_input)
+        conv2 = Conv1D(filters=32, kernel_size=3,input_shape=(self.dims),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv1)
+        conv3 = Conv1D(filters=64, kernel_size=3,input_shape=(self.dims),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv2)
+        conv4 = Conv1D(filters=128, kernel_size=3,input_shape=(self.dims),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv3)
+
         # DNN
         flatten = layers.Flatten()(conv4)
         dense1=Dense(64, activation='relu')(flatten)
