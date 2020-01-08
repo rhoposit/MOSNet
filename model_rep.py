@@ -30,7 +30,7 @@ class CNN(object):
 #        flatten = layers.Flatten()(conv3)
 #        dense1=Dense(64, activation='relu')(flatten)
 #        dr=Dropout(self.dr)(dense1)
-        dense2=Dense(1,activation='relu')(flatten)
+        dense2=Dense(1,activation='relu')(conv3)
         
         model = Model(outputs=dense2, inputs=_input)
         
