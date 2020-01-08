@@ -4,14 +4,15 @@ from tensorflow.keras import Model, layers
 from tensorflow.keras.layers import Dense, Dropout, Conv2D
 from tensorflow.keras.layers import LSTM, TimeDistributed, Bidirectional
 from tensorflow.keras.constraints import max_norm
-from keras import regularizers
+from tensorflow.keras import regularizers
 
 class CNN(object):
     
-    def __init__(self, dims, l2_val):
+    def __init__(self, dims, l2_val, dr):
         print('CNN init')
         self.dims = dims
-        self.l2_val
+        self.l2_val = l2_val
+        self.dr = dr
         
     def build(self):
         
@@ -27,7 +28,7 @@ class CNN(object):
         # DNN
         flatten = layers.Flatten()(conv4)
         dense1=Dense(64, activation='relu')(flatten)
-        dense1=Dropout(0.3)(dense1)
+        dense1=Dropout(self.dr)(dense1)
 
         average_score=layers.GlobalAveragePooling1D(name='avg')(dense1)
         
