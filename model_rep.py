@@ -1,7 +1,7 @@
 import tensorflow
 from tensorflow import keras
 from tensorflow.keras import Model, layers
-from tensorflow.keras.layers import Dense, Dropout, Conv2D
+from tensorflow.keras.layers import Dense, Dropout, Conv1D
 from tensorflow.keras.layers import LSTM, TimeDistributed, Bidirectional
 from tensorflow.keras.constraints import max_norm
 from tensorflow.keras import regularizers
