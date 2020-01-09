@@ -95,7 +95,7 @@ def data_gen_rep(file_list, bin_root, batch_size=1):
             if i == 0:
                 feat = DS
             else:
-                feat = np.append(feat, DS, axis=0)
+                feat = np.concatenate((feat, DS), axis=0)
             print(DS.shape, feat.shape)
         mos = [float(file_list[x+index].split(',')[1]) for x in range(batch_size)]
         mos = np.asarray(mos).reshape([batch_size])
