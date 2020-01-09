@@ -17,7 +17,7 @@ class CNN(object):
         
     def build(self):
         
-        _input = keras.Input(shape=(self.shape))
+        _input = keras.Input(shape=self.shape)
 #        re_input = layers.BatchNormalization(input_shape=self.shape)(_input)
         
         # CNN
@@ -43,7 +43,7 @@ class FFN(object):
         print('FFN init')
         self.dims = dims
         self.dr = dr
-        self.shape = (None, self.dims)
+        self.shape = (self.dims,1)
         
     def build(self):
         _input = keras.Input(shape=self.shape)
