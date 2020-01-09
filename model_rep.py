@@ -21,7 +21,7 @@ class CNN(object):
 #        re_input = layers.BatchNormalization(input_shape=self.shape)(_input)
         
         # CNN
-        conv1 = Conv1D(filters=16, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(re_input)
+        conv1 = Conv1D(filters=16, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(_input)
         conv2 = Conv1D(filters=32, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv1)
         conv3 = Conv1D(filters=64, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv2)
         conv4 = Conv1D(filters=128, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv3)
@@ -39,10 +39,9 @@ class CNN(object):
 
 class FFN(object):
     
-    def __init__(self, dims, n_targets, dr):
-        print('CNN init')
+    def __init__(self, dims, dr):
+        print('FFN init')
         self.dims = dims
-        self.n_targets
         self.dr = dr
         self.shape = (None, self.dims)
         
