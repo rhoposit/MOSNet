@@ -140,16 +140,21 @@ CALLBACKS = [
 ]
 
 # data generator
-train_data = utils.data_gen_rep(train_list, BIN_DIR)
-valid_data = utils.data_gen_rep(valid_list, BIN_DIR)
+train_data = utils.data_gen_rep(train_list, BIN_DIR, batch_size=BATCH_SIZE)
+valid_data = utils.data_gen_rep(valid_list, BIN_DIR, batch_size=BATCH_SIZE)
+
+tr_steps = int(NUM_TRAIN/BATCH_SIZE)
+val_steps = int(NUM_VALID/BATCH_SIZE)
+
 
 # start fitting model
-hist = model.fit(train_data,
-                 epochs=EPOCHS,
-                 callbacks=CALLBACKS,
-                 validation_data=valid_data,
-                 batch_size = BATCH_SIZE,
-                 verbose=1)
+hist = model.fit_generator(train_data,
+                           steps_per_epoch=tr_steps,
+                           epochs=EPOCHS,
+                           callbacks=CALLBACKS,
+                           validation_data=valid_data,
+                           validation_steps=val_steps,
+                           verbose=1)
     
 
 # plot testing result
