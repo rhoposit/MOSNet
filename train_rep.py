@@ -102,6 +102,15 @@ rep_dims = {'DS-image':4096, 'CNN':512, 'xvec_0':512, 'xvec_1':512, 'xvec_2':512
 l2_val = 0.01
 dr = 0.3
 
+
+# data generator
+train_data = utils.data_gen_rep(train_list, BIN_DIR, batch_size=BATCH_SIZE)
+valid_data = utils.data_gen_rep(valid_list, BIN_DIR, batch_size=BATCH_SIZE)
+
+tr_steps = int(NUM_TRAIN/BATCH_SIZE)
+val_steps = int(NUM_VALID/BATCH_SIZE)
+
+
 # init model
 if args.model == 'CNN':
     dim = rep_dims[args.feats]
@@ -139,12 +148,6 @@ CALLBACKS = [
         verbose=1)
 ]
 
-# data generator
-train_data = utils.data_gen_rep(train_list, BIN_DIR, batch_size=BATCH_SIZE)
-valid_data = utils.data_gen_rep(valid_list, BIN_DIR, batch_size=BATCH_SIZE)
-
-tr_steps = int(NUM_TRAIN/BATCH_SIZE)
-val_steps = int(NUM_VALID/BATCH_SIZE)
 
 
 # start fitting model
