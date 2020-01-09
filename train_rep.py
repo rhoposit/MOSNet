@@ -114,7 +114,7 @@ elif args.model == 'BLSTM':
 elif args.model == 'CNN-BLSTM':
     sys.exit()
 else:
-    raise ValueError('please specify model to train with, CNN, FFN etc')
+    raise ValueError('please specify model to train with, CNN, FFN')
 
 model = MOSNet.build()
 
@@ -149,9 +149,11 @@ val_steps = int(NUM_VALID/BATCH_SIZE)
 
 # start fitting model
 hist = model.fit_generator(train_data,
+                           steps_per_epoch=tr_steps,
                            epochs=EPOCHS,
                            callbacks=CALLBACKS,
                            validation_data=valid_data,
+                           validation_steps=val_steps,
                            verbose=1)
     
 
