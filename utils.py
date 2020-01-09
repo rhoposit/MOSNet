@@ -94,8 +94,6 @@ def data_gen_rep(file_list, bin_root, batch_size=1):
         for i in range(len(filename)):
             DS = np.load(join(bin_root,filename[i]+'.npy'))
             arrs.append(DS)
-            feat = np.array(arrs)
-            print(DS.shape, feat.shape)
         mos = [float(file_list[x+index].split(',')[1]) for x in range(batch_size)]
         mos = np.asarray(mos).reshape([batch_size])
         index += batch_size  
@@ -103,6 +101,7 @@ def data_gen_rep(file_list, bin_root, batch_size=1):
         if index+batch_size >= len(file_list):
             index = 0
             random.shuffle(file_list)
+        feat = np.array(arrs).reshape([batch_size])
         print(feat.shape, mos.shape)
         yield feat, mos
 
