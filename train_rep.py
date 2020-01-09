@@ -109,7 +109,7 @@ valid_data = utils.data_gen_rep(valid_list, BIN_DIR, batch_size=BATCH_SIZE)
 
 tr_steps = int(NUM_TRAIN/BATCH_SIZE)
 val_steps = int(NUM_VALID/BATCH_SIZE)
-
+print("steps", tr_steps)
 
 # init model
 if args.model == 'CNN':
