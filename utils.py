@@ -86,6 +86,24 @@ def pad(array, reference_shape):
     return result
 
 
+def data_rep(file_list, bin_root):
+    index=0
+    batch_size = len(file_list)
+    filename = [file_list[index+x].split(',')[0].split('.')[0] for x in range(batch_size)]
+    arrs = []
+    print(len(filename))
+    for i in range(len(filename)):
+        DS = np.load(join(bin_root,filename[i]+'.npy'))
+        arrs.append(DS)
+    mos = [float(file_list[x+index].split(',')[1]) for x in range(batch_size)]
+    mos = np.asarray(mos)
+    print(len(arrs))
+    feat = np.array(arrs)
+    print(feat.shape, mos.shape)
+    return feat, mos
+
+
+
 def data_gen_rep(file_list, bin_root, batch_size=1):
     index=0
     while True:          
@@ -103,7 +121,7 @@ def data_gen_rep(file_list, bin_root, batch_size=1):
             index = 0
             random.shuffle(file_list)
         print(len(arrs))
-        feat = np.array(arrs)
+        feat = np.asarray(arrs)
         print(feat.shape, mos.shape)
         yield feat, mos
 
