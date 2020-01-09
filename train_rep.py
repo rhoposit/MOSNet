@@ -106,6 +106,9 @@ dr = 0.3
 if args.model == 'CNN':
     dim = rep_dims[args.feats]
     MOSNet = model_rep.CNN(dim, l2_val, dr)
+elif args.model == 'FFN':
+    dim = rep_dims[args.feats]
+    MOSNet = model_rep.FFN(dim, dr)
 elif args.model == 'BLSTM':
     print("TODO: implement a BLSTM for representation learning")
     sys.exit()
@@ -152,7 +155,8 @@ hist = model.fit_generator(train_data,
                            epochs=EPOCHS,
                            callbacks=CALLBACKS,
                            validation_data=valid_data,
-                           validation_steps=val_steps)
+                           validation_steps=val_steps,
+                           verbose=1)
     
 
 # plot testing result
