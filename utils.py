@@ -89,13 +89,12 @@ def pad(array, reference_shape):
 def data_gen_rep(file_list, bin_root, batch_size=1):
     index=0
     while True:          
-        filename = [file_list[index+x].split(',')[0].split('.')[0] for x in range(batch_size)] 
+        filename = [file_list[index+x].split(',')[0].split('.')[0] for x in range(batch_size)]
+        arrs = []
         for i in range(len(filename)):
             DS = np.load(join(bin_root,filename[i]+'.npy'))
-            if i == 0:
-                feat = DS
-            else:
-                feat = np.concatenate((feat, DS), axis=1)
+            arrs.append(DS)
+            feat = np.array(arrs)
             print(DS.shape, feat.shape)
         mos = [float(file_list[x+index].split(',')[1]) for x in range(batch_size)]
         mos = np.asarray(mos).reshape([batch_size])
