@@ -110,18 +110,16 @@ elif args.model == 'FFN':
     dim = rep_dims[args.feats]
     MOSNet = model_rep.FFN(dim, dr)
 elif args.model == 'BLSTM':
-    print("TODO: implement a BLSTM for representation learning")
     sys.exit()
 elif args.model == 'CNN-BLSTM':
-    print("TODO: implement a CNN-BLSTM for representation learning")
     sys.exit()
 else:
-    raise ValueError('please specify model to train with, CNN, BLSTM or CNN-BLSTM')
+    raise ValueError('please specify model to train with, CNN, FFN etc')
 
 model = MOSNet.build()
 
 model.compile(
-    optimizer=tf.keras.optimizers.Adam(1e-4),metrics=['mean_absolute_error'],
+    optimizer=tf.keras.optimizers.Adam(1e-4),metrics="mean_absolute_error",
     loss="mse")
     
 CALLBACKS = [
@@ -151,11 +149,9 @@ val_steps = int(NUM_VALID/BATCH_SIZE)
 
 # start fitting model
 hist = model.fit_generator(train_data,
-                           steps_per_epoch=tr_steps,
                            epochs=EPOCHS,
                            callbacks=CALLBACKS,
                            validation_data=valid_data,
-                           validation_steps=val_steps,
                            verbose=1)
     
 
