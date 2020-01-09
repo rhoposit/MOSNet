@@ -13,7 +13,7 @@ class CNN(object):
         self.dims = dims
         self.l2_val = l2_val
         self.dr = dr
-        self.shape = (None,self.dims)
+        self.shape = (None, None, self.dims)
         
     def build(self):
         
