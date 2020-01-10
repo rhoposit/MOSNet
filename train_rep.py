@@ -207,10 +207,10 @@ for i in tqdm(range(len(test_list))):
     _DS = np.expand_dims(_DS, axis=3)
     Average_score=model.predict(_DS, verbose=0, batch_size=1)
 
-    if reg_class_flag == "R":
+    if args.reg_class_flag == "R":
         MOS_Predict[i]=Average_score
         MOS_true[i] =mos
-    elif reg_class_flag == "C":
+    elif args.reg_class_flag == "C":
         MOS_Predict[i]=np.argmax(Average_score, axis=1)
         MOS_true[i] =np.argmax(mos, axis=1)
 
