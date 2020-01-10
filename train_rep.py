@@ -212,7 +212,8 @@ for i in tqdm(range(len(test_list))):
         MOS_true[i] =mos
     elif args.reg_class_flag == "C":
         print(Average_score)
-        MOS_Predict[i]=np.argmax(Average_score, axis=1)
+        print(Average_score[0])
+        MOS_Predict[i]=np.argmax(Average_score[0])
         MOS_true[i] =np.argmax(mos, axis=1)
 
         

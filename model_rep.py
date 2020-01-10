@@ -46,7 +46,7 @@ class FFN(object):
         self.dr = dr
         self.shape = (self.dims,1)
         
-    def build(self):
+    def build(self, targets):
         _input = keras.Input(shape=self.shape)
 
         # Dense Layers
