@@ -14,7 +14,7 @@ class CNN(object):
         self.dims = dims
         self.l2_val = l2_val
         self.dr = dr
-        self.shape = (self.dims)
+        self.shape = (self.dims,1)
         
 #    def build(self):
 #        _input = keras.Input(shape=self.shape)
@@ -57,7 +57,7 @@ class FFN(object):
         print('FFN init')
         self.dims = dims
         self.dr = dr
-        self.shape = (self.dims)
+        self.shape = (self.dims,1)
         
     def build(self):
         _input = keras.Input(shape=self.shape)
