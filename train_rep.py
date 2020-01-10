@@ -203,7 +203,7 @@ for i in tqdm(range(len(test_list))):
     _rep = _feat['rep']    
         
     _rep = np.expand_dims(_rep, axis=3)
-    print(_feat.shape, _rep.shape)
+    print(_rep.shape)
     Average_score=model.predict(_rep, verbose=0, batch_size=1)
     MOS_Predict[i]=Average_score
     MOS_true[i]   =mos
@@ -228,12 +228,14 @@ plt.ylabel('number')
 plt.show()
 plt.savefig('./'+OUTPUT_DIR+'/MOSNet_distribution.png', dpi=150)
 
-LCC=np.corrcoef(MOS_true, MOS_Predict)
-print('[UTTERANCE] Linear correlation coefficient= %f' % LCC[0][1])
-SRCC=scipy.stats.spearmanr(MOS_true.T, MOS_Predict.T)
-print('[UTTERANCE] Spearman rank correlation coefficient= %f' % SRCC[0])    
-MSE=np.mean((MOS_true-MOS_Predict)**2)
-print('[UTTERANCE] Test error= %f' % MSE)
+
+if args.reg_class_flag == "R":
+    LCC=np.corrcoef(MOS_true, MOS_Predict)
+    print('[UTTERANCE] Linear correlation coefficient= %f' % LCC[0][1])
+    SRCC=scipy.stats.spearmanr(MOS_true.T, MOS_Predict.T)
+    print('[UTTERANCE] Spearman rank correlation coefficient= %f' % SRCC[0])    
+    MSE=np.mean((MOS_true-MOS_Predict)**2)
+    print('[UTTERANCE] Test error= %f' % MSE)
     
 
 
@@ -264,12 +266,13 @@ sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')
 sys_true = sys_mer_df['mean']
 sys_predicted = sys_mer_df['predict_mos']
 
-LCC=np.corrcoef(sys_true, sys_predicted)
-print('[SYSTEM] Linear correlation coefficient= %f' % LCC[0][1])
-SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
-print('[SYSTEM] Spearman rank correlation coefficient= %f' % SRCC[0])
-MSE=np.mean((sys_true-sys_predicted)**2)
-print('[SYSTEM] Test error= %f' % MSE)
+if args.reg_class_flag == "R":
+    LCC=np.corrcoef(sys_true, sys_predicted)
+    print('[SYSTEM] Linear correlation coefficient= %f' % LCC[0][1])
+    SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
+    print('[SYSTEM] Spearman rank correlation coefficient= %f' % SRCC[0])
+    MSE=np.mean((sys_true-sys_predicted)**2)
+    print('[SYSTEM] Test error= %f' % MSE)
 
 
 # Plotting scatter plot
@@ -303,12 +306,13 @@ if args.data == "LA":
     spk_true = spk_mer_df['mean']
     spk_predicted = spk_mer_df['predict_mos']
 
-    LCC=np.corrcoef(spk_true, spk_predicted)
-    print('[SPEAKER] Linear correlation coefficient= %f' % LCC[0][1])
-    SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
-    print('[SPEAKER] Spearman rank correlation coefficient= %f' % SRCC[0])
-    MSE=np.mean((spk_true-spk_predicted)**2)
-    print('[SPEAKER] Test error= %f' % MSE)
+    if args.reg_class_flag == "R":
+        LCC=np.corrcoef(spk_true, spk_predicted)
+        print('[SPEAKER] Linear correlation coefficient= %f' % LCC[0][1])
+        SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
+        print('[SPEAKER] Spearman rank correlation coefficient= %f' % SRCC[0])
+        MSE=np.mean((spk_true-spk_predicted)**2)
+        print('[SPEAKER] Test error= %f' % MSE)
 
 
                    
