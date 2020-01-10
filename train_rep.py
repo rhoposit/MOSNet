@@ -15,6 +15,8 @@ from tensorflow import keras
 import model_rep
 import utils
 import random
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--model", help="model to train with, CNN")
@@ -141,6 +143,7 @@ elif args.reg_class_flag == "C":
     model.compile(
         optimizer=tf.keras.optimizers.Adam(1e-4),metrics=["accuracy"],
         loss="categorical_crossentropy")
+    train_data_mos = keras.utils.to_categorical(train_data_mos, num_classes=10)
     valid_data_mos = keras.utils.to_categorical(valid_data_mos, num_classes=10)
 
     
@@ -204,8 +207,15 @@ for i in tqdm(range(len(test_list))):
     _DS = np.expand_dims(_DS, axis=3)
     print(_DS.shape)
     Average_score=model.predict(_DS, verbose=0, batch_size=1)
-    MOS_Predict[i]=Average_score
-    MOS_true[i]   =mos
+
+    if reg_class_flag == "R":
+        MOS_Predict[i]=Average_score
+        MOS_true[i] =mos
+    elif reg_class_flag == "C":
+        MOS_Predict[i]=np.argmax(Average_score, axis=1)
+        MOS_true[i] =np.argmax(mos, axis=1)
+
+        
     df = df.append({'audio': filepath[0], 
                     'true_mos': MOS_true[i], 
                     'predict_mos': MOS_Predict[i], 
@@ -235,6 +245,10 @@ if args.reg_class_flag == "R":
     print('[UTTERANCE] Spearman rank correlation coefficient= %f' % SRCC[0])    
     MSE=np.mean((MOS_true-MOS_Predict)**2)
     print('[UTTERANCE] Test error= %f' % MSE)
+elif args.reg_class_flag == "C":
+    ACC = accuracy_score(MOS_true, MOS_predicted)
+    print('[UTTERANCE] Accuracy = %f' % ACC)
+    print(confusion_matrix(MOS_true, MOS_predicted))
     
 
 
@@ -272,6 +286,10 @@ if args.reg_class_flag == "R":
     print('[SYSTEM] Spearman rank correlation coefficient= %f' % SRCC[0])
     MSE=np.mean((sys_true-sys_predicted)**2)
     print('[SYSTEM] Test error= %f' % MSE)
+elif args.reg_class_flag == "C":
+    ACC = accuracy_score(sys_true, sys_predicted)
+    print('[SYSTEM] Accuracy = %f' % ACC)
+    print(confusion_matrix(sys_true, sys_predicted))
 
 
 # Plotting scatter plot
@@ -312,8 +330,10 @@ if args.data == "LA":
         print('[SPEAKER] Spearman rank correlation coefficient= %f' % SRCC[0])
         MSE=np.mean((spk_true-spk_predicted)**2)
         print('[SPEAKER] Test error= %f' % MSE)
-
-
+    elif args.reg_class_flag == "C":
+        ACC = accuracy_score(spk_true, spk_predicted)
+        print('[SPEAKER] Accuracy = %f' % ACC)
+        print(confusion_matrix(spk_true, spk_predicted))
                    
     # Plotting scatter plot
     M=np.max([np.max(spk_predicted),5])
