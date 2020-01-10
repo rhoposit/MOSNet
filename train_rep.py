@@ -104,10 +104,10 @@ dr = 0.3
 
 
 # data generator
-#train_data = utils.data_gen_rep(train_list, BIN_DIR, batch_size=BATCH_SIZE)
-#valid_data = utils.data_gen_rep(valid_list, BIN_DIR, batch_size=BATCH_SIZE)
-train_data = utils.data_rep(train_list, BIN_DIR)
-valid_data = utils.data_rep(valid_list, BIN_DIR)
+train_data = utils.data_gen_rep(train_list, BIN_DIR, batch_size=BATCH_SIZE)
+valid_data = utils.data_gen_rep(valid_list, BIN_DIR, batch_size=BATCH_SIZE)
+#train_data = utils.data_rep(train_list, BIN_DIR)
+#valid_data = utils.data_rep(valid_list, BIN_DIR)
 
 
 tr_steps = int(NUM_TRAIN/BATCH_SIZE)
@@ -128,7 +128,7 @@ elif args.model == 'CNN-BLSTM':
 else:
     raise ValueError('please specify model to train with, CNN, FFN')
 
-model = MOSNet.build()
+model = MOSNet.build3()
 
 model.compile(
     optimizer=tf.keras.optimizers.Adam(1e-4),metrics=["mean_absolute_error"],
@@ -154,23 +154,23 @@ CALLBACKS = [
 
 
 # start fitting model
-#hist = model.fit_generator(train_data,
-#                           steps_per_epoch=tr_steps,
-#                           epochs=EPOCHS,
-#                           callbacks=CALLBACKS,
-#                           validation_data=valid_data,
-#                           validation_steps=val_steps,
-#                           verbose=1)
+hist = model.fit_generator(train_data,
+                           steps_per_epoch=tr_steps,
+                           epochs=EPOCHS,
+                           callbacks=CALLBACKS,
+                           validation_data=valid_data,
+                           validation_steps=val_steps,
+                           verbose=1)
     
 
 # start fitting model
-hist = model.fit(train_data,
-                 epochs=EPOCHS,
-                 callbacks=CALLBACKS,
-                 shuffle=True,
-                 batch_size=BATCH_SIZE,
-                 validation_data=valid_data,
-                 verbose=1)
+#hist = model.fit(train_data,
+#                 epochs=EPOCHS,
+#                 callbacks=CALLBACKS,
+#                 shuffle=True,
+#                 batch_size=BATCH_SIZE,
+#                 validation_data=valid_data,
+#                 verbose=1)
 
 # plot testing result
 model.load_weights(os.path.join(OUTPUT_DIR,'mosnet.h5'),)   # Load the best model   

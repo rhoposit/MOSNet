@@ -1,6 +1,7 @@
 import tensorflow
 from tensorflow import keras
 from tensorflow.keras import Model, layers
+from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Conv1D, MaxPooling1D
 from tensorflow.keras.layers import LSTM, TimeDistributed, Bidirectional
 from tensorflow.keras.constraints import max_norm
@@ -30,10 +31,10 @@ class CNN(object):
 #        return model
 
 
-    def build(self):
+    def build2(self):
         k,m = 3,2
         model = Sequential()
-        model.add(BatchNormalization(input_shape=self.shape))
+        model.add(layers.BatchNormalization(input_shape=self.shape))
         model.add(Conv1D(filters=32, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
         model.add(MaxPooling1D(m))
         model.add(Conv1D(filters=32, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
@@ -46,7 +47,43 @@ class CNN(object):
         labels = model(vec)
         return Model(vec, labels)
 
+
+
+    def build3(self):
+        _input = keras.Input(shape=(None, 257))
+        
+        re_input = layers.Reshape((-1, 257, 1), input_shape=(-1, 257))(_input)
+        
+        # CNN
+        conv1 = (Conv1D(16, 3, strides=1, activation='relu', padding='same'))(re_input)
+        conv1 = (Conv1D(16, 3, strides=1, activation='relu', padding='same'))(conv1)
+        conv1 = (Conv1D(16, 3, strides=3, activation='relu', padding='same'))(conv1)
+        
+        conv2 = (Conv1D(32, 3, strides=1, activation='relu', padding='same'))(conv1)
+        conv2 = (Conv1D(32, 3, strides=1, activation='relu', padding='same'))(conv2)
+        conv2 = (Conv1D(32, 3, strides=3, activation='relu', padding='same'))(conv2)
+        
+        conv3 = (Conv1D(64, 3, strides=1, activation='relu', padding='same'))(conv2)
+        conv3 = (Conv1D(64, 3, strides=1, activation='relu', padding='same'))(conv3)
+        conv3 = (Conv1D(64, 3, strides=3, activation='relu', padding='same'))(conv3)
+        
+        conv4 = (Conv1D(128, 3, strides=1, activation='relu', padding='same'))(conv3)
+        conv4 = (Conv1D(128, 3, strides=1, activation='relu', padding='same'))(conv4)
+        conv4 = (Conv1D(128, 3, strides=1, activation='relu', padding='same'))(conv4)
+        
+        # DNN
+        flatten = layers.Flatten()(conv4)
+        dense1=Dense(64, activation='relu')(flatten)
+        dense1=Dropout(0.3)(dense1)
+
+        model = Model(outputs=dense1, inputs=_input)        
+        return model
     
+
+
+
+
+
 class FFN(object):
     
     def __init__(self, dims, dr):
