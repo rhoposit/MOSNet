@@ -154,15 +154,15 @@ CALLBACKS = [
 
 
 
-print(train_data_feats.shape)
+print(train_data_feat.shape)
 print(train_data_mos.shape)
 # start fitting model
-hist = model.fit(x=train_data_feats, y=train_data_mos,
+hist = model.fit(x=train_data_feat, y=train_data_mos,
                  epochs=EPOCHS,
                  callbacks=CALLBACKS,
                  shuffle=True,
                  batch_size=BATCH_SIZE,
-                 validation_data=(valid_data_feats, valid_data_mos),
+                 validation_data=(valid_data_feat, valid_data_mos),
                  verbose=1)
 
 # plot testing result
