@@ -51,31 +51,24 @@ class CNN(object):
 
     def build3(self):
         _input = keras.Input(shape=(None, 257))
-        
 #        re_input = layers.Reshape((-1, 257, 1), input_shape=(-1, 257))(_input)
-        
         # CNN
         conv1 = (Conv1D(16, 3, strides=1, activation='relu', padding='same'))(_input)
         conv1 = (Conv1D(16, 3, strides=1, activation='relu', padding='same'))(conv1)
         conv1 = (Conv1D(16, 3, strides=3, activation='relu', padding='same'))(conv1)
-        
         conv2 = (Conv1D(32, 3, strides=1, activation='relu', padding='same'))(conv1)
         conv2 = (Conv1D(32, 3, strides=1, activation='relu', padding='same'))(conv2)
         conv2 = (Conv1D(32, 3, strides=3, activation='relu', padding='same'))(conv2)
-        
         conv3 = (Conv1D(64, 3, strides=1, activation='relu', padding='same'))(conv2)
         conv3 = (Conv1D(64, 3, strides=1, activation='relu', padding='same'))(conv3)
         conv3 = (Conv1D(64, 3, strides=3, activation='relu', padding='same'))(conv3)
-        
         conv4 = (Conv1D(128, 3, strides=1, activation='relu', padding='same'))(conv3)
         conv4 = (Conv1D(128, 3, strides=1, activation='relu', padding='same'))(conv4)
         conv4 = (Conv1D(128, 3, strides=1, activation='relu', padding='same'))(conv4)
-        
         # DNN
         flatten = layers.Flatten()(conv4)
         dense1=Dense(64, activation='relu')(flatten)
         dense1=Dropout(0.3)(dense1)
-
         model = Model(outputs=dense1, inputs=_input)        
         return model
     
