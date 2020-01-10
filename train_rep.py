@@ -108,8 +108,6 @@ train_data_feat = np.load(DATA_DIR+'/DS_train__feat.npy')
 train_data_mos = np.load(DATA_DIR+'/DS_train__mos.npy')
 valid_data_feat = np.load(DATA_DIR+'/DS_valid__feat.npy')
 valid_data_mos = np.load(DATA_DIR+'/DS_valid__mos.npy')
-train_data = train_data_feat, train_data_mos
-valid_data = valid_data_feat, valid_data_mos
 
 #train_data = utils.data_gen_rep(train_list, BIN_DIR, batch_size=BATCH_SIZE)
 #valid_data = utils.data_gen_rep(valid_list, BIN_DIR, batch_size=BATCH_SIZE)
@@ -156,23 +154,15 @@ CALLBACKS = [
 
 
 
+print(train_data_feats.shape)
+print(train_data_mos.shape)
 # start fitting model
-#hist = model.fit_generator(train_data,
-#                           steps_per_epoch=tr_steps,
-#                           epochs=EPOCHS,
-#                           callbacks=CALLBACKS,
-#                           validation_data=valid_data,
-#                           validation_steps=val_steps,
-#                           verbose=1)
-    
-
-# start fitting model
-hist = model.fit(train_data,
+hist = model.fit(x=train_data_feats, y=train_data_mos,
                  epochs=EPOCHS,
                  callbacks=CALLBACKS,
                  shuffle=True,
                  batch_size=BATCH_SIZE,
-                 validation_data=valid_data,
+                 validation_data=(valid_data_feats, valid_data_mos),
                  verbose=1)
 
 # plot testing result
