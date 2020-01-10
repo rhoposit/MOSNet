@@ -41,7 +41,7 @@ class CNN(object):
         model.add(MaxPooling1D(m))
         model.add(Conv1D(filters=32, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
         model.add(MaxPooling1D(m))
-        model.add(Flatten())
+        model.add(layers.Flatten())
         model.add(Dense(1, activation='relu'))
         vec = Input(shape=(self.shape))
         labels = model(vec)
