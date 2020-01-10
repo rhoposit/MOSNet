@@ -199,10 +199,9 @@ for i in tqdm(range(len(test_list))):
         speakerid = filepath[0]
         mos=float(filepath[3])
 
-    _feat = utils.read_rep(os.path.join(BIN_DIR,filename+'.npy'))
-    _rep = _feat['rep']    
+    _DS = utils.read_rep(os.path.join(BIN_DIR,filename+'.npy'))
         
-    _rep = np.expand_dims(_rep, axis=3)
+    _DS = np.expand_dims(_DS, axis=3)
     print(_rep.shape)
     Average_score=model.predict(_rep, verbose=0, batch_size=1)
     MOS_Predict[i]=Average_score
