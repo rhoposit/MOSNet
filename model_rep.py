@@ -2,7 +2,7 @@ import tensorflow
 from tensorflow import keras
 from tensorflow.keras import Model, layers
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Conv1D, MaxPooling1D
+from tensorflow.keras.layers import Input, Dense, Dropout, Conv1D, MaxPooling1D
 from tensorflow.keras.layers import LSTM, TimeDistributed, Bidirectional
 from tensorflow.keras.constraints import max_norm
 from tensorflow.keras import regularizers
