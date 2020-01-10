@@ -140,7 +140,7 @@ elif args.reg_class_flag == "C":
     model = MOSNet.build(True)
     model.compile(
         optimizer=tf.keras.optimizers.Adam(1e-4),metrics=["accuracy"],
-        loss="categorical_cross_entropy")
+        loss="categorical_crossentropy")
     valid_data_mos = keras.utils.to_categorical(valid_data_mos, num_classes=10)
 
     
