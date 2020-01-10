@@ -23,7 +23,7 @@ parser.add_argument("--batch_size", type=int, default=8, help="number batch_size
 parser.add_argument("--data", help="data: VC, LA")
 parser.add_argument("--feats", help="feats: orig, DS-image, xvec_, or CNN")
 parser.add_argument("--seed", type=int, default=1984, help="specify a seed")
-parser.add_argument("--reg_class_flag", type=bool, default=False, help="True for classification")
+parser.add_argument("--reg_class_flag", type=str, default="R", help="C or R")
 
 
 args = parser.parse_args()
@@ -39,7 +39,7 @@ print('training with model architecture: {}'.format(args.model))
 print('epochs: {}\nbatch_size: {}'.format(args.epoch, args.batch_size))
 print('training with data: {}'.format(args.data))   
 print('training with feature type: {}'.format(args.feats))   
-print('Classification: {}'.format(args.reg_class_flag))   
+print('C/R: {}'.format(args.reg_class_flag))   
 
 
 # 0 = all messages are logged (default behavior)
@@ -113,11 +113,6 @@ train_data_mos = np.load(DATA_DIR+'/DS_train__mos.npy')
 valid_data_feat = np.load(DATA_DIR+'/DS_valid__feat.npy')
 valid_data_mos = np.load(DATA_DIR+'/DS_valid__mos.npy')
 
-#train_data = utils.data_gen_rep(train_list, BIN_DIR, batch_size=BATCH_SIZE)
-#valid_data = utils.data_gen_rep(valid_list, BIN_DIR, batch_size=BATCH_SIZE)
-#tr_steps = int(NUM_TRAIN/BATCH_SIZE)
-#val_steps = int(NUM_VALID/BATCH_SIZE)
-#print("steps", tr_steps)
 
 # init model
 if args.model == 'CNN':
@@ -146,6 +141,7 @@ elif args.reg_class_flag == "C":
     model.compile(
         optimizer=tf.keras.optimizers.Adam(1e-4),metrics=["accuracy"],
         loss="categorical_cross_entropy")
+    valid_data_mos = keras.utils.to_categorical(valid_data_mos, num_classes=10)
 
     
     
