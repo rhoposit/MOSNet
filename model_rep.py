@@ -16,38 +16,25 @@ class CNN(object):
         self.dr = dr
         self.shape = (self.dims,1)
         
-#    def build(self):
-#        _input = keras.Input(shape=self.shape)
-#        re_input = layers.BatchNormalization(input_shape=self.shape)(_input)
-#        
-#        # CNN
-#        conv1 = Conv1D(filters=16, kernel_size=3,input_shape=(None, None, self.dims),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(_input)
-#        conv2 = Conv1D(filters=32, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv1)
-#        conv3 = Conv1D(filters=64, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv2)
-#        conv4 = Conv1D(filters=128, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv3)
-#        # DNN
-#        dense2=Dense(1,activation='relu')(conv4)        
-#        model = Model(outputs=dense2, inputs=_input)       
-#        return model
-
-
-    def build2(self):
+    def build(self, targets):
         k,m = 3,2
         model = Sequential()
         model.add(layers.BatchNormalization(input_shape=self.shape))
-        model.add(Conv1D(filters=32, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
+        model.add(Conv1D(filters=16, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
         model.add(MaxPooling1D(m))
         model.add(Conv1D(filters=32, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
         model.add(MaxPooling1D(m))
-        model.add(Conv1D(filters=32, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
+        model.add(Conv1D(filters=64, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
         model.add(MaxPooling1D(m))
         model.add(layers.Flatten())
-        model.add(Dense(1, activation='relu'))
+
+        if targets:
+            model.add(Dense(10, activation='relu'))
+        else:
+            model.add(Dense(1, activation='relu'))            
         vec = Input(shape=(self.shape))
         labels = model(vec)
         return Model(vec, labels)
-
-
 
 
 
@@ -72,7 +59,11 @@ class FFN(object):
         dropout=Dropout(self.dr)(d5)
 
         # make this last layer output suitable for MSE and regression
-        output = Dense(1, activation='relu')(dropout)        
+        if targets:
+            output = Dense(10, activation='relu')(dropout)        
+        else:
+            output = Dense(1, activation='relu')(dropout)        
+        
         model = Model(outputs=output, inputs=_input)
         
         return model

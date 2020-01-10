@@ -23,6 +23,8 @@ parser.add_argument("--batch_size", type=int, default=8, help="number batch_size
 parser.add_argument("--data", help="data: VC, LA")
 parser.add_argument("--feats", help="feats: orig, DS-image, xvec_, or CNN")
 parser.add_argument("--seed", type=int, default=1984, help="specify a seed")
+parser.add_argument("--reg_class_flag", type=bool, default=False, help="True for classification")
+
 
 args = parser.parse_args()
 
@@ -36,7 +38,9 @@ if not args.model:
 print('training with model architecture: {}'.format(args.model))   
 print('epochs: {}\nbatch_size: {}'.format(args.epoch, args.batch_size))
 print('training with data: {}'.format(args.data))   
-print('training with features: {}'.format(args.feats))   
+print('training with feature type: {}'.format(args.feats))   
+print('Classification: {}'.format(args.reg_class_flag))   
+
 
 # 0 = all messages are logged (default behavior)
 # 1 = INFO messages are not printed
@@ -129,11 +133,21 @@ elif args.model == 'CNN-BLSTM':
 else:
     raise ValueError('please specify model to train with, CNN, FFN')
 
-model = MOSNet.build2()
 
-model.compile(
-    optimizer=tf.keras.optimizers.Adam(1e-4),metrics=["mean_absolute_error"],
-    loss="mse")
+
+if args.reg_class_flag == "R":
+    model = MOSNet.build(False)
+    model.compile(
+        optimizer=tf.keras.optimizers.Adam(1e-4),metrics=["mean_absolute_error"],
+        loss="mse")
+
+elif args.reg_class_flag == "C":
+    model = MOSNet.build(True)
+    model.compile(
+        optimizer=tf.keras.optimizers.Adam(1e-4),metrics=["accuracy"],
+        loss="categorical_cross_entropy")
+
+    
     
 CALLBACKS = [
     keras.callbacks.ModelCheckpoint(
@@ -192,7 +206,7 @@ for i in tqdm(range(len(test_list))):
     _feat = utils.read_rep(os.path.join(BIN_DIR,filename+'.npy'))
     _rep = _feat['rep']    
         
-    
+    _rep = np.expand_dims(_rep, axis=3)
     Average_score=model.predict(_rep, verbose=0, batch_size=1)
     MOS_Predict[i]=Average_score
     MOS_true[i]   =mos
