@@ -106,6 +106,9 @@ dr = 0.3
 # data generator
 train_data = utils.data_gen_rep(train_list, BIN_DIR, batch_size=BATCH_SIZE)
 valid_data = utils.data_gen_rep(valid_list, BIN_DIR, batch_size=BATCH_SIZE)
+#train_data = utils.data_rep(train_list, BIN_DIR)
+#valid_data = utils.data_rep(valid_list, BIN_DIR)
+
 
 tr_steps = int(NUM_TRAIN/BATCH_SIZE)
 val_steps = int(NUM_VALID/BATCH_SIZE)
@@ -159,6 +162,14 @@ hist = model.fit_generator(train_data,
                            validation_steps=val_steps,
                            verbose=1)
     
+
+# start fitting model
+#hist = model.fit(train_data,
+#                 epochs=EPOCHS,
+#                 callbacks=CALLBACKS,
+#                 shuffle=True,
+#                 validation_data=valid_data,
+#                 verbose=1)
 
 # plot testing result
 model.load_weights(os.path.join(OUTPUT_DIR,'mosnet.h5'),)   # Load the best model   

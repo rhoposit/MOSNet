@@ -15,28 +15,38 @@ class CNN(object):
         self.dr = dr
         self.shape = (None, self.dims)
         
-    def build(self):
-        
-        _input = keras.Input(shape=self.shape)
+#    def build(self):
+#        _input = keras.Input(shape=self.shape)
 #        re_input = layers.BatchNormalization(input_shape=self.shape)(_input)
-        
-        # CNN
-        conv1 = Conv1D(filters=16, kernel_size=3,input_shape=(None, None, self.dims),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(_input)
-        conv2 = Conv1D(filters=32, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv1)
-        conv3 = Conv1D(filters=64, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv2)
-        conv4 = Conv1D(filters=128, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv3)
-
-        # DNN
-#        flatten = layers.Flatten()(conv3)
-#        dense1=Dense(64, activation='relu')(flatten)
-#        dr=Dropout(self.dr)(dense1)
-        dense2=Dense(1,activation='relu')(conv4)
-        
-        model = Model(outputs=dense2, inputs=_input)
-        
-        return model
+#        
+#        # CNN
+#        conv1 = Conv1D(filters=16, kernel_size=3,input_shape=(None, None, self.dims),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(_input)
+#        conv2 = Conv1D(filters=32, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv1)
+#        conv3 = Conv1D(filters=64, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv2)
+#        conv4 = Conv1D(filters=128, kernel_size=3,activation='relu',kernel_regularizer=regularizers.l2(self.l2_val))(conv3)
+#        # DNN
+#        dense2=Dense(1,activation='relu')(conv4)        
+#        model = Model(outputs=dense2, inputs=_input)       
+#        return model
 
 
+    def build(self):
+        k,m = 3,2
+        model = Sequential()
+        model.add(BatchNormalization(input_shape=self.shape))
+        model.add(Conv1D(filters=32, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
+        model.add(MaxPooling1D(m))
+        model.add(Conv1D(filters=32, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
+        model.add(MaxPooling1D(m))
+        model.add(Conv1D(filters=32, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
+        model.add(MaxPooling1D(m))
+        model.add(Flatten())
+        model.add(Dense(1, activation='relu'))
+        vec = Input(shape=(self.shape))
+        labels = model(vec)
+        return Model(vec, labels)
+
+    
 class FFN(object):
     
     def __init__(self, dims, dr):
