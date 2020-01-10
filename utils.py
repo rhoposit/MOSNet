@@ -75,7 +75,7 @@ def read(file_path):
 
 def read_rep(file_path):
 
-    return {'rep' : np.load(file_path) }
+    return np.array([np.load(file_path)])
 
 
 def pad(array, reference_shape):
