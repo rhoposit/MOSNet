@@ -205,7 +205,6 @@ for i in tqdm(range(len(test_list))):
     _DS = utils.read_rep(os.path.join(BIN_DIR,filename+'.npy'))
         
     _DS = np.expand_dims(_DS, axis=3)
-    print(_DS.shape)
     Average_score=model.predict(_DS, verbose=0, batch_size=1)
 
     if reg_class_flag == "R":
