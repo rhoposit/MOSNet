@@ -211,10 +211,9 @@ for i in tqdm(range(len(test_list))):
         MOS_Predict[i]=Average_score
         MOS_true[i] =mos
     elif args.reg_class_flag == "C":
-        print(Average_score)
-        print(Average_score[0])
         MOS_Predict[i]=np.argmax(Average_score[0])
-        MOS_true[i] =np.argmax(mos, axis=1)
+        MOS_true[i] =np.argmax(mos[0])
+        
 
         
     df = df.append({'audio': filepath[0], 
