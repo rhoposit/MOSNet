@@ -93,6 +93,7 @@ def data_rep(file_list, bin_root):
     arrs = []
     print(len(filename))
     for i in range(len(filename)):
+        print(i, len(filename))
         DS = np.load(join(bin_root,filename[i]+'.npy'))
         arrs.append(DS)
     mos = [float(file_list[x+index].split(',')[1]) for x in range(batch_size)]
