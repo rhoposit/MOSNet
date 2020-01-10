@@ -104,6 +104,14 @@ dr = 0.3
 
 
 # data generator
+train_data_feat = np.load('DS_train__feat.npy')
+train_data_mos = np.load('DS_train__mos.npy')
+valid_data_feat = np.load('DS_train__feat.npy')
+valid_data_mos = np.load('DS_train__mos.npy')
+train_data = train_data_feat, train_data_mos
+valid_data = valid_data_feat, valid_data_mos
+
+
 train_data = utils.data_gen_rep(train_list, BIN_DIR, batch_size=BATCH_SIZE)
 valid_data = utils.data_gen_rep(valid_list, BIN_DIR, batch_size=BATCH_SIZE)
 #train_data = utils.data_rep(train_list, BIN_DIR)

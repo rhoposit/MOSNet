@@ -52,10 +52,10 @@ class CNN(object):
     def build3(self):
         _input = keras.Input(shape=(None, 257))
         
-        re_input = layers.Reshape((-1, 257, 1), input_shape=(-1, 257))(_input)
+#        re_input = layers.Reshape((-1, 257, 1), input_shape=(-1, 257))(_input)
         
         # CNN
-        conv1 = (Conv1D(16, 3, strides=1, activation='relu', padding='same'))(re_input)
+        conv1 = (Conv1D(16, 3, strides=1, activation='relu', padding='same'))(_input)
         conv1 = (Conv1D(16, 3, strides=1, activation='relu', padding='same'))(conv1)
         conv1 = (Conv1D(16, 3, strides=3, activation='relu', padding='same'))(conv1)
         
