@@ -171,13 +171,13 @@ valid_data_feat = np.expand_dims(valid_data_feat, axis=3)
 print(train_data_feat.shape)
 print(train_data_mos.shape)
 # start fitting model
-hist = model.fit(x=train_data_feat, y=train_data_mos,
-                 epochs=EPOCHS,
-                 callbacks=CALLBACKS,
-                 shuffle=True,
-                 batch_size=BATCH_SIZE,
-                 validation_data=(valid_data_feat, valid_data_mos),
-                 verbose=1)
+#hist = model.fit(x=train_data_feat, y=train_data_mos,
+#                 epochs=EPOCHS,
+#                 callbacks=CALLBACKS,
+#                 shuffle=True,
+#                 batch_size=BATCH_SIZE,
+#                 validation_data=(valid_data_feat, valid_data_mos),
+#                 verbose=1)
 
 # plot testing result
 model.load_weights(os.path.join(OUTPUT_DIR,'mosnet.h5'),)   # Load the best model   
