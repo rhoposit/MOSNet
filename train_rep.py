@@ -42,7 +42,9 @@ print('training with model architecture: {}'.format(args.model))
 print('epochs: {}\nbatch_size: {}'.format(args.epoch, args.batch_size))
 print('training with data: {}'.format(args.data))   
 print('training with feature type: {}'.format(args.feats))   
-print('C/R: {}'.format(args.reg_class_flag))   
+print('C/R: {}'.format(args.reg_class_flag))
+print('Test only: {}'.format(args.test_only))
+
 
 
 # 0 = all messages are logged (default behavior)
@@ -70,7 +72,7 @@ if gpus:
 # set dir
 DATA_DIR = './data_'+args.data
 BIN_DIR = os.path.join(DATA_DIR, args.feats)
-OUTPUT_DIR = './output_'+args.model+"_"+str(args.batch_size)+"_"+args.data+"_"+args.feats
+OUTPUT_DIR = './output_'+args.model+"_"+str(args.batch_size)+"_"+args.data+"_"+args.feats+"_"+args.reg_class_flag
 
 
 EPOCHS = args.epoch
