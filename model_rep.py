@@ -31,7 +31,7 @@ class CNN(object):
         if targets:
             model.add(Dense(10, activation='relu'))
         else:
-            model.add(Dense(1, activation='relu'))            
+            model.add(Dense(1, activation='softmax'))            
         vec = Input(shape=(self.shape))
         labels = model(vec)
         return Model(vec, labels)
@@ -47,25 +47,21 @@ class FFN(object):
         self.shape = (self.dims,1)
         
     def build(self, targets):
-        _input = keras.Input(shape=self.shape)
-
-        # Dense Layers
-        d1 = Dense(64, activation='relu')(_input)
-        d2 = Dense(64, activation='relu')(d1)
-        d3 = Dense(64, activation='relu')(d2)
-        d4 = Dense(64, activation='relu')(d3)
-        d5 = Dense(64, activation='relu')(d4)
+        model = Sequential()
+        model.add(Flatten(input_shape=self.shape))
+        model.add(layers.BatchNormalization(input_shape=self.shape))
+        model.add(Dense(64, activation='relu')
+        model.add(Dense(64, activation='relu')
+        model.add(Dense(64, activation='relu')
+        model.add(Dense(64, activation='relu')
+        model.add(Dense(64, activation='relu')
         
-        dropout=Dropout(self.dr)(d5)
-
-        # make this last layer output suitable for MSE and regression
         if targets:
-            output = Dense(10, activation='relu')(dropout)        
+            model.add(Dense(10, activation='relu'))
         else:
-            output = Dense(1, activation='relu')(dropout)        
-        
-        model = Model(outputs=output, inputs=_input)
-        
-        return model
+            model.add(Dense(1, activation='softmax'))            
+        vec = Input(shape=self.shape)
+        labels = model(vec))
+        return Model(vec, labels)
     
     
