@@ -260,7 +260,7 @@ plt.xlim([0.5,M])
 plt.ylim([0.5,M])
 plt.xlabel('True MOS')
 plt.ylabel('Predicted MOS')
-plt.title('LCC= {:.4f}, SRCC= {:.4f}, MSE= {:.4f}'.format(LCC[0][1], SRCC[0], MSE))
+plt.title('Utterance-Level')
 plt.show()
 plt.savefig('./'+OUTPUT_DIR+'/MOSNet_scatter_plot.png', dpi=150)
 
@@ -301,7 +301,7 @@ plt.xlim([1,M])
 plt.ylim([1,M])
 plt.xlabel('True MOS')
 plt.ylabel('Predicted MOS')
-plt.title('LCC= {:.4f}, SRCC= {:.4f}, MSE= {:.4f}'.format(LCC[0][1], SRCC[0], MSE))
+plt.title('System-Level')
 
 # # add system id
 # for i in range(len(sys_mer_df)):
@@ -344,7 +344,7 @@ if args.data == "LA":
     plt.ylim([1,M])
     plt.xlabel('True MOS')
     plt.ylabel('Predicted MOS')
-    plt.title('LCC= {:.4f}, SRCC= {:.4f}, MSE= {:.4f}'.format(LCC[0][1], SRCC[0], MSE))
+    plt.title('Speaker-Level')
 
     # # add system id
     # for i in range(len(spk_mer_df)):
