@@ -50,11 +50,11 @@ class FFN(object):
         model = Sequential()
         model.add(Flatten(input_shape=self.shape))
         model.add(layers.BatchNormalization(input_shape=self.shape))
-        model.add(Dense(64, activation='relu')
-        model.add(Dense(64, activation='relu')
-        model.add(Dense(64, activation='relu')
-        model.add(Dense(64, activation='relu')
-        model.add(Dense(64, activation='relu')
+        model.add(Dense(64, activation='relu'))
+        model.add(Dense(64, activation='relu'))
+        model.add(Dense(64, activation='relu'))
+        model.add(Dense(64, activation='relu'))
+        model.add(Dense(64, activation='relu'))
         
         if targets:
             model.add(Dense(10, activation='relu'))
