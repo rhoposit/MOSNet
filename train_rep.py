@@ -280,6 +280,10 @@ sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')
 if args.reg_class_flag == "R":
     sys_true = sys_mer_df['mean']
     sys_predicted = sys_mer_df['predict_mos']
+    print(sys_true)
+    print(sys_predicted)
+    print(sys_true.shape)
+    print(sys_predicted.shape)
     LCC=np.corrcoef(sys_true, sys_predicted)
     print('[SYSTEM] Linear correlation coefficient= %f' % LCC[0][1])
     SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
