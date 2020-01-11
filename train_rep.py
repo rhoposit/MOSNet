@@ -290,7 +290,8 @@ elif args.reg_class_flag == "C":
     sys_true = sys_mer_df['mean'].round(0).astype(int)
     sys_predicted = sys_mer_df['predict_mos'].round(0).astype(int)
 
-    print(sys_true[0])
+    print(sys_true)
+    print(sys_predicted)
     print(sys_true.shape)
     print(sys_predicted.shape)
     ACC = accuracy_score(sys_true, sys_predicted)
