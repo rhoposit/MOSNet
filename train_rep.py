@@ -212,9 +212,7 @@ for i in tqdm(range(len(test_list))):
         MOS_true[i] =mos
     elif args.reg_class_flag == "C":
         MOS_Predict[i]=np.argmax(Average_score[0])
-        print(MOS_Predict[i])
         MOS_true[i] = mos
-        print(mos)
         
 
         
@@ -248,9 +246,9 @@ if args.reg_class_flag == "R":
     MSE=np.mean((MOS_true-MOS_Predict)**2)
     print('[UTTERANCE] Test error= %f' % MSE)
 elif args.reg_class_flag == "C":
-    ACC = accuracy_score(MOS_true, MOS_predicted)
+    ACC = accuracy_score(MOS_true, MOS_Predict)
     print('[UTTERANCE] Accuracy = %f' % ACC)
-    print(confusion_matrix(MOS_true, MOS_predicted))
+    print(confusion_matrix(MOS_true, MOS_Predict))
     
 
 
