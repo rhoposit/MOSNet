@@ -61,7 +61,7 @@ class FFN(object):
         else:
             model.add(Dense(1, activation='softmax'))            
         vec = Input(shape=self.shape)
-        labels = model(vec))
+        labels = model(vec)
         return Model(vec, labels)
     
     
