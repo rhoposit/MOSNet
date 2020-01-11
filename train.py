@@ -248,6 +248,12 @@ sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')
 sys_true = sys_mer_df['mean']
 sys_predicted = sys_mer_df['predict_mos']
 
+print("SYSTEM-LEVEL")
+print(sys_true)
+print(sys_predicted)
+print(sys_true.shape)
+print(sys_predicted.shape)
+
 LCC=np.corrcoef(sys_true, sys_predicted)
 print('[SYSTEM] Linear correlation coefficient= %f' % LCC[0][1])
 SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
@@ -282,11 +288,17 @@ if args.data == "LA":
     spk_df = pd.read_csv(os.path.join(DATA_DIR,'LA_mos_speaker.csv'))
     spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
     spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                          
-    spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
-    spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                                                                                                                 
     spk_true = spk_mer_df['mean']
     spk_predicted = spk_mer_df['predict_mos']
 
+
+    print("SPEAKER-LEVEL")
+    print(spk_true)
+    print(spk_predicted)
+    print(spk_true.shape)
+    print(spk_predicted.shape)
+
+    
     LCC=np.corrcoef(spk_true, spk_predicted)
     print('[SPEAKER] Linear correlation coefficient= %f' % LCC[0][1])
     SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
