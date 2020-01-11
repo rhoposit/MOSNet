@@ -279,6 +279,11 @@ sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')
 sys_true = sys_mer_df['mean']
 sys_predicted = sys_mer_df['predict_mos']
 
+print(sys_true[0])
+print(sys_true.shape)
+print(sys_predicted.shape)
+
+
 if args.reg_class_flag == "R":
     LCC=np.corrcoef(sys_true, sys_predicted)
     print('[SYSTEM] Linear correlation coefficient= %f' % LCC[0][1])
