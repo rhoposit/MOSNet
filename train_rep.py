@@ -276,15 +276,10 @@ elif args.data == "LA":
      
 sys_result_mean = df[['system_ID', 'predict_mos']].groupby(['system_ID']).mean()
 sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')                                                                                                                 
-sys_true = sys_mer_df['mean']
-sys_predicted = sys_mer_df['predict_mos']
-
-print(sys_true[0])
-print(sys_true.shape)
-print(sys_predicted.shape)
-
 
 if args.reg_class_flag == "R":
+    sys_true = sys_mer_df['mean']
+    sys_predicted = sys_mer_df['predict_mos']
     LCC=np.corrcoef(sys_true, sys_predicted)
     print('[SYSTEM] Linear correlation coefficient= %f' % LCC[0][1])
     SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
@@ -292,6 +287,12 @@ if args.reg_class_flag == "R":
     MSE=np.mean((sys_true-sys_predicted)**2)
     print('[SYSTEM] Test error= %f' % MSE)
 elif args.reg_class_flag == "C":
+    sys_true = sys_mer_df['mean'].round(0)
+    sys_predicted = sys_mer_df['predict_mos'].round(0)
+
+    print(sys_true[0])
+    print(sys_true.shape)
+    print(sys_predicted.shape)
     ACC = accuracy_score(sys_true, sys_predicted)
     print('[SYSTEM] Accuracy = %f' % ACC)
     print(confusion_matrix(sys_true, sys_predicted))
@@ -325,10 +326,9 @@ if args.data == "LA":
     spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                          
     spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
     spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                                                                                                                 
-    spk_true = spk_mer_df['mean']
-    spk_predicted = spk_mer_df['predict_mos']
-
     if args.reg_class_flag == "R":
+        spk_true = spk_mer_df['mean']
+        spk_predicted = spk_mer_df['predict_mos']
         LCC=np.corrcoef(spk_true, spk_predicted)
         print('[SPEAKER] Linear correlation coefficient= %f' % LCC[0][1])
         SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
@@ -336,6 +336,8 @@ if args.data == "LA":
         MSE=np.mean((spk_true-spk_predicted)**2)
         print('[SPEAKER] Test error= %f' % MSE)
     elif args.reg_class_flag == "C":
+        spk_true = spk_mer_df['mean'].round(0)
+        spk_predicted = spk_mer_df['predict_mos'].round(0)
         ACC = accuracy_score(spk_true, spk_predicted)
         print('[SPEAKER] Accuracy = %f' % ACC)
         print(confusion_matrix(spk_true, spk_predicted))
