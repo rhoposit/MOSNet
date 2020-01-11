@@ -287,8 +287,8 @@ if args.reg_class_flag == "R":
     MSE=np.mean((sys_true-sys_predicted)**2)
     print('[SYSTEM] Test error= %f' % MSE)
 elif args.reg_class_flag == "C":
-    sys_true = sys_mer_df['mean'].round(0)
-    sys_predicted = sys_mer_df['predict_mos'].round(0)
+    sys_true = sys_mer_df['mean'].round(0).astype(int)
+    sys_predicted = sys_mer_df['predict_mos'].round(0).astype(int)
 
     print(sys_true[0])
     print(sys_true.shape)
@@ -336,8 +336,11 @@ if args.data == "LA":
         MSE=np.mean((spk_true-spk_predicted)**2)
         print('[SPEAKER] Test error= %f' % MSE)
     elif args.reg_class_flag == "C":
-        spk_true = spk_mer_df['mean'].round(0)
-        spk_predicted = spk_mer_df['predict_mos'].round(0)
+        spk_true = spk_mer_df['mean'].round(0).astype(int)
+        spk_predicted = spk_mer_df['predict_mos'].round(0).astype(int)
+        print(spk_true.shape)
+        print(spk_predicted.shape)
+
         ACC = accuracy_score(spk_true, spk_predicted)
         print('[SPEAKER] Accuracy = %f' % ACC)
         print(confusion_matrix(spk_true, spk_predicted))
