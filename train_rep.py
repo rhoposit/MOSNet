@@ -26,6 +26,7 @@ parser.add_argument("--data", help="data: VC, LA")
 parser.add_argument("--feats", help="feats: orig, DS-image, xvec_, or CNN")
 parser.add_argument("--seed", type=int, default=1984, help="specify a seed")
 parser.add_argument("--reg_class_flag", type=str, default="R", help="C or R")
+parser.add_argument("--test_only", type=bool, default=False, help="True for test only")
 
 
 args = parser.parse_args()
@@ -171,13 +172,14 @@ valid_data_feat = np.expand_dims(valid_data_feat, axis=3)
 print(train_data_feat.shape)
 print(train_data_mos.shape)
 # start fitting model
-#hist = model.fit(x=train_data_feat, y=train_data_mos,
-#                 epochs=EPOCHS,
-#                 callbacks=CALLBACKS,
-#                 shuffle=True,
-#                 batch_size=BATCH_SIZE,
-#                 validation_data=(valid_data_feat, valid_data_mos),
-#                 verbose=1)
+if not args.test_only:
+    hist = model.fit(x=train_data_feat, y=train_data_mos,
+                     epochs=EPOCHS,
+                     callbacks=CALLBACKS,
+                     shuffle=True,
+                     batch_size=BATCH_SIZE,
+                     validation_data=(valid_data_feat, valid_data_mos),
+                     verbose=1)
 
 # plot testing result
 model.load_weights(os.path.join(OUTPUT_DIR,'mosnet.h5'),)   # Load the best model   
