@@ -9,29 +9,30 @@ from tensorflow.keras import regularizers
 
 class CNN(object):
     
-    def __init__(self, dims, l2_val, dr):
+    def __init__(self, dims, l2_val, dr, f):
         print('CNN init')
         self.dims = dims
         self.l2_val = l2_val
         self.dr = dr
         self.shape = (self.dims,1)
+        self.f = f
         
     def build(self, targets):
         k,m = 3,2
         model = Sequential()
         model.add(layers.BatchNormalization(input_shape=self.shape))
-        model.add(Conv1D(filters=16, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
+        model.add(Conv1D(filters=self.f, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
         model.add(MaxPooling1D(m))
-        model.add(Conv1D(filters=32, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
+        model.add(Conv1D(filters=self.f, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
         model.add(MaxPooling1D(m))
-        model.add(Conv1D(filters=64, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
+        model.add(Conv1D(filters=self.f, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
         model.add(MaxPooling1D(m))
         model.add(layers.Flatten())
 
         if targets:
-            model.add(Dense(10, activation='relu'))
+            model.add(Dense(10, activation='softmax'))
         else:
-            model.add(Dense(1, activation='softmax'))            
+            model.add(Dense(1, activation='relu'))            
         vec = Input(shape=(self.shape))
         labels = model(vec)
         return Model(vec, labels)
@@ -40,11 +41,12 @@ class CNN(object):
 
 class FFN(object):
     
-    def __init__(self, dims, dr):
+    def __init__(self, dims, dr, n):
         print('FFN init')
         self.dims = dims
         self.dr = dr
         self.shape = (self.dims,1)
+        self.n = n
         
     def build(self, targets):
         model = Sequential()
@@ -57,9 +59,9 @@ class FFN(object):
         model.add(Dense(64, activation='relu'))
         
         if targets:
-            model.add(Dense(10, activation='relu'))
+            model.add(Dense(10, activation='softmax'))
         else:
-            model.add(Dense(1, activation='softmax'))            
+            model.add(Dense(1, activation='relu'))            
         vec = Input(shape=self.shape)
         labels = model(vec)
         return Model(vec, labels)
