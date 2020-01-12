@@ -21,7 +21,6 @@ from sklearn.metrics import confusion_matrix
 parser = argparse.ArgumentParser()
 parser.add_argument("--model", help="model to train with, CNN")
 parser.add_argument("--epoch", type=int, default=100, help="number epochs")
-parser.add_argument("--batch_size", type=int, default=8, help="number batch_size")
 parser.add_argument("--data", help="data: VC, LA")
 parser.add_argument("--feats", help="feats: orig, DS-image, xvec_, or CNN")
 parser.add_argument("--seed", type=int, default=1984, help="specify a seed")
@@ -30,8 +29,6 @@ parser.add_argument("--test_only", type=bool, default=False, help="True for test
 
 
 args = parser.parse_args()
-
-
 random.seed(args.seed)
 
 
@@ -40,7 +37,6 @@ if not args.model:
 
 print('training with model architecture: {}'.format(args.model))   
 print('epochs: {}\nbatch_size: {}'.format(args.epoch, args.batch_size))
-print('training with data: {}'.format(args.data))   
 print('training with feature type: {}'.format(args.feats))   
 print('C/R: {}'.format(args.reg_class_flag))
 print('Test only: {}'.format(args.test_only))
@@ -68,107 +64,103 @@ if gpus:
         # Memory growth must be set before GPUs have been initialized
         print(e)
 
-        
-# set dir
-DATA_DIR = './data_'+args.data
-BIN_DIR = os.path.join(DATA_DIR, args.feats)
-OUTPUT_DIR = './output_'+args.model+"_"+str(args.batch_size)+"_"+args.data+"_"+args.feats+"_"+args.reg_class_flag
+def run(l2_val, dr, n, batch_size):
+    # set dir
+    DATA_DIR = './data_'+args.data
+    BIN_DIR = os.path.join(DATA_DIR, args.feats)
+    OUTPUT_DIR = './output_'+args.model+"_"+str(args.batch_size)+"_"+args.data+"_"+args.feats+"_"+args.reg_class_flag+"_"+str(l2_val)+"_"+str(dr)+"_"+str(n)+"_"+str(batch_size)
 
 
-EPOCHS = args.epoch
-BATCH_SIZE = args.batch_size
+    EPOCHS = args.epoch
+    BATCH_SIZE = batch_size
 
-if args.data == "VC":
-    NUM_TRAIN = 13580
-    NUM_TEST=4000
-    NUM_VALID=3000
-    mos_list = utils.read_list(os.path.join(DATA_DIR,'mos_list.txt'))
-    random.shuffle(mos_list)
-    train_list= mos_list[0:-(NUM_TEST+NUM_VALID)]
-    random.shuffle(train_list)
-    valid_list= mos_list[-(NUM_TEST+NUM_VALID):-NUM_TEST]
-    test_list= mos_list[-NUM_TEST:]
-    train_data_feat, train_data_mos = utils.data_rep(train_list, BIN_DIR)
-    valid_data_feat, valid_data_mos = utils.data_rep(valid_list, BIN_DIR)
-if args.data == "LA":
-    test_list = utils.read_list(os.path.join(DATA_DIR,'test_list.txt'))
-    train_data_feat = np.load(DATA_DIR+'/'+args.feats+'_X_train.npy')
-    train_data_mos = np.load(DATA_DIR+'/'+args.feats+'_y_train.npy')
-    valid_data_feat = np.load(DATA_DIR+'/'+args.feats+'_X_valid.npy')
-    valid_data_mos = np.load(DATA_DIR+'/'+args.feats+'_y_valid.npy')
-    NUM_TRAIN = train_data_feat.shape[0]
-    NUM_TEST=valid_data_feat.shape[0]
-    NUM_VALID=len(test_list)
+    if args.data == "VC":
+        NUM_TRAIN = 13580
+        NUM_TEST=4000
+        NUM_VALID=3000
+        mos_list = utils.read_list(os.path.join(DATA_DIR,'mos_list.txt'))
+        random.shuffle(mos_list)
+        train_list= mos_list[0:-(NUM_TEST+NUM_VALID)]
+        random.shuffle(train_list)
+        valid_list= mos_list[-(NUM_TEST+NUM_VALID):-NUM_TEST]
+        test_list= mos_list[-NUM_TEST:]
+        train_data_feat, train_data_mos = utils.data_rep(train_list, BIN_DIR)
+        valid_data_feat, valid_data_mos = utils.data_rep(valid_list, BIN_DIR)
+    if args.data == "LA":
+        test_list = utils.read_list(os.path.join(DATA_DIR,'test_list.txt'))
+        train_data_feat = np.load(DATA_DIR+'/'+args.feats+'_X_train.npy')
+        train_data_mos = np.load(DATA_DIR+'/'+args.feats+'_y_train.npy')
+        valid_data_feat = np.load(DATA_DIR+'/'+args.feats+'_X_valid.npy')
+        valid_data_mos = np.load(DATA_DIR+'/'+args.feats+'_y_valid.npy')
+        NUM_TRAIN = train_data_feat.shape[0]
+        NUM_TEST=valid_data_feat.shape[0]
+        NUM_VALID=len(test_list)
     
     
 
-if not os.path.exists(OUTPUT_DIR):
-    os.makedirs(OUTPUT_DIR)
+    if not os.path.exists(OUTPUT_DIR):
+        os.makedirs(OUTPUT_DIR)
             
 
-print('{} for training; {} for valid; {} for testing'.format(NUM_TRAIN, NUM_TEST, NUM_VALID))        
-rep_dims = {'DS-image':4096, 'CNN':512, 'xvec_0':512, 'xvec_1':512, 'xvec_2':512, 'xvec_3':512, 'xvec_4':512, 'xvec_5':512}
+    print('{} for training; {} for valid; {} for testing'.format(NUM_TRAIN, NUM_TEST, NUM_VALID))        
+    rep_dims = {'DS-image':4096, 'CNN':512, 'xvec_0':512, 'xvec_1':512, 'xvec_2':512, 'xvec_3':512, 'xvec_4':512, 'xvec_5':512}
     
-l2_val = 0.01
-dr = 0.3
-n = 16
 
-# init model
-if args.model == 'CNN':
-    dim = rep_dims[args.feats]
-    MOSNet = model_rep.CNN(dim, l2_val, dr, n)
-elif args.model == 'FFN':
-    dim = rep_dims[args.feats]
-    MOSNet = model_rep.FFN(dim, dr, n)
-elif args.model == 'BLSTM':
-    sys.exit()
-elif args.model == 'CNN-BLSTM':
-    sys.exit()
-else:
-    raise ValueError('please specify model to train with, CNN, FFN')
+    # init model
+    if args.model == 'CNN':
+        dim = rep_dims[args.feats]
+        MOSNet = model_rep.CNN(dim, l2_val, dr, n)
+    elif args.model == 'FFN':
+        dim = rep_dims[args.feats]
+        MOSNet = model_rep.FFN(dim, dr, n)
+    elif args.model == 'BLSTM':
+        sys.exit()
+    elif args.model == 'CNN-BLSTM':
+        sys.exit()
+    else:
+        raise ValueError('please specify model to train with, CNN, FFN')
 
 
 
-if args.reg_class_flag == "R":
-    model = MOSNet.build(False)
-    model.compile(
-        optimizer=tf.keras.optimizers.Adam(1e-4),metrics=["mean_absolute_error"],
-        loss="mse")
+    if args.reg_class_flag == "R":
+        model = MOSNet.build(False)
+        model.compile(
+            optimizer=tf.keras.optimizers.Adam(1e-4),metrics=["mean_absolute_error"],
+            loss="mse")
 
-elif args.reg_class_flag == "C":
-    model = MOSNet.build(True)
-    model.compile(
-        optimizer=tf.keras.optimizers.Adam(1e-4),metrics=["accuracy"],
-        loss="categorical_crossentropy")
-    train_data_mos = keras.utils.to_categorical(train_data_mos, num_classes=10)
-    valid_data_mos = keras.utils.to_categorical(valid_data_mos, num_classes=10)
+    elif args.reg_class_flag == "C":
+        model = MOSNet.build(True)
+        model.compile(
+            optimizer=tf.keras.optimizers.Adam(1e-4),metrics=["accuracy"],
+            loss="categorical_crossentropy")
+        train_data_mos = keras.utils.to_categorical(train_data_mos, num_classes=10)
+        valid_data_mos = keras.utils.to_categorical(valid_data_mos, num_classes=10)
 
     
     
-CALLBACKS = [
-    keras.callbacks.ModelCheckpoint(
-        filepath=os.path.join(OUTPUT_DIR,'mosnet.h5'),
-        save_best_only=True,
-        monitor='val_loss',
-        verbose=1),
-    keras.callbacks.TensorBoard(
-        log_dir=os.path.join(OUTPUT_DIR,'tensorboard.log'),
-        update_freq='epoch'), 
-    keras.callbacks.EarlyStopping(
-        monitor='val_loss',
-        mode='min',
-        min_delta=0,
-        patience=5,
-        verbose=1)
-]
+    CALLBACKS = [
+        keras.callbacks.ModelCheckpoint(
+            filepath=os.path.join(OUTPUT_DIR,'mosnet.h5'),
+            save_best_only=True,
+            monitor='val_loss',
+            verbose=1),
+        keras.callbacks.TensorBoard(
+            log_dir=os.path.join(OUTPUT_DIR,'tensorboard.log'),
+            update_freq='epoch'), 
+        keras.callbacks.EarlyStopping(
+            monitor='val_loss',
+            mode='min',
+            min_delta=0,
+            patience=5,
+            verbose=1)
+    ]
 
 
-train_data_feat = np.expand_dims(train_data_feat, axis=3)
-valid_data_feat = np.expand_dims(valid_data_feat, axis=3)
-print(train_data_feat.shape)
-print(train_data_mos.shape)
-# start fitting model
-if not args.test_only:
+    train_data_feat = np.expand_dims(train_data_feat, axis=3)
+    valid_data_feat = np.expand_dims(valid_data_feat, axis=3)
+    print(train_data_feat.shape)
+    print(train_data_mos.shape)
+    # start fitting model
     hist = model.fit(x=train_data_feat, y=train_data_mos,
                      epochs=EPOCHS,
                      callbacks=CALLBACKS,
@@ -177,177 +169,173 @@ if not args.test_only:
                      validation_data=(valid_data_feat, valid_data_mos),
                      verbose=1)
 
-# plot testing result
-model.load_weights(os.path.join(OUTPUT_DIR,'mosnet.h5'),)   # Load the best model   
+    # plot testing result
+    model.load_weights(os.path.join(OUTPUT_DIR,'mosnet.h5'),)   # Load the best model   
 
-print('testing...')
-MOS_Predict=np.zeros([len(test_list),])
-MOS_true   =np.zeros([len(test_list),])
-df = pd.DataFrame(columns=['audio', 'true_mos','predict_mos','system_ID','speaker_ID'])
+    print('testing...')
+    MOS_Predict=np.zeros([len(test_list),])
+    MOS_true   =np.zeros([len(test_list),])
+    df = pd.DataFrame(columns=['audio', 'true_mos','predict_mos','system_ID','speaker_ID'])
 
-for i in tqdm(range(len(test_list))):
+    for i in tqdm(range(len(test_list))):
+
+        if args.data == "VC":
+            filepath=test_list[i].split(',')
+            filename=filepath[0].split('.')[0]
+            sysid = ""
+            speakerid = ""
+            mos=float(filepath[1])
+        elif args.data == "LA":
+            filepath=test_list[i].split(',')
+            filename=filepath[2].split('.')[0]
+            sysid = filepath[1]
+            speakerid = filepath[0]
+            mos=float(filepath[3])
+
+        _DS = utils.read_rep(os.path.join(BIN_DIR,filename+'.npy'))
+        
+        _DS = np.expand_dims(_DS, axis=3)
+        Average_score=model.predict(_DS, verbose=0, batch_size=1)
+
+        if args.reg_class_flag == "R":
+            MOS_Predict[i]=Average_score
+            MOS_true[i] =mos
+        elif args.reg_class_flag == "C":
+            MOS_Predict[i]=np.argmax(Average_score[0])
+            MOS_true[i] = mos
+        
+
+        
+        df = df.append({'audio': filepath[0], 
+                        'true_mos': MOS_true[i], 
+                        'predict_mos': MOS_Predict[i], 
+                        'system_ID': sysid, 
+                        'speaker_ID': speakerid}, 
+                       ignore_index=True)
+    
+    
+
+    plt.style.use('seaborn-deep')
+    x = df['true_mos']
+    y = df['predict_mos']
+    bins = np.linspace(1, 5, 40)
+    plt.figure(2)
+    plt.hist([x, y], bins, label=['true_mos', 'predict_mos'])
+    plt.legend(loc='upper right')
+    plt.xlabel('MOS')
+    plt.ylabel('number') 
+    plt.savefig('./'+OUTPUT_DIR+'/MOSNet_distribution.png', dpi=150)
+
+
+    if args.reg_class_flag == "R":
+        LCC=np.corrcoef(MOS_true, MOS_Predict)
+        print('[UTTERANCE] Linear correlation coefficient= %f' % LCC[0][1])
+        SRCC=scipy.stats.spearmanr(MOS_true.T, MOS_Predict.T)
+        print('[UTTERANCE] Spearman rank correlation coefficient= %f' % SRCC[0])    
+        MSE=np.mean((MOS_true-MOS_Predict)**2)
+        print('[UTTERANCE] Test error= %f' % MSE)
+    elif args.reg_class_flag == "C":
+        ACC = accuracy_score(MOS_true, MOS_Predict)
+        print('[UTTERANCE] Accuracy = %f' % ACC)
+        print(confusion_matrix(MOS_true, MOS_Predict))
+        
+
+
+    # Plotting scatter plot
+    M=np.max([np.max(MOS_Predict),5])
+    plt.figure(3)
+    plt.scatter(MOS_true, MOS_Predict, s =15, color='b',  marker='o', edgecolors='b', alpha=.20)
+    plt.xlim([0.5,M])
+    plt.ylim([0.5,M])
+    plt.xlabel('True MOS')
+    plt.ylabel('Predicted MOS')
+    plt.title('Utterance-Level')
+    plt.savefig('./'+OUTPUT_DIR+'/MOSNet_scatter_plot.png', dpi=150)
+
+
 
     if args.data == "VC":
-        filepath=test_list[i].split(',')
-        filename=filepath[0].split('.')[0]
-        sysid = ""
-        speakerid = ""
-        mos=float(filepath[1])
+        # load vcc2018_system
+        sys_df = pd.read_csv(os.path.join(DATA_DIR,'vcc2018_system.csv'))
+        df['system_ID'] = df['audio'].str.split('_').str[-1].str.split('.').str[0] + '_' + df['audio'].str.split('_').str[0]
     elif args.data == "LA":
-        filepath=test_list[i].split(',')
-        filename=filepath[2].split('.')[0]
-        sysid = filepath[1]
-        speakerid = filepath[0]
-        mos=float(filepath[3])
-
-    _DS = utils.read_rep(os.path.join(BIN_DIR,filename+'.npy'))
-        
-    _DS = np.expand_dims(_DS, axis=3)
-    Average_score=model.predict(_DS, verbose=0, batch_size=1)
-
-    if args.reg_class_flag == "R":
-        MOS_Predict[i]=Average_score
-        MOS_true[i] =mos
-    elif args.reg_class_flag == "C":
-        MOS_Predict[i]=np.argmax(Average_score[0])
-        MOS_true[i] = mos
-        
-
-        
-    df = df.append({'audio': filepath[0], 
-                    'true_mos': MOS_true[i], 
-                    'predict_mos': MOS_Predict[i], 
-                    'system_ID': sysid, 
-                    'speaker_ID': speakerid}, 
-                    ignore_index=True)
-    
-    
-
-plt.style.use('seaborn-deep')
-x = df['true_mos']
-y = df['predict_mos']
-bins = np.linspace(1, 5, 40)
-plt.figure(2)
-plt.hist([x, y], bins, label=['true_mos', 'predict_mos'])
-plt.legend(loc='upper right')
-plt.xlabel('MOS')
-plt.ylabel('number') 
-plt.show()
-plt.savefig('./'+OUTPUT_DIR+'/MOSNet_distribution.png', dpi=150)
-
-
-if args.reg_class_flag == "R":
-    LCC=np.corrcoef(MOS_true, MOS_Predict)
-    print('[UTTERANCE] Linear correlation coefficient= %f' % LCC[0][1])
-    SRCC=scipy.stats.spearmanr(MOS_true.T, MOS_Predict.T)
-    print('[UTTERANCE] Spearman rank correlation coefficient= %f' % SRCC[0])    
-    MSE=np.mean((MOS_true-MOS_Predict)**2)
-    print('[UTTERANCE] Test error= %f' % MSE)
-elif args.reg_class_flag == "C":
-    ACC = accuracy_score(MOS_true, MOS_Predict)
-    print('[UTTERANCE] Accuracy = %f' % ACC)
-    print(confusion_matrix(MOS_true, MOS_Predict))
-    
-
-
-# Plotting scatter plot
-M=np.max([np.max(MOS_Predict),5])
-plt.figure(3)
-plt.scatter(MOS_true, MOS_Predict, s =15, color='b',  marker='o', edgecolors='b', alpha=.20)
-plt.xlim([0.5,M])
-plt.ylim([0.5,M])
-plt.xlabel('True MOS')
-plt.ylabel('Predicted MOS')
-plt.title('Utterance-Level')
-plt.show()
-plt.savefig('./'+OUTPUT_DIR+'/MOSNet_scatter_plot.png', dpi=150)
-
-
-
-if args.data == "VC":
-    # load vcc2018_system
-    sys_df = pd.read_csv(os.path.join(DATA_DIR,'vcc2018_system.csv'))
-    df['system_ID'] = df['audio'].str.split('_').str[-1].str.split('.').str[0] + '_' + df['audio'].str.split('_').str[0]
-elif args.data == "LA":
-    # load LA 2019 system
-    sys_df = pd.read_csv(os.path.join(DATA_DIR,'LA_mos_system.csv'))
+        # load LA 2019 system
+        sys_df = pd.read_csv(os.path.join(DATA_DIR,'LA_mos_system.csv'))
      
-sys_result_mean = df[['system_ID', 'predict_mos']].groupby(['system_ID']).mean()
-sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')                                                                                                                 
+    sys_result_mean = df[['system_ID', 'predict_mos']].groupby(['system_ID']).mean()
+    sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')                                                                                                                 
 
-if args.reg_class_flag == "R":
-    sys_true = sys_mer_df['mean']
-    sys_predicted = sys_mer_df['predict_mos']
-    print(sys_true)
-    print(sys_predicted)
-    print(sys_true.shape)
-    print(sys_predicted.shape)
-    LCC=np.corrcoef(sys_true, sys_predicted)
-    print('[SYSTEM] Linear correlation coefficient= %f' % LCC[0][1])
-    SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
-    print('[SYSTEM] Spearman rank correlation coefficient= %f' % SRCC[0])
-    MSE=np.mean((sys_true-sys_predicted)**2)
-    print('[SYSTEM] Test error= %f' % MSE)
-elif args.reg_class_flag == "C":
-    sys_true = sys_mer_df['mean'].round(0).astype(int)
-    sys_predicted = sys_mer_df['predict_mos'].round(0).astype(int)
-
-    print(sys_true)
-    print(sys_predicted)
-    print(sys_true.shape)
-    print(sys_predicted.shape)
-    ACC = accuracy_score(sys_true, sys_predicted)
-    print('[SYSTEM] Accuracy = %f' % ACC)
-    print(confusion_matrix(sys_true, sys_predicted))
-
-
-# Plotting scatter plot
-M=np.max([np.max(sys_predicted),5])
-# m=np.max([np.min(sys_predicted)-1,0.5])
-plt.figure(4)
-plt.scatter(sys_true, sys_predicted, s =25, color='b',  marker='o', edgecolors='b')
-plt.xlim([1,M])
-plt.ylim([1,M])
-plt.xlabel('True MOS')
-plt.ylabel('Predicted MOS')
-plt.title('System-Level')
-
-# # add system id
-# for i in range(len(sys_mer_df)):
-#     sys_ID = mer_df['system_ID'][i]
-#     x = mer_df['mean'][i]
-#     y = mer_df['predict_mos'][i]
-#     plt.text(x-0.05, y+0.1, sys_ID, fontsize=8)
-plt.show()
-plt.savefig('./'+OUTPUT_DIR+'/MOSNet_system_scatter_plot.png', dpi=150)
-
-
-                   
-if args.data == "LA":
-    spk_df = pd.read_csv(os.path.join(DATA_DIR,'LA_mos_speaker.csv'))
-    spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
-    spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                          
-    spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
-    spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                                                                                                                 
     if args.reg_class_flag == "R":
-        spk_true = spk_mer_df['mean']
-        spk_predicted = spk_mer_df['predict_mos']
-        LCC=np.corrcoef(spk_true, spk_predicted)
-        print('[SPEAKER] Linear correlation coefficient= %f' % LCC[0][1])
-        SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
-        print('[SPEAKER] Spearman rank correlation coefficient= %f' % SRCC[0])
-        MSE=np.mean((spk_true-spk_predicted)**2)
-        print('[SPEAKER] Test error= %f' % MSE)
+        sys_true = sys_mer_df['mean']
+        sys_predicted = sys_mer_df['predict_mos']
+        print(sys_true)
+        print(sys_predicted)
+        print(sys_true.shape)
+        print(sys_predicted.shape)
+        LCC=np.corrcoef(sys_true, sys_predicted)
+        print('[SYSTEM] Linear correlation coefficient= %f' % LCC[0][1])
+        SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
+        print('[SYSTEM] Spearman rank correlation coefficient= %f' % SRCC[0])
+        MSE=np.mean((sys_true-sys_predicted)**2)
+        print('[SYSTEM] Test error= %f' % MSE)
     elif args.reg_class_flag == "C":
-        spk_true = spk_mer_df['mean'].round(0).astype(int)
-        spk_predicted = spk_mer_df['predict_mos'].round(0).astype(int)
-        print(spk_true.shape)
-        print(spk_predicted.shape)
+        sys_true = sys_mer_df['mean'].round(0).astype(int)
+        sys_predicted = sys_mer_df['predict_mos'].round(0).astype(int)
 
-        ACC = accuracy_score(spk_true, spk_predicted)
-        print('[SPEAKER] Accuracy = %f' % ACC)
-        print(confusion_matrix(spk_true, spk_predicted))
-                   
+        print(sys_true)
+        print(sys_predicted)
+        print(sys_true.shape)
+        print(sys_predicted.shape)
+        ACC = accuracy_score(sys_true, sys_predicted)
+        print('[SYSTEM] Accuracy = %f' % ACC)
+        print(confusion_matrix(sys_true, sys_predicted))
+        
+
+    # Plotting scatter plot
+    M=np.max([np.max(sys_predicted),5])
+    # m=np.max([np.min(sys_predicted)-1,0.5])
+    plt.figure(4)
+    plt.scatter(sys_true, sys_predicted, s =25, color='b',  marker='o', edgecolors='b')
+    plt.xlim([1,M])
+    plt.ylim([1,M])
+    plt.xlabel('True MOS')
+    plt.ylabel('Predicted MOS')
+    plt.title('System-Level')
+
+    # # add system id
+    # for i in range(len(sys_mer_df)):
+    #     sys_ID = mer_df['system_ID'][i]
+    #     x = mer_df['mean'][i]
+    #     y = mer_df['predict_mos'][i]
+    #     plt.text(x-0.05, y+0.1, sys_ID, fontsize=8)
+    plt.savefig('./'+OUTPUT_DIR+'/MOSNet_system_scatter_plot.png', dpi=150)
+
+
+    
+    if args.data == "LA":
+        spk_df = pd.read_csv(os.path.join(DATA_DIR,'LA_mos_speaker.csv'))
+        spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
+        spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                          
+        spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
+        spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                                                                                                                 
+        if args.reg_class_flag == "R":
+            spk_true = spk_mer_df['mean']
+            spk_predicted = spk_mer_df['predict_mos']
+            LCC=np.corrcoef(spk_true, spk_predicted)
+            print('[SPEAKER] Linear correlation coefficient= %f' % LCC[0][1])
+            SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
+            print('[SPEAKER] Spearman rank correlation coefficient= %f' % SRCC[0])
+            MSE=np.mean((spk_true-spk_predicted)**2)
+            print('[SPEAKER] Test error= %f' % MSE)
+        elif args.reg_class_flag == "C":
+            spk_true = spk_mer_df['mean'].round(0).astype(int)
+            spk_predicted = spk_mer_df['predict_mos'].round(0).astype(int)
+            print(spk_true.shape)
+            print(spk_predicted.shape)
+            ACC = accuracy_score(spk_true, spk_predicted)
+            print('[SPEAKER] Accuracy = %f' % ACC)
+            print(confusion_matrix(spk_true, spk_predicted))
+            
     # Plotting scatter plot
     M=np.max([np.max(spk_predicted),5])
     # m=np.max([np.min(spk_predicted)-1,0.5])
@@ -358,12 +346,32 @@ if args.data == "LA":
     plt.xlabel('True MOS')
     plt.ylabel('Predicted MOS')
     plt.title('Speaker-Level')
-
+    
     # # add system id
     # for i in range(len(spk_mer_df)):
     #     spk_ID = mer_df['speaker_ID'][i]
     #     x = mer_df['mean'][i]
     #     y = mer_df['predict_mos'][i]
     #     plt.text(x-0.05, y+0.1, spk_ID, fontsize=8)
-    plt.show()
     plt.savefig('./'+OUTPUT_DIR+'/MOSNet_speaker_scatter_plot.png', dpi=150)
+
+    
+##############################################################################
+
+# sweep these vals
+#L2_VALS = [0.001, 0.01, 0.1]
+#DRS = [0.1, 0.2, 0.3]
+#N = [16, 32, 64]
+#BATCH_SIZES = [16, 64, 128]
+
+# vals for testing
+L2_VALS = [0.001]
+DRS = [0.1]
+N = [16]
+BATCH_SIZES = [16]
+
+for l2_val in L2_VALS:
+    for dr in DRS:
+        for n in N:
+            for batch_size in BATCH_SIZES:
+                run(l2_val, dr, n, batch_size)
