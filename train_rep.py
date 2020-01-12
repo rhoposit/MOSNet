@@ -36,7 +36,7 @@ if not args.model:
     raise ValueError('please specify model to train with, CNN, etc')
 
 print('training with model architecture: {}'.format(args.model))   
-print('epochs: {}\nbatch_size: {}'.format(args.epoch))
+print('epochs: {}'.format(args.epoch))
 print('training with feature type: {}'.format(args.feats))   
 print('C/R: {}'.format(args.reg_class_flag))
 print('Test only: {}'.format(args.test_only))
