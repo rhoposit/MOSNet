@@ -111,15 +111,15 @@ rep_dims = {'DS-image':4096, 'CNN':512, 'xvec_0':512, 'xvec_1':512, 'xvec_2':512
     
 l2_val = 0.01
 dr = 0.3
-
+n = 16
 
 # init model
 if args.model == 'CNN':
     dim = rep_dims[args.feats]
-    MOSNet = model_rep.CNN(dim, l2_val, dr)
+    MOSNet = model_rep.CNN(dim, l2_val, dr, n)
 elif args.model == 'FFN':
     dim = rep_dims[args.feats]
-    MOSNet = model_rep.FFN(dim, dr)
+    MOSNet = model_rep.FFN(dim, dr, n)
 elif args.model == 'BLSTM':
     sys.exit()
 elif args.model == 'CNN-BLSTM':
