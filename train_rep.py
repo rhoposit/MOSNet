@@ -97,7 +97,7 @@ if args.data == "LA":
     valid_data_feat = np.load(DATA_DIR+'/'+args.feats+'_X_valid.npy')
     valid_data_mos = np.load(DATA_DIR+'/'+args.feats+'_y_valid.npy')
     NUM_TRAIN = train_data_feat.shape[0]
-    NUM_TEST=valid_list.shape[0]
+    NUM_TEST=valid_data_feat.shape[0]
     NUM_VALID=len(test_list)
     
     
