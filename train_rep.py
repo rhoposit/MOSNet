@@ -68,7 +68,7 @@ def run(l2_val, dr, n, batch_size):
     # set dir
     DATA_DIR = './data_'+args.data
     BIN_DIR = os.path.join(DATA_DIR, args.feats)
-    OUTPUT_DIR = './output_'+args.model+"_"+str(args.batch_size)+"_"+args.data+"_"+args.feats+"_"+args.reg_class_flag+"_"+str(l2_val)+"_"+str(dr)+"_"+str(n)+"_"+str(batch_size)
+    OUTPUT_DIR = './output_'+args.model+"_"+str(batch_size)+"_"+args.data+"_"+args.feats+"_"+args.reg_class_flag+"_"+str(l2_val)+"_"+str(dr)+"_"+str(n)+"_"+str(batch_size)
 
 
     EPOCHS = args.epoch
