@@ -88,15 +88,16 @@ if args.data == "VC":
     random.shuffle(train_list)
     valid_list= mos_list[-(NUM_TEST+NUM_VALID):-NUM_TEST]
     test_list= mos_list[-NUM_TEST:]
+    train_data_feat, train_data_mos = utils.data_rep(train_list, BIN_DIR)
+    valid_data_feat, valid_data_mos = utils.data_rep(valid_list, BIN_DIR)
 if args.data == "LA":
-    train_list = utils.read_list(os.path.join(DATA_DIR,'train_list.txt'))
-    valid_list = utils.read_list(os.path.join(DATA_DIR,'valid_list.txt'))
     test_list = utils.read_list(os.path.join(DATA_DIR,'test_list.txt'))
-    random.shuffle(train_list)
-    random.shuffle(valid_list)
-    random.shuffle(test_list)
-    NUM_TRAIN = len(train_list)
-    NUM_TEST=len(valid_list)
+    train_data_feat = np.load(DATA_DIR+'/'+args.feats+'_X_train.npy')
+    train_data_mos = np.load(DATA_DIR+'/'+args.feats+'_y_train.npy')
+    valid_data_feat = np.load(DATA_DIR+'/'+args.feats+'_X_valid.npy')
+    valid_data_mos = np.load(DATA_DIR+'/'+args.feats+'_y_valid.npy')
+    NUM_TRAIN = train_data_feat.shape[0]
+    NUM_TEST=valid_list.shape[0]
     NUM_VALID=len(test_list)
     
     
@@ -110,13 +111,6 @@ rep_dims = {'DS-image':4096, 'CNN':512, 'xvec_0':512, 'xvec_1':512, 'xvec_2':512
     
 l2_val = 0.01
 dr = 0.3
-
-
-# data generator
-train_data_feat = np.load(DATA_DIR+'/DS_train__feat.npy')
-train_data_mos = np.load(DATA_DIR+'/DS_train__mos.npy')
-valid_data_feat = np.load(DATA_DIR+'/DS_valid__feat.npy')
-valid_data_mos = np.load(DATA_DIR+'/DS_valid__mos.npy')
 
 
 # init model

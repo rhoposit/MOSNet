@@ -86,28 +86,17 @@ def pad(array, reference_shape):
     return result
 
 
-def data_gen_rep(file_list, bin_root, batch_size=1):
+def data_rep(file_list, bin_root):
     index=0
-    while True:
-            
-        filename = [file_list[index+x].split(',')[0].split('.')[0] for x in range(batch_size)]        
-        for i in range(len(filename)):
-            DS = np.load(join(bin_root,filename[i]+'.npy'))
-            if i == 0:
-                feat = DS
-            else:
-                # same timestep, append all
-                feat = np.append(feat, DS, axis=0)
-        
-        mos = [float(file_list[x+index].split(',')[1]) for x in range(batch_size)]
-        mos=np.asarray(mos).reshape([batch_size])
-            
-        index += batch_size  
-        # ensure next batch won't out of range
-        if index+batch_size >= len(file_list):
-            index = 0
-            random.shuffle(file_list)
-        yield feat, [mos]
+    total = len(file_list)
+    random.shuffle(file_list)
+    filename = [file_list[index+x].split(',')[0].split('.')[0] for x in range(total)]
+    arr = []
+    for i in range(len(filename)):
+        DS = np.load(join(bin_root,filename[i]+'.npy'))
+        arr.append(DS)
+    mos = [float(file_list[x+index].split(',')[1]) for x in range(total)]
+    return np.asarray(arr), np.asarray(mos)
 
         
 def data_generator(file_list, bin_root, frame=False, batch_size=1):
