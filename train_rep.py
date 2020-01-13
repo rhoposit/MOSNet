@@ -359,16 +359,16 @@ def run(l2_val, dr, n, batch_size):
 ##############################################################################
 
 # sweep these vals
-#L2_VALS = [0.001, 0.01, 0.1]
-#DRS = [0.1, 0.2, 0.3]
-#N = [16, 32, 64]
-#BATCH_SIZES = [16, 64, 128]
+L2_VALS = [0.001, 0.01, 0.1]
+DRS = [0.1, 0.2, 0.3]
+N = [16, 32, 64]
+BATCH_SIZES = [16, 64, 128]
 
 # vals for testing
-L2_VALS = [0.001]
-DRS = [0.1]
-N = [16]
-BATCH_SIZES = [16]
+#L2_VALS = [0.001]
+#DRS = [0.1]
+#N = [16]
+#BATCH_SIZES = [16]
 
 for l2_val in L2_VALS:
     for dr in DRS:
