@@ -218,9 +218,10 @@ for folder in F:
     logname = "log."+folder
     results_file = folder+"/res_df.pkl"
     items = folder.split("_")
-    testlist = "data_LA/test_list.txt"
     data = items[3]
-    model = folder+"/mosnet.h5"
-    # get the model name, pass to the test function
-    get_test_results(data, testlist, model, results_file)
-    # aggregate_test_results(results_file, logname)
+    if data == "LA":
+        testlist = "data_LA/test_list.txt"
+        model = folder+"/mosnet.h5"
+        # get the model name, pass to the test function
+        get_test_results(data, testlist, model, results_file)
+        # aggregate_test_results(results_file, logname)
