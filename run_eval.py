@@ -39,10 +39,10 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class
             speakerid = ""
             mos=float(filepath[1])
         elif data == "LA":
-            print(test_list[i])
-            print(filepath)
             filepath=test_list[i].split(',')
             filename=filepath[2].split('.')[0]
+            print(test_list[i])
+            print(filepath)
             sysid = filepath[1]
             speakerid = filepath[0]
             mos=float(filepath[3])
