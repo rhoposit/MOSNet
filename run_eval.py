@@ -229,7 +229,7 @@ for folder in F:
         if feats == "xvec":
             feats = feats + "_" + items[5]
         input = open(testfile, "r")
-        testlist = input.read().split("\n")
+        testlist = input.read().split("\n")[:-1]
         input.close()
         model = folder+"/mosnet.h5"
         bin_dir = "data_"+data+"/"+feats
