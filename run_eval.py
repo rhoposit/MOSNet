@@ -21,9 +21,11 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 
 
-def get_test_results(BIN_DIR, data, test_list, model, resultsfile):
+def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile):
 
     print('testing...')
+    model = load_model(modelfile)
+    model.summary()
     MOS_Predict=np.zeros([len(test_list),])
     MOS_true   =np.zeros([len(test_list),])
     df = pd.DataFrame(columns=['audio', 'true_mos','predict_mos','system_ID','speaker_ID'])
