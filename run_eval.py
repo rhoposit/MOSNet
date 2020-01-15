@@ -21,7 +21,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 from tensorflow.keras.models import load_model
 
-def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile):
+def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class_flag):
 
     print('testing...')
     model = load_model(modelfile)
@@ -50,11 +50,11 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile):
         _DS = np.expand_dims(_DS, axis=3)
         Average_score=model.predict(_DS, verbose=0, batch_size=1)
 
-        if args.reg_class_flag == "R":
+        if reg_class_flag == "R":
             MOS_Predict[i]=Average_score
             MOS_true[i] =mos
             print("R", MOS_Predict[i], MOS_true[i])
-        elif args.reg_class_flag == "C":
+        elif reg_class_flag == "C":
             MOS_Predict[i]=np.argmax(Average_score[0])
             MOS_true[i] = mos
             print("C", MOS_Predict[i], MOS_true[i])
@@ -231,6 +231,7 @@ for folder in F:
         input.close()
         model = folder+"/mosnet.h5"
         bin_dir = "data_"+data+"/"+feats
+        flag = items[6]
         # get the model name, pass to the test function
-        get_test_results(bin_dir, data, testlist, model, results_file)
+        get_test_results(bin_dir, data, testlist, model, results_file, flag)
         # aggregate_test_results(results_file, logname)
