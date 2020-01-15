@@ -220,7 +220,10 @@ for folder in F:
     items = folder.split("_")
     data = items[3]
     if data == "LA":
-        testlist = "data_LA/test_list.txt"
+        testfile = "data_LA/test_list.txt"
+        input = open(testfile, "r")
+        testlist = input.read().split("\n")
+        input.close()
         model = folder+"/mosnet.h5"
         # get the model name, pass to the test function
         get_test_results(data, testlist, model, results_file)
