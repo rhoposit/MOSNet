@@ -14,13 +14,12 @@ import matplotlib.pyplot as plt
 import argparse
 import tensorflow as tf
 from tensorflow import keras
-import keras.models
 import model_rep
 import utils
 import random
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 
 def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile):
 
