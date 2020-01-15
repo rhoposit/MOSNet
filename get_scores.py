@@ -32,7 +32,7 @@ def get_scores(OUTPUT_DIR, data, test_list, resultsfile, reg_class_flag, logname
     speakerID = df['speaker_ID']
     print(x, y, systemID, speakerID)
 
- '''   
+'''   
     plt.style.use('seaborn-deep')
     x = df['true_mos']
     y = df['predict_mos']
