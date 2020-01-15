@@ -21,7 +21,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 
 
-def get_test_results(test_list, model, resultsfile):
+def get_test_results(data, test_list, model, resultsfile):
 
     print('testing...')
     MOS_Predict=np.zeros([len(test_list),])
@@ -30,13 +30,13 @@ def get_test_results(test_list, model, resultsfile):
 
     for i in tqdm(range(len(test_list))):
 
-        if args.data == "VC":
+        if data == "VC":
             filepath=test_list[i].split(',')
             filename=filepath[0].split('.')[0]
             sysid = ""
             speakerid = ""
             mos=float(filepath[1])
-        elif args.data == "LA":
+        elif data == "LA":
             filepath=test_list[i].split(',')
             filename=filepath[2].split('.')[0]
             sysid = filepath[1]
@@ -51,9 +51,11 @@ def get_test_results(test_list, model, resultsfile):
         if args.reg_class_flag == "R":
             MOS_Predict[i]=Average_score
             MOS_true[i] =mos
+            print("R", MOS_Predict[i], MOS_true[i])
         elif args.reg_class_flag == "C":
             MOS_Predict[i]=np.argmax(Average_score[0])
             MOS_true[i] = mos
+            print("C", MOS_Predict[i], MOS_true[i])
         
 
         
@@ -217,7 +219,9 @@ for folder in F:
     results_file = folder+"/res_df.pkl"
     items = folder.split("_")
     testlist = "data_LA/test_list.txt"
+    data = items[3]
     model = folder+"/mosnet.h5"
+    re
     # get the model name, pass to the test function
-    get_test_results(testlist, model, results_file)
+    get_test_results(data, testlist, model, results_file)
     # aggregate_test_results(results_file, logname)
