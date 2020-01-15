@@ -21,7 +21,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 
 
-def get_test_results(data, test_list, model, resultsfile):
+def get_test_results(BIN_DIR, data, test_list, model, resultsfile):
 
     print('testing...')
     MOS_Predict=np.zeros([len(test_list),])
@@ -221,10 +221,14 @@ for folder in F:
     data = items[3]
     if data == "LA":
         testfile = "data_LA/test_list.txt"
+        feats = items[4]
+        if feats == "xvec":
+            feats = feats + "_" + items[5]
         input = open(testfile, "r")
         testlist = input.read().split("\n")
         input.close()
         model = folder+"/mosnet.h5"
+        bin_dir = "data_"+data+"/"+feats
         # get the model name, pass to the test function
-        get_test_results(data, testlist, model, results_file)
+        get_test_results(bin_dir, data, testlist, model, results_file)
         # aggregate_test_results(results_file, logname)
