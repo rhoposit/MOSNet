@@ -23,7 +23,7 @@ from tensorflow.keras.models import load_model
 
 def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class_flag):
 
-    print('testing...')
+    print('testing...', modelfile)
     model = load_model(modelfile)
     model.summary()
     MOS_Predict=np.zeros([len(test_list),])
@@ -41,8 +41,8 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class
         elif data == "LA":
             filepath=test_list[i].split(',')
             filename=filepath[2].split('.')[0]
-            print(test_list[i])
-            print(filepath)
+#            print(test_list[i])
+#            print(filepath)
             sysid = filepath[1]
             speakerid = filepath[0]
             mos=float(filepath[3])
