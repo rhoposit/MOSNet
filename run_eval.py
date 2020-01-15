@@ -208,16 +208,16 @@ def get_test_results(test_list, model, resultsfile):
 
     
 # move my orig folders somewhere else
-F = glob.glob("output*LA")
+F = glob.glob("./output*/")
+print(F)
 # output_CNN_16_LA_xvec_5_R_0.01_0.1_64_16
 # output, nn, batch, data, feats, reg/class, l2, dr, nodes, batch
 for folder in F:
-    if "orig" not in folder:
-        logname = "log."+folder
-        results_file = folder+"/res_df.pkl"
-        items = folder.split("_")
-        testlist = "data_LA/test_list.txt"
-        model = folder+"/mosnet.h5"
-        # get the model name, pass to the test function
-        get_test_results(testlist, model, results_file)
-        # aggregate_test_results(results_file, logname)
+    logname = "log."+folder
+    results_file = folder+"/res_df.pkl"
+    items = folder.split("_")
+    testlist = "data_LA/test_list.txt"
+    model = folder+"/mosnet.h5"
+    # get the model name, pass to the test function
+    get_test_results(testlist, model, results_file)
+    # aggregate_test_results(results_file, logname)
