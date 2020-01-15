@@ -41,8 +41,6 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class
         elif data == "LA":
             filepath=test_list[i].split(',')
             filename=filepath[2].split('.')[0]
-#            print(test_list[i])
-#            print(filepath)
             sysid = filepath[1]
             speakerid = filepath[0]
             mos=float(filepath[3])
@@ -55,11 +53,9 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class
         if reg_class_flag == "R":
             MOS_Predict[i]=Average_score
             MOS_true[i] =mos
-            print("R", MOS_Predict[i], MOS_true[i])
         elif reg_class_flag == "C":
             MOS_Predict[i]=np.argmax(Average_score[0])
             MOS_true[i] = mos
-            print("C", MOS_Predict[i], MOS_true[i])
         
 
         
@@ -70,7 +66,7 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class
                         'speaker_ID': speakerid}, 
                        ignore_index=True)
         
-        df.to_pickle(results_file)
+    df.to_pickle(results_file)
     return
 
 '''        
@@ -224,16 +220,19 @@ for folder in F:
     items = folder.split("_")
     data = items[3]
     if data == "LA":
-        testfile = "data_LA/test_list.txt"
-        feats = items[4]
-        if feats == "xvec":
-            feats = feats + "_" + items[5]
-        input = open(testfile, "r")
-        testlist = input.read().split("\n")[:-1]
-        input.close()
-        model = folder+"/mosnet.h5"
-        bin_dir = "data_"+data+"/"+feats
-        flag = items[6]
-        # get the model name, pass to the test function
-        get_test_results(bin_dir, data, testlist, model, results_file, flag)
-        # aggregate_test_results(results_file, logname)
+        try:
+            testfile = "data_LA/test_list.txt"
+            feats = items[4]
+            if feats == "xvec":
+                feats = feats + "_" + items[5]
+            input = open(testfile, "r")
+            testlist = input.read().split("\n")[:-1]
+            input.close()
+            model = folder+"/mosnet.h5"
+            bin_dir = "data_"+data+"/"+feats
+            flag = items[6]
+            # get the model name, pass to the test function
+            get_test_results(bin_dir, data, testlist, model, results_file, flag)
+            # aggregate_test_results(results_file, logname)
+        except:
+            print("Caught exception, continuing")
