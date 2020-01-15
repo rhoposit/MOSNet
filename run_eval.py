@@ -19,7 +19,7 @@ import utils
 import random
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
-
+from keras.models import load_model
 
 def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile):
 
