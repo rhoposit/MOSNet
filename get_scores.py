@@ -195,7 +195,7 @@ for folder in F:
             bin_dir = "data_"+data+"/"+feats
             flag = items[6]
             # get the model name, pass to the test function
-            get_scores(folder, data, testlist, model, results_file, flag)
+            get_scores(folder, data, testlist, results_file, flag, logname)
             sys.exit()
         except:
             print("Caught exception, continuing")
