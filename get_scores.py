@@ -27,6 +27,7 @@ def get_scores(OUTPUT_DIR, data, test_list, resultsfile, reg_class_flag, logname
     print('scoring', resultsfile)
     df = pandas.read_pickle(resultsfile)
 
+    print("successfully read file")
     x = df['true_mos']
     y = df['predict_mos']
     systemID = df['system_ID']
@@ -183,19 +184,13 @@ for folder in F:
     results_file = folder+"/res_df.pkl"
     if os.path.isfile(results_file):
         print("Success")
-    else:
-        continue
     items = folder.split("_")
     data = items[3]
     if data == "LA":
         try:
-            testfile = "data_LA/test_list.txt"
             feats = items[4]
             if feats == "xvec":
                 feats = feats + "_" + items[5]
-            input = open(testfile, "r")
-            testlist = input.read().split("\n")[:-1]
-            input.close()
             model = folder+"/mosnet.h5"
             bin_dir = "data_"+data+"/"+feats
             flag = items[6]
@@ -203,4 +198,4 @@ for folder in F:
             get_scores(folder, data, testlist, results_file, flag, logname)
             sys.exit()
         except:
-            print("Caught exception, continuing")
+            continue
