@@ -141,8 +141,6 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
     sys_resultP = df[['system_ID', 'predict_mos']].groupby(['system_ID'])
     sys_resultT = df[['system_ID', 'true_mos']].groupby(['system_ID'])
-    print(sys_resultP)
-    print(sys_resultT)
     
     if reg_class_flag == "R":
         sys_true = sys_mer_df['mean']
@@ -175,8 +173,6 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         sys_true = true
         sys_predicted = sys_resultP.groups[systemID]
         if reg_class_flag == "R":
-            sys_true = sys_mer_df['mean']
-            sys_predicted = sys_mer_df['predict_mos']
             print(sys_true)
             print(sys_predicted)
             print(sys_true.shape)
@@ -188,8 +184,6 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
             MSE=np.mean((sys_true-sys_predicted)**2)
             out.write('[SYSTEM-%s] Test error= %f' % (systemID,MSE)+"\n")
         elif reg_class_flag == "C":
-            sys_true = sys_mer_df['mean'].round(0).astype(int)
-            sys_predicted = sys_mer_df['predict_mos'].round(0).astype(int)            
             print(sys_true)
             print(sys_predicted)
             print(sys_true.shape)
@@ -229,7 +223,10 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
         spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                          
         spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
-        spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                                                                                                                 
+        spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')
+        spk_resultP = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID'])
+        spk_resultT = df[['speaker_ID', 'true_mos']].groupby(['speaker_ID'])
+
         if reg_class_flag == "R":
             spk_true = spk_mer_df['mean']
             spk_predicted = spk_mer_df['predict_mos']
@@ -248,6 +245,31 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
             out.write('[SPEAKER-AGG] Accuracy = %f' % ACC+"\n")
             out.write(str(confusion_matrix(spk_true, spk_predicted)))
             out.write("\n\n")
+
+        for speakerID,true in spk_resultT:
+            spk_true = true
+            spk_predicted = spk_resultP.groups[speakerID]
+            if reg_class_flag == "R":
+                print(spk_true)
+                print(spk_predicted)
+                print(spk_true.shape)
+                print(spk_predicted.shape)
+                LCC=np.corrcoef(spk_true, spk_predicted)
+                out.write('[SPEAKER-%s] Linear correlation coefficient= %f' % (speakerID,LCC[0][1])+"\n")
+                SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
+                out.write('[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC[0])+"\n")
+                MSE=np.mean((spk_true-spk_predicted)**2)
+                out.write('[SPEAKER-%s] Test error= %f' % (speakerID,MSE)+"\n")
+            elif reg_class_flag == "C":
+                print(spk_true)
+                print(spk_predicted)
+                print(spk_true.shape)
+                print(spk_predicted.shape)
+                ACC = accuracy_score(spk_true, spk_predicted)
+                out.write('[SPEAKER-%s] Accuracy = %f' % (speakerID,ACC)+"\n")
+                out.write(str(confusion_matrix(spk_true, spk_predicted)))
+                out.write("\n\n")
+
 
            
     # Plotting scatter plot
