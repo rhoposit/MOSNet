@@ -188,6 +188,7 @@ for folder in F:
     data = items[3]
     if data == "LA":
         try:
+            print("try getting scores")
             feats = items[4]
             if feats == "xvec":
                 feats = feats + "_" + items[5]
