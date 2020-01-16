@@ -264,7 +264,7 @@ bin_dir = "data_LA/CNN"
 sys.exit()
 
 
-
+'''
 # move my orig folders somewhere else
 F = glob.glob("./output*/")
 print(F)
@@ -290,3 +290,4 @@ for folder in F:
         get_scores(folder, data, results_file, flag, logname)
         #except:
         #    continue
+'''
