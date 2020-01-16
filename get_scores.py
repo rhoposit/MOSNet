@@ -170,8 +170,8 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
 
     for systemID,true in sys_resultT:
-        sys_true = sys_resultT.get_group(systemID)
-        sys_predicted = sys_resultP.get_group(systemID)
+        sys_true = sys_resultT.get_group(systemID)['true_mos']
+        sys_predicted = sys_resultP.get_group(systemID)['predict_mos']
         if reg_class_flag == "R":
             print(sys_true)
             print(sys_predicted)
