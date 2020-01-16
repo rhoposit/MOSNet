@@ -291,7 +291,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     #     plt.text(x-0.05, y+0.1, spk_ID, fontsize=8)
     plt.savefig('./'+OUTPUT_DIR+'/MOSNet_speaker_scatter_plot.png', dpi=150)
 
-
+'''
 folder = 'output_CNN_64_LA_CNN_R_0.01_0.1_32_64'
 data = "LA"
 results_file = folder+"/res_df.pkl"
@@ -321,7 +321,7 @@ get_test_results(bin_dir, data, testlist, model, results_file, flag)
 get_scores(folder, data, results_file, flag, logname)
 
 sys.exit()
-
+'''
 
 # move my orig folders somewhere else
 F = glob.glob("./output*/")
