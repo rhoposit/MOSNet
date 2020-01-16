@@ -170,8 +170,8 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
 
     for systemID,true in sys_resultT:
-        sys_true = sys_resultT.groups[systemID]
-        sys_predicted = sys_resultP.groups[systemID]
+        sys_true = sys_resultT.get_group(systemID)
+        sys_predicted = sys_resultP.get_group(systemID)
         if reg_class_flag == "R":
             print(sys_true)
             print(sys_predicted)
@@ -247,7 +247,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
             out.write("\n\n")
 
         for speakerID,true in spk_resultT:
-            spk_true = true
+            spk_true = spk_resultT.groups[speakerID]
             spk_predicted = spk_resultP.groups[speakerID]
             if reg_class_flag == "R":
                 print(spk_true)
