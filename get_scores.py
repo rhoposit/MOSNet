@@ -226,7 +226,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     #     y = mer_df['predict_mos'][i]
     #     plt.text(x-0.05, y+0.1, spk_ID, fontsize=8)
     plt.savefig('./'+OUTPUT_DIR+'/MOSNet_speaker_scatter_plot.png', dpi=150)
-'''
+
 
 folder = 'output_CNN_64_LA_CNN_R_0.01_0.1_32_64'
 data = "LA"
