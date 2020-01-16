@@ -28,13 +28,17 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     df = pd.read_pickle(resultsfile)
 
     print("successfully read file")
-    x = list(df['true_mos'])[1]
-    y = list(df['predict_mos'])[1]
-    systemID = list(df['system_ID'])[1]
-    speakerID = list(df['speaker_ID'])[1]
-    print(x[0], y[0], systemID[0], speakerID[0])
+    x = df['true_mos']
+#    print(x)
+#    print(list(x))
+#    print(list(x)[1])
+    
+    y = df['predict_mos']
+#    systemID = df['system_ID']
+#    speakerID = df['speaker_ID']
+#    print(x, y, systemID, speakerID)
 
-'''   
+   
     plt.style.use('seaborn-deep')
     x = df['true_mos']
     y = df['predict_mos']
@@ -47,14 +51,15 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     plt.savefig('./'+OUTPUT_DIR+'/MOSNet_distribution.png', dpi=150)
 
 
-    if args.reg_class_flag == "R":
+'''
+    if reg_class_flag == "R":
         LCC=np.corrcoef(MOS_true, MOS_Predict)
         print('[UTTERANCE] Linear correlation coefficient= %f' % LCC[0][1])
         SRCC=scipy.stats.spearmanr(MOS_true.T, MOS_Predict.T)
         print('[UTTERANCE] Spearman rank correlation coefficient= %f' % SRCC[0])    
         MSE=np.mean((MOS_true-MOS_Predict)**2)
         print('[UTTERANCE] Test error= %f' % MSE)
-    elif args.reg_class_flag == "C":
+    elif reg_class_flag == "C":
         ACC = accuracy_score(MOS_true, MOS_Predict)
         print('[UTTERANCE] Accuracy = %f' % ACC)
         print(confusion_matrix(MOS_true, MOS_Predict))
@@ -72,18 +77,18 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
 
 
-    if args.data == "VC":
+    if data == "VC":
         # load vcc2018_system
         sys_df = pd.read_csv(os.path.join(DATA_DIR,'vcc2018_system.csv'))
         df['system_ID'] = df['audio'].str.split('_').str[-1].str.split('.').str[0] + '_' + df['audio'].str.split('_').str[0]
-    elif args.data == "LA":
+    elif data == "LA":
         # load LA 2019 system
         sys_df = pd.read_csv(os.path.join(DATA_DIR,'LA_mos_system.csv'))
      
     sys_result_mean = df[['system_ID', 'predict_mos']].groupby(['system_ID']).mean()
     sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')                          
 
-    if args.reg_class_flag == "R":
+    if reg_class_flag == "R":
         sys_true = sys_mer_df['mean']
         sys_predicted = sys_mer_df['predict_mos']
         print(sys_true)
@@ -96,7 +101,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         print('[SYSTEM] Spearman rank correlation coefficient= %f' % SRCC[0])
         MSE=np.mean((sys_true-sys_predicted)**2)
         print('[SYSTEM] Test error= %f' % MSE)
-    elif args.reg_class_flag == "C":
+    elif reg_class_flag == "C":
         sys_true = sys_mer_df['mean'].round(0).astype(int)
         sys_predicted = sys_mer_df['predict_mos'].round(0).astype(int)
 
@@ -129,13 +134,13 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
 
     
-    if args.data == "LA":
+    if data == "LA":
         spk_df = pd.read_csv(os.path.join(DATA_DIR,'LA_mos_speaker.csv'))
         spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
         spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                          
         spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
         spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                                                                                                                 
-        if args.reg_class_flag == "R":
+        if eg_class_flag == "R":
             spk_true = spk_mer_df['mean']
             spk_predicted = spk_mer_df['predict_mos']
             LCC=np.corrcoef(spk_true, spk_predicted)
@@ -144,7 +149,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
             print('[SPEAKER] Spearman rank correlation coefficient= %f' % SRCC[0])
             MSE=np.mean((spk_true-spk_predicted)**2)
             print('[SPEAKER] Test error= %f' % MSE)
-        elif args.reg_class_flag == "C":
+        elif reg_class_flag == "C":
             spk_true = spk_mer_df['mean'].round(0).astype(int)
             spk_predicted = spk_mer_df['predict_mos'].round(0).astype(int)
             print(spk_true.shape)
