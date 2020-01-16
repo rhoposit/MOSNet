@@ -140,7 +140,12 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')                          
 
     sys_resultP = df[['system_ID', 'predict_mos']].groupby(['system_ID'])
+    sys_mer_P = pd.merge(sys_resultP, sys_df, on='system_ID')   
     sys_resultT = df[['system_ID', 'true_mos']].groupby(['system_ID'])
+    sys_mer_T = pd.merge(sys_resultT, sys_df, on='system_ID')
+
+    print(sys_mer_T)
+    print(sys_mer_P)
     
     if reg_class_flag == "R":
         sys_true = sys_mer_df['mean']
@@ -196,7 +201,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
         
         
-
+    sys.exit()
     # Plotting scatter plot
     M=np.max([np.max(sys_predicted),5])
     # m=np.max([np.min(sys_predicted)-1,0.5])
@@ -218,60 +223,34 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
 
     
-    if data == "LA":
-        spk_df = pd.read_csv(os.path.join("data_LA",'LA_mos_speaker.csv'))
-        spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
-        spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                          
-        spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
-        spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')
-        spk_resultP = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID'])
-        spk_resultT = df[['speaker_ID', 'true_mos']].groupby(['speaker_ID'])
+    spk_df = pd.read_csv(os.path.join("data_LA",'LA_mos_speaker.csv'))
+    spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
+    spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')
+    spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
+    spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')
 
-        if reg_class_flag == "R":
-            spk_true = spk_mer_df['mean']
-            spk_predicted = spk_mer_df['predict_mos']
-            LCC=np.corrcoef(spk_true, spk_predicted)
-            out.write('[SPEAKER-AGG] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
-            SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
-            out.write('[SPEAKER-AGG] Spearman rank correlation coefficient= %f' % SRCC[0]+"\n")
-            MSE=np.mean((spk_true-spk_predicted)**2)
-            out.write('[SPEAKER-AGG] Test error= %f' % MSE+"\n")
-        elif reg_class_flag == "C":
-            spk_true = spk_mer_df['mean'].round(0).astype(int)
-            spk_predicted = spk_mer_df['predict_mos'].round(0).astype(int)
-            print(spk_true.shape)
-            print(spk_predicted.shape)
-            ACC = accuracy_score(spk_true, spk_predicted)
-            out.write('[SPEAKER-AGG] Accuracy = %f' % ACC+"\n")
-            out.write(str(confusion_matrix(spk_true, spk_predicted)))
-            out.write("\n\n")
+    spk_resultP = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID'])
+    spk_resultT = df[['speaker_ID', 'true_mos']].groupby(['speaker_ID'])
 
-        for speakerID,true in spk_resultT:
-            sys_true = spk_resultT.get_group(speakerID)['true_mos']
-            sys_predicted = spk_resultP.get_group(speakerID)['predict_mos']
-            if reg_class_flag == "R":
-                print(spk_true)
-                print(spk_predicted)
-                print(spk_true.shape)
-                print(spk_predicted.shape)
-                LCC=np.corrcoef(spk_true, spk_predicted)
-                out.write('[SPEAKER-%s] Linear correlation coefficient= %f' % (speakerID,LCC[0][1])+"\n")
-                SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
-                out.write('[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC[0])+"\n")
-                MSE=np.mean((spk_true-spk_predicted)**2)
-                out.write('[SPEAKER-%s] Test error= %f' % (speakerID,MSE)+"\n")
-            elif reg_class_flag == "C":
-                print(spk_true)
-                print(spk_predicted)
-                print(spk_true.shape)
-                print(spk_predicted.shape)
-                ACC = accuracy_score(spk_true, spk_predicted)
-                out.write('[SPEAKER-%s] Accuracy = %f' % (speakerID,ACC)+"\n")
-                out.write(str(confusion_matrix(spk_true, spk_predicted)))
-                out.write("\n\n")
-
-
-           
+    if reg_class_flag == "R":
+        spk_true = spk_mer_df['mean']
+        spk_predicted = spk_mer_df['predict_mos']
+        LCC=np.corrcoef(spk_true, spk_predicted)
+        out.write('[SPEAKER-AGG] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
+        SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
+        out.write('[SPEAKER-AGG] Spearman rank correlation coefficient= %f' % SRCC[0]+"\n")
+        MSE=np.mean((spk_true-spk_predicted)**2)
+        out.write('[SPEAKER-AGG] Test error= %f' % MSE+"\n")
+    elif reg_class_flag == "C":
+        spk_true = spk_mer_df['mean'].round(0).astype(int)
+        spk_predicted = spk_mer_df['predict_mos'].round(0).astype(int)
+        print(spk_true.shape)
+        print(spk_predicted.shape)
+        ACC = accuracy_score(spk_true, spk_predicted)
+        out.write('[SPEAKER-AGG] Accuracy = %f' % ACC+"\n")
+        out.write(str(confusion_matrix(spk_true, spk_predicted)))
+        out.write("\n\n")
+        
     # Plotting scatter plot
     M=np.max([np.max(spk_predicted),5])
     # m=np.max([np.min(spk_predicted)-1,0.5])
@@ -291,7 +270,38 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     #     plt.text(x-0.05, y+0.1, spk_ID, fontsize=8)
     plt.savefig('./'+OUTPUT_DIR+'/MOSNet_speaker_scatter_plot.png', dpi=150)
 
-'''
+
+        
+    for speakerID,true in spk_resultT:
+        print(speakerID)
+        print(spk_resultT.get_group(speakerID))
+        print(spk_resultP.get_group(speakerID))
+        sys_true = spk_resultT.get_group(speakerID)['true_mos']
+        sys_predicted = spk_resultP.get_group(speakerID)['predict_mos']
+        if reg_class_flag == "R":
+            print(spk_true)
+            print(spk_predicted)
+            print(spk_true.shape)
+            print(spk_predicted.shape)
+            LCC=np.corrcoef(spk_true, spk_predicted)
+            out.write('[SPEAKER-%s] Linear correlation coefficient= %f' % (speakerID,LCC[0][1])+"\n")
+            SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
+            out.write('[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC[0])+"\n")
+            MSE=np.mean((spk_true-spk_predicted)**2)
+            out.write('[SPEAKER-%s] Test error= %f' % (speakerID,MSE)+"\n")
+        elif reg_class_flag == "C":
+            print(spk_true)
+            print(spk_predicted)
+            print(spk_true.shape)
+            print(spk_predicted.shape)
+            ACC = accuracy_score(spk_true, spk_predicted)
+            out.write('[SPEAKER-%s] Accuracy = %f' % (speakerID,ACC)+"\n")
+            out.write(str(confusion_matrix(spk_true, spk_predicted)))
+            out.write("\n\n")
+
+
+           
+ 
 folder = 'output_CNN_64_LA_CNN_R_0.01_0.1_32_64'
 data = "LA"
 results_file = folder+"/res_df.pkl"
@@ -306,22 +316,8 @@ bin_dir = "data_LA/CNN"
 get_test_results(bin_dir, data, testlist, model, results_file, flag)
 get_scores(folder, data, results_file, flag, logname)
 
-folder = 'output_CNN_64_LA_CNN_C_0.01_0.1_32_64'
-data = "LA"
-results_file = folder+"/res_df.pkl"
-logname = "log."+folder
-flag = "C"
-testfile = "data_LA/test_list.txt"
-input = open(testfile, "r")
-testlist = input.read().split("\n")[:-1]
-input.close()
-model = folder+"/mosnet.h5"
-bin_dir = "data_LA/CNN"
-get_test_results(bin_dir, data, testlist, model, results_file, flag)
-get_scores(folder, data, results_file, flag, logname)
-
 sys.exit()
-'''
+
 
 # move my orig folders somewhere else
 F = glob.glob("./results_1/output*/")
@@ -335,7 +331,8 @@ for folder in F:
         print("Success")
     items = folder.split("/")[2].split("_")
     data = items[3]
-    if data == "LA":
+    flag = items[6]
+    if data == "LA" and flag == "R":
 #        try:
         print("try getting scores")
         testfile = "data_LA/test_list.txt"
@@ -348,7 +345,6 @@ for folder in F:
         input.close()
         model = folder+"/mosnet.h5"
         bin_dir = "data_"+data+"/"+feats
-        flag = items[6]
         # get the model name, pass to the test function
         get_test_results(bin_dir, data, testlist, model, results_file, flag)
         get_scores(folder, data, results_file, flag, logname)
