@@ -187,16 +187,16 @@ for folder in F:
     items = folder.split("_")
     data = items[3]
     if data == "LA":
-        try:
-            print("try getting scores")
-            feats = items[4]
-            if feats == "xvec":
-                feats = feats + "_" + items[5]
-            model = folder+"/mosnet.h5"
-            bin_dir = "data_"+data+"/"+feats
-            flag = items[6]
-            # get the model name, pass to the test function
-            get_scores(folder, data, results_file, flag, logname)
-            sys.exit()
-        except:
-            continue
+#        try:
+        print("try getting scores")
+        feats = items[4]
+        if feats == "xvec":
+            feats = feats + "_" + items[5]
+        model = folder+"/mosnet.h5"
+        bin_dir = "data_"+data+"/"+feats
+        flag = items[6]
+        # get the model name, pass to the test function
+        get_scores(folder, data, results_file, flag, logname)
+        sys.exit()
+        #except:
+        #    continue
