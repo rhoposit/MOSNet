@@ -129,11 +129,11 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
     if data == "VC":
         # load vcc2018_system
-        sys_df = pd.read_csv(os.path.join(DATA_DIR,'vcc2018_system.csv'))
+        sys_df = pd.read_csv(os.path.join("data_VC",'vcc2018_system.csv'))
         df['system_ID'] = df['audio'].str.split('_').str[-1].str.split('.').str[0] + '_' + df['audio'].str.split('_').str[0]
     elif data == "LA":
         # load LA 2019 system
-        sys_df = pd.read_csv(os.path.join(DATA_DIR,'LA_mos_system.csv'))
+        sys_df = pd.read_csv(os.path.join("data_LA",'LA_mos_system.csv'))
      
     sys_result_mean = df[['system_ID', 'predict_mos']].groupby(['system_ID']).mean()
     sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')                          
@@ -146,11 +146,11 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         print(sys_true.shape)
         print(sys_predicted.shape)
         LCC=np.corrcoef(sys_true, sys_predicted)
-        print('[SYSTEM] Linear correlation coefficient= %f' % LCC[0][1])
+        out.write('[SYSTEM] Linear correlation coefficient= %f' % LCC[0][1])
         SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
-        print('[SYSTEM] Spearman rank correlation coefficient= %f' % SRCC[0])
+        out.write('[SYSTEM] Spearman rank correlation coefficient= %f' % SRCC[0])
         MSE=np.mean((sys_true-sys_predicted)**2)
-        print('[SYSTEM] Test error= %f' % MSE)
+        out.write('[SYSTEM] Test error= %f' % MSE)
     elif reg_class_flag == "C":
         sys_true = sys_mer_df['mean'].round(0).astype(int)
         sys_predicted = sys_mer_df['predict_mos'].round(0).astype(int)
@@ -160,8 +160,8 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         print(sys_true.shape)
         print(sys_predicted.shape)
         ACC = accuracy_score(sys_true, sys_predicted)
-        print('[SYSTEM] Accuracy = %f' % ACC)
-        print(confusion_matrix(sys_true, sys_predicted))
+        out.write('[SYSTEM] Accuracy = %f' % ACC)
+        out.write(confusion_matrix(sys_true, sys_predicted))
 
     # Plotting scatter plot
     M=np.max([np.max(sys_predicted),5])
