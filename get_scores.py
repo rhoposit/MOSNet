@@ -170,13 +170,13 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     sys_resultT = df[['system_ID', 'true_mos']].groupby(['system_ID'])
 
     for systemID,true in sys_resultT:
-        sys_true = sys_resultT.groups[systemID]
+        sys_true = sys_resultT.get_group(systemID)['true_mos']
         sys_predicted = sys_resultP.get_group(systemID)['predict_mos']
         if reg_class_flag == "R":
-            print(sys_true)
-            print(sys_predicted)
-            print(sys_true.shape)
-            print(sys_predicted.shape)
+#            print(sys_true)
+#            print(sys_predicted)
+#            print(sys_true.shape)
+#            print(sys_predicted.shape)
             LCC=np.corrcoef(sys_true, sys_predicted)
             out.write('[SYSTEM-%s] Linear correlation coefficient= %f' % (systemID,LCC[0][1])+"\n")
             SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
@@ -222,9 +222,6 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
     spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')
 
-    spk_resultP = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID'])
-    spk_resultT = df[['speaker_ID', 'true_mos']].groupby(['speaker_ID'])
-
     if reg_class_flag == "R":
         spk_true = spk_mer_df['mean']
         spk_predicted = spk_mer_df['predict_mos']
@@ -264,14 +261,17 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     plt.savefig('./'+OUTPUT_DIR+'/MOSNet_speaker_scatter_plot.png', dpi=150)
 
 
+    spk_resultP = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID'])
+    spk_resultT = df[['speaker_ID', 'true_mos']].groupby(['speaker_ID'])
+
    # spk_resultP = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID'])['predict_mos'].apply(list)
    #spk_resultT = df[['speaker_ID', 'true_mos']].groupby(['speaker_ID'])['true_mos'].apply(list)
 #   sys_true = spk_resultT[systemID].apply(list)
 #   sys_predicted = spk_resultT[systemID].apply(list)
     for speakerID,true in spk_resultT:
-        print(speakerID)
-        print(spk_resultT.get_group(speakerID))
-        print(spk_resultP.get_group(speakerID))
+#        print(speakerID)
+#        print(spk_resultT.get_group(speakerID))
+#        print(spk_resultP.get_group(speakerID))
         spk_true = spk_resultT.get_group(speakerID)['true_mos']
         spk_predicted = spk_resultP.get_group(speakerID)['predict_mos']
         if reg_class_flag == "R":
