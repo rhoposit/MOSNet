@@ -140,9 +140,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')                          
 
     sys_resultP = df[['system_ID', 'predict_mos']].groupby(['system_ID'])
-    sys_mer_P = pd.merge(sys_resultP, sys_df, on='system_ID')   
     sys_resultT = df[['system_ID', 'true_mos']].groupby(['system_ID'])
-    sys_mer_T = pd.merge(sys_resultT, sys_df, on='system_ID')
 
     print(sys_mer_T)
     print(sys_mer_P)
