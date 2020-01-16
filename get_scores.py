@@ -51,14 +51,13 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class
         
         _DS = np.expand_dims(_DS, axis=3)
         Average_score=model.predict(_DS, verbose=0, batch_size=1)
-        print(Average_score)
-        print(np.argmax(Average_score))
+        print(np.argmax(Average_score), mos)
 
         if reg_class_flag == "R":
             MOS_Predict[i]=Average_score[0][0]
             MOS_true[i] =mos
         elif reg_class_flag == "C":
-            MOS_Predict[i]=np.argmax(Average_score[0])
+            MOS_Predict[i]=np.argmax(Average_score)
             MOS_true[i] = mos
             
         df = df.append({'audio': filepath[0], 
