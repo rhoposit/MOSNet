@@ -336,22 +336,22 @@ for folder in F:
     items = folder.split("_")
     data = items[3]
     if data == "LA":
-        try:
-            print("try getting scores")
-            testfile = "data_LA/test_list.txt"
-
-            feats = items[4]
-            if feats == "xvec":
-                feats = feats + "_" + items[5]
-            input = open(testfile, "r")
-            testlist = input.read().split("\n")[:-1]
-            input.close()
-            model = folder+"/mosnet.h5"
-            bin_dir = "data_"+data+"/"+feats
-            flag = items[6]
-            # get the model name, pass to the test function
-            get_test_results(bin_dir, data, testlist, model, results_file, flag)
-            get_scores(folder, data, results_file, flag, logname)
-        except:
-            continue
+#        try:
+        print("try getting scores")
+        testfile = "data_LA/test_list.txt"
+        
+        feats = items[4]
+        if feats == "xvec":
+            feats = feats + "_" + items[5]
+        input = open(testfile, "r")
+        testlist = input.read().split("\n")[:-1]
+        input.close()
+        model = folder+"/mosnet.h5"
+        bin_dir = "data_"+data+"/"+feats
+        flag = items[6]
+        # get the model name, pass to the test function
+        get_test_results(bin_dir, data, testlist, model, results_file, flag)
+        get_scores(folder, data, results_file, flag, logname)
+#        except:
+#            continue
 
