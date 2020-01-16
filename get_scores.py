@@ -324,12 +324,12 @@ sys.exit()
 '''
 
 # move my orig folders somewhere else
-F = glob.glob("./output*/")
+F = glob.glob("./results_1/output*/")
 print(F)
 # output_CNN_16_LA_xvec_5_R_0.01_0.1_64_16
 # output, nn, batch, data, feats, reg/class, l2, dr, nodes, batch
 for folder in F:
-    logname = "log."+folder[2:-1]
+    logname = "log."+folder[12:-1]
     results_file = folder+"/res_df.pkl"
     if os.path.isfile(results_file):
         print("Success")
