@@ -51,7 +51,7 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class
         
         _DS = np.expand_dims(_DS, axis=3)
         Average_score=model.predict(_DS, verbose=0, batch_size=1)
-        print(Average_score)
+        print(Average_score[0], mos)
 
         if reg_class_flag == "R":
             MOS_Predict[i]=Average_score
