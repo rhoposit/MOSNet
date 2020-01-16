@@ -111,7 +111,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     elif reg_class_flag == "C":
         ACC = accuracy_score(MOS_true, MOS_Predict)
         out.write('[UTTERANCE] Accuracy = %f' % ACC+"\n")
-        out.write(confusion_matrix(MOS_true, MOS_Predict))
+        out.write(str(confusion_matrix(MOS_true, MOS_Predict)))
         out.write("\n\n")
 
 
@@ -139,7 +139,10 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     sys_result_mean = df[['system_ID', 'predict_mos']].groupby(['system_ID']).mean()
     sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')                          
 
-#    sys_result = df[['system_ID', 'predict_mos']].groupby(['system_ID'])
+    sys_resultP = df[['system_ID', 'predict_mos']].groupby(['system_ID'])
+    sys_resultT = df[['system_ID', 'true_mos']].groupby(['system_ID'])
+    print(sys_resultP)
+    print(sys_resultT)
 
     
     if reg_class_flag == "R":
@@ -165,7 +168,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         print(sys_predicted.shape)
         ACC = accuracy_score(sys_true, sys_predicted)
         out.write('[SYSTEM-AGG] Accuracy = %f' % ACC+"\n")
-        out.write(confusion_matrix(sys_true, sys_predicted))
+        out.write(str(confusion_matrix(sys_true, sys_predicted)))
         out.write("\n\n")
 
 
@@ -212,7 +215,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
             print(spk_predicted.shape)
             ACC = accuracy_score(spk_true, spk_predicted)
             out.write('[SPEAKER-AGG] Accuracy = %f' % ACC+"\n")
-            out.write(confusion_matrix(spk_true, spk_predicted))
+            out.write(str(confusion_matrix(spk_true, spk_predicted)))
             out.write("\n\n")
 
            
