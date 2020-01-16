@@ -247,8 +247,8 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
             out.write("\n\n")
 
         for speakerID,true in spk_resultT:
-            spk_true = spk_resultT.groups[speakerID]
-            spk_predicted = spk_resultP.groups[speakerID]
+            sys_true = spk_resultT.get_group(speakerID)['true_mos']
+            sys_predicted = spk_resultP.get_group(speakerID)['predict_mos']
             if reg_class_flag == "R":
                 print(spk_true)
                 print(spk_predicted)
