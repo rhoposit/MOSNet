@@ -41,7 +41,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     MOS_true = list(x)
     MOS_Predict = list(y)
     print(MOS_true)
-    print(MOS_predict)
+    print(MOS_Predict)
 
     plt.style.use('seaborn-deep')
     x = df['true_mos']
