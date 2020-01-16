@@ -40,7 +40,8 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
     MOS_true = list(x)[1]
     MOS_Predict = list(y)[1]
-    print(MOS_true[0], MOS_predict[0])
+    print(MOS_true)
+    print(MOS_predict)
 
     plt.style.use('seaborn-deep')
     x = df['true_mos']
