@@ -28,11 +28,15 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     df = pd.read_pickle(resultsfile)
 
     print("successfully read file")
-    x = df['true_mos'][1][:]
-    y = df['predict_mos'][1][:]
-    systemID = df['system_ID'][1][:]
-    speakerID = df['speaker_ID'][1][:]
-    print(x, y, systemID, speakerID)
+    x = df['true_mos']
+    print(x)
+    print(list(x))
+    print(list(x)[1])
+    
+#    y = df['predict_mos']
+#    systemID = df['system_ID']
+#    speakerID = df['speaker_ID']
+#    print(x, y, systemID, speakerID)
 
 '''   
     plt.style.use('seaborn-deep')
