@@ -38,7 +38,10 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 #    speakerID = df['speaker_ID']
 #    print(x, y, systemID, speakerID)
 
-   
+    MOS_true = list(x)[1]
+    MOS_Predict = list(y)[1]
+    print(MOS_true[0], MOS_predict[0])
+
     plt.style.use('seaborn-deep')
     x = df['true_mos']
     y = df['predict_mos']
@@ -51,7 +54,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     plt.savefig('./'+OUTPUT_DIR+'/MOSNet_distribution.png', dpi=150)
 
 
-'''
+
     if reg_class_flag == "R":
         LCC=np.corrcoef(MOS_true, MOS_Predict)
         print('[UTTERANCE] Linear correlation coefficient= %f' % LCC[0][1])
@@ -64,6 +67,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         print('[UTTERANCE] Accuracy = %f' % ACC)
         print(confusion_matrix(MOS_true, MOS_Predict))
 
+'''
     # Plotting scatter plot
     M=np.max([np.max(MOS_Predict),5])
     plt.figure(3)
@@ -178,7 +182,23 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     plt.savefig('./'+OUTPUT_DIR+'/MOSNet_speaker_scatter_plot.png', dpi=150)
 '''
 
-    
+folder = 'output_CNN_64_LA_CNN_R_0.01_0.1_32_64'
+data = "LA"
+results_file = folder+"/res_df.pkl"
+logname = "log."+folder
+flag = "R"
+get_scores(folder, data, results_file, flag, logname)
+folder = 'output_CNN_64_LA_CNN_C_0.01_0.1_32_64'
+data = "LA"
+results_file = folder+"/res_df.pkl"
+logname = "log."+folder
+flag = "C"
+get_scores(folder, data, results_file, flag, logname)
+
+sys.exit()
+
+
+
 # move my orig folders somewhere else
 F = glob.glob("./output*/")
 print(F)
@@ -187,7 +207,7 @@ print(F)
 for folder in F:
     logname = "log."+folder
     results_file = folder+"/res_df.pkl"
-    if os.path.isfile(results_file):
+c    if os.path.isfile(results_file):
         print("Success")
     items = folder.split("_")
     data = items[3]
@@ -202,6 +222,5 @@ for folder in F:
         flag = items[6]
         # get the model name, pass to the test function
         get_scores(folder, data, results_file, flag, logname)
-        sys.exit()
         #except:
         #    continue
