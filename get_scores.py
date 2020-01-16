@@ -139,9 +139,6 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     sys_result_mean = df[['system_ID', 'predict_mos']].groupby(['system_ID']).mean()
     sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')                          
 
-    sys_resultP = df[['system_ID', 'predict_mos']].groupby(['system_ID'])
-    sys_resultT = df[['system_ID', 'true_mos']].groupby(['system_ID'])
-
     if reg_class_flag == "R":
         sys_true = sys_mer_df['mean']
         sys_predicted = sys_mer_df['predict_mos']
@@ -169,9 +166,16 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         out.write("\n\n")
 
 
+   # spk_resultP = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID'])['predict_mos'].apply(list)
+    sys_resultP = df[['system_ID', 'predict_mos']].groupby(['system_ID'])['predict_mos']
+    sys_resultT = df[['system_ID', 'true_mos']].groupby(['system_ID'])['predict_mos']
+
     for systemID,true in sys_resultT:
-        sys_true = sys_resultT.get_group(systemID)['true_mos']
-        sys_predicted = sys_resultP.get_group(systemID)['predict_mos']
+        print(sys_resultT)
+        print(sys_resultT[systemID].apply(list))
+        sys.exit()
+#        sys_resultT.get_group(systemID)['true_mos']
+#        sys_predicted = sys_resultP.get_group(systemID)['predict_mos']
         if reg_class_flag == "R":
             print(sys_true)
             print(sys_predicted)
