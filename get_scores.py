@@ -22,7 +22,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 from tensorflow.keras.models import load_model
 
-def get_scores(OUTPUT_DIR, data, test_list, resultsfile, reg_class_flag, logname):
+def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
     print('scoring', resultsfile)
     df = pandas.read_pickle(resultsfile)
@@ -196,7 +196,7 @@ for folder in F:
             bin_dir = "data_"+data+"/"+feats
             flag = items[6]
             # get the model name, pass to the test function
-            get_scores(folder, data, testlist, results_file, flag, logname)
+            get_scores(folder, data, results_file, flag, logname)
             sys.exit()
         except:
             continue
