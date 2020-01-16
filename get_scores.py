@@ -111,7 +111,8 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     elif reg_class_flag == "C":
         ACC = accuracy_score(MOS_true, MOS_Predict)
         out.write('[UTTERANCE] Accuracy = %f' % ACC+"\n")
-        out.write(confusion_matrix(MOS_true, MOS_Predict)+"\n")
+        out.write(confusion_matrix(MOS_true, MOS_Predict))
+        out.write("\n\n")
 
 
     # Plotting scatter plot
@@ -138,6 +139,9 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     sys_result_mean = df[['system_ID', 'predict_mos']].groupby(['system_ID']).mean()
     sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')                          
 
+#    sys_result = df[['system_ID', 'predict_mos']].groupby(['system_ID'])
+
+    
     if reg_class_flag == "R":
         sys_true = sys_mer_df['mean']
         sys_predicted = sys_mer_df['predict_mos']
@@ -146,11 +150,11 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         print(sys_true.shape)
         print(sys_predicted.shape)
         LCC=np.corrcoef(sys_true, sys_predicted)
-        out.write('[SYSTEM] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
+        out.write('[SYSTEM-AGG] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
         SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
-        out.write('[SYSTEM] Spearman rank correlation coefficient= %f' % SRCC[0]+"\n")
+        out.write('[SYSTEM-AGG] Spearman rank correlation coefficient= %f' % SRCC[0]+"\n")
         MSE=np.mean((sys_true-sys_predicted)**2)
-        out.write('[SYSTEM] Test error= %f' % MSE+"\n")
+        out.write('[SYSTEM-AGG] Test error= %f' % MSE+"\n")
     elif reg_class_flag == "C":
         sys_true = sys_mer_df['mean'].round(0).astype(int)
         sys_predicted = sys_mer_df['predict_mos'].round(0).astype(int)
@@ -160,8 +164,10 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         print(sys_true.shape)
         print(sys_predicted.shape)
         ACC = accuracy_score(sys_true, sys_predicted)
-        out.write('[SYSTEM] Accuracy = %f' % ACC+"\n")
-        out.write(confusion_matrix(sys_true, sys_predicted)+"\n")
+        out.write('[SYSTEM-AGG] Accuracy = %f' % ACC+"\n")
+        out.write(confusion_matrix(sys_true, sys_predicted))
+        out.write("\n\n")
+
 
     # Plotting scatter plot
     M=np.max([np.max(sys_predicted),5])
@@ -194,19 +200,21 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
             spk_true = spk_mer_df['mean']
             spk_predicted = spk_mer_df['predict_mos']
             LCC=np.corrcoef(spk_true, spk_predicted)
-            out.write('[SPEAKER] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
+            out.write('[SPEAKER-AGG] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
             SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
-            out.write('[SPEAKER] Spearman rank correlation coefficient= %f' % SRCC[0]+"\n")
+            out.write('[SPEAKER-AGG] Spearman rank correlation coefficient= %f' % SRCC[0]+"\n")
             MSE=np.mean((spk_true-spk_predicted)**2)
-            out.write('[SPEAKER] Test error= %f' % MSE+"\n")
+            out.write('[SPEAKER-AGG] Test error= %f' % MSE+"\n")
         elif reg_class_flag == "C":
             spk_true = spk_mer_df['mean'].round(0).astype(int)
             spk_predicted = spk_mer_df['predict_mos'].round(0).astype(int)
             print(spk_true.shape)
             print(spk_predicted.shape)
             ACC = accuracy_score(spk_true, spk_predicted)
-            out.write('[SPEAKER] Accuracy = %f' % ACC+"\n")
-            out.write(confusion_matrix(spk_true, spk_predicted)+"\n")
+            out.write('[SPEAKER-AGG] Accuracy = %f' % ACC+"\n")
+            out.write(confusion_matrix(spk_true, spk_predicted))
+            out.write("\n\n")
+
            
     # Plotting scatter plot
     M=np.max([np.max(spk_predicted),5])
