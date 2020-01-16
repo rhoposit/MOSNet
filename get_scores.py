@@ -207,7 +207,7 @@ print(F)
 for folder in F:
     logname = "log."+folder
     results_file = folder+"/res_df.pkl"
-c    if os.path.isfile(results_file):
+    if os.path.isfile(results_file):
         print("Success")
     items = folder.split("_")
     data = items[3]
