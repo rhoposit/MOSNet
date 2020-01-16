@@ -170,7 +170,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
 
     for systemID,true in sys_resultT:
-        sys_true = true
+        sys_true = sys_resultT.groups[systemID]
         sys_predicted = sys_resultP.groups[systemID]
         if reg_class_flag == "R":
             print(sys_true)
@@ -323,7 +323,6 @@ get_scores(folder, data, results_file, flag, logname)
 sys.exit()
 
 
-'''
 # move my orig folders somewhere else
 F = glob.glob("./output*/")
 print(F)
@@ -337,16 +336,16 @@ for folder in F:
     items = folder.split("_")
     data = items[3]
     if data == "LA":
-#        try:
-        print("try getting scores")
-        feats = items[4]
-        if feats == "xvec":
-            feats = feats + "_" + items[5]
-        model = folder+"/mosnet.h5"
-        bin_dir = "data_"+data+"/"+feats
-        flag = items[6]
-        # get the model name, pass to the test function
-        get_scores(folder, data, results_file, flag, logname)
-        #except:
-        #    continue
-'''
+        try:
+            print("try getting scores")
+            feats = items[4]
+            if feats == "xvec":
+                feats = feats + "_" + items[5]
+            model = folder+"/mosnet.h5"
+            bin_dir = "data_"+data+"/"+feats
+            flag = items[6]
+            # get the model name, pass to the test function
+            get_scores(folder, data, results_file, flag, logname)
+        except:
+            continue
+
