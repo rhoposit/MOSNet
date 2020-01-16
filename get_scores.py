@@ -239,16 +239,23 @@ results_file = folder+"/res_df.pkl"
 logname = "log."+folder
 flag = "R"
 testfile = "data_LA/test_list.txt"
+input = open(testfile, "r")
+testlist = input.read().split("\n")[:-1]
+input.close()
 model = folder+"/mosnet.h5"
 bin_dir = "data_LA/CNN"
 get_test_results(bin_dir, data, testlist, model, results_file, flag)
 #get_scores(folder, data, results_file, flag, logname)
+
 folder = 'output_CNN_64_LA_CNN_C_0.01_0.1_32_64'
 data = "LA"
 results_file = folder+"/res_df.pkl"
 logname = "log."+folder
 flag = "C"
 testfile = "data_LA/test_list.txt"
+input = open(testfile, "r")
+testlist = input.read().split("\n")[:-1]
+input.close()
 model = folder+"/mosnet.h5"
 bin_dir = "data_LA/CNN"
 #get_test_results(bin_dir, data, testlist, model, results_file, flag)
