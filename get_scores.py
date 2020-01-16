@@ -51,10 +51,10 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class
         
         _DS = np.expand_dims(_DS, axis=3)
         Average_score=model.predict(_DS, verbose=0, batch_size=1)
-        print(Average_score[0], mos)
+        print(Average_score)
 
         if reg_class_flag == "R":
-            MOS_Predict[i]=Average_score
+            MOS_Predict[i]=Average_score[0][0]
             MOS_true[i] =mos
         elif reg_class_flag == "C":
             MOS_Predict[i]=np.argmax(Average_score[0])
@@ -244,7 +244,7 @@ testlist = input.read().split("\n")[:-1]
 input.close()
 model = folder+"/mosnet.h5"
 bin_dir = "data_LA/CNN"
-get_test_results(bin_dir, data, testlist, model, results_file, flag)
+#get_test_results(bin_dir, data, testlist, model, results_file, flag)
 #get_scores(folder, data, results_file, flag, logname)
 
 folder = 'output_CNN_64_LA_CNN_C_0.01_0.1_32_64'
@@ -258,7 +258,7 @@ testlist = input.read().split("\n")[:-1]
 input.close()
 model = folder+"/mosnet.h5"
 bin_dir = "data_LA/CNN"
-#get_test_results(bin_dir, data, testlist, model, results_file, flag)
+get_test_results(bin_dir, data, testlist, model, results_file, flag)
 #get_scores(folder, data, results_file, flag, logname)
 
 sys.exit()
