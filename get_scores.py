@@ -168,7 +168,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
    # spk_resultP = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID'])['predict_mos'].apply(list)
     sys_resultP = df[['system_ID', 'predict_mos']].groupby(['system_ID'])['predict_mos']
-    sys_resultT = df[['system_ID', 'true_mos']].groupby(['system_ID'])['predict_mos']
+    sys_resultT = df[['system_ID', 'true_mos']].groupby(['system_ID'])['true_mos']
 
     for systemID,true in sys_resultT:
         print(sys_resultT)
