@@ -173,7 +173,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
     for systemID,true in sys_resultT:
         sys_true = true
-        sys_predicted = sys_resultP[systemID]
+        sys_predicted = sys_resultP.groups[systemID]
         if reg_class_flag == "R":
             sys_true = sys_mer_df['mean']
             sys_predicted = sys_mer_df['predict_mos']
