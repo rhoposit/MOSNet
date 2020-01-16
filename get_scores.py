@@ -264,13 +264,16 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     plt.savefig('./'+OUTPUT_DIR+'/MOSNet_speaker_scatter_plot.png', dpi=150)
 
 
-        
+   # spk_resultP = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID'])['predict_mos'].apply(list)
+   #spk_resultT = df[['speaker_ID', 'true_mos']].groupby(['speaker_ID'])['true_mos'].apply(list)
+#   sys_true = spk_resultT[systemID].apply(list)
+#   sys_predicted = spk_resultT[systemID].apply(list)
     for speakerID,true in spk_resultT:
         print(speakerID)
         print(spk_resultT.get_group(speakerID))
         print(spk_resultP.get_group(speakerID))
-        sys_true = spk_resultT.get_group(speakerID)['true_mos']
-        sys_predicted = spk_resultP.get_group(speakerID)['predict_mos']
+        spk_true = spk_resultT.get_group(speakerID)['true_mos']
+        spk_predicted = spk_resultP.get_group(speakerID)['predict_mos']
         if reg_class_flag == "R":
             print(spk_true)
             print(spk_predicted)
