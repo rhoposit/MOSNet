@@ -25,7 +25,7 @@ from tensorflow.keras.models import load_model
 def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
     print('scoring', resultsfile)
-    df = pandas.read_pickle(resultsfile)
+    df = pd.read_pickle(resultsfile)
 
     print("successfully read file")
     x = df['true_mos']
