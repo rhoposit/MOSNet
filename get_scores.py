@@ -305,7 +305,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 folder = 'results_1/output_CNN_64_LA_CNN_R_0.01_0.1_32_64'
 data = "LA"
 results_file = folder+"/res_df.pkl"
-logname = "log."+folder
+logname = "log."+folder[12:-1]
 flag = "R"
 testfile = "data_LA/test_list.txt"
 input = open(testfile, "r")
