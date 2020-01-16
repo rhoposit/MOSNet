@@ -74,24 +74,19 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class
 
 def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
+
+    out = open(logname, "w")
     print('scoring', resultsfile)
     df = pd.read_pickle(resultsfile)
 
     print("successfully read file")
     x = df['true_mos']
-#    print(x)
-#    print(list(x))
-#    print(list(x)[1])
-    
     y = df['predict_mos']
-#    systemID = df['system_ID']
-#    speakerID = df['speaker_ID']
-#    print(x, y, systemID, speakerID)
+    systemID = df['system_ID']
+    speakerID = df['speaker_ID']
 
     MOS_true = np.array(x)
     MOS_Predict = np.array(y)
-    print(MOS_true)
-    print(MOS_Predict)
 
     plt.style.use('seaborn-deep')
     x = df['true_mos']
@@ -108,17 +103,17 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
     if reg_class_flag == "R":
         LCC=np.corrcoef(MOS_true, MOS_Predict)
-        print('[UTTERANCE] Linear correlation coefficient= %f' % LCC[0][1])
+        out.write('[UTTERANCE] Linear correlation coefficient= %f' % LCC[0][1])
         SRCC=scipy.stats.spearmanr(MOS_true.T, MOS_Predict.T)
-        print('[UTTERANCE] Spearman rank correlation coefficient= %f' % SRCC[0])    
+        out.write('[UTTERANCE] Spearman rank correlation coefficient= %f' % SRCC[0])    
         MSE=np.mean((MOS_true-MOS_Predict)**2)
-        print('[UTTERANCE] Test error= %f' % MSE)
+        out.write('[UTTERANCE] Test error= %f' % MSE)
     elif reg_class_flag == "C":
         ACC = accuracy_score(MOS_true, MOS_Predict)
-        print('[UTTERANCE] Accuracy = %f' % ACC)
-        print(confusion_matrix(MOS_true, MOS_Predict))
+        out.write('[UTTERANCE] Accuracy = %f' % ACC)
+        out.write(confusion_matrix(MOS_true, MOS_Predict))
 
-'''
+
     # Plotting scatter plot
     M=np.max([np.max(MOS_Predict),5])
     plt.figure(3)
