@@ -38,8 +38,8 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 #    speakerID = df['speaker_ID']
 #    print(x, y, systemID, speakerID)
 
-    MOS_true = list(x)[1]
-    MOS_Predict = list(y)[1]
+    MOS_true = list(x)
+    MOS_Predict = list(y)
     print(MOS_true)
     print(MOS_predict)
 
