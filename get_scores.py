@@ -103,15 +103,15 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
     if reg_class_flag == "R":
         LCC=np.corrcoef(MOS_true, MOS_Predict)
-        out.write('[UTTERANCE] Linear correlation coefficient= %f' % LCC[0][1])
+        out.write('[UTTERANCE] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
         SRCC=scipy.stats.spearmanr(MOS_true.T, MOS_Predict.T)
-        out.write('[UTTERANCE] Spearman rank correlation coefficient= %f' % SRCC[0])    
+        out.write('[UTTERANCE] Spearman rank correlation coefficient= %f' % SRCC[0]+"\n")    
         MSE=np.mean((MOS_true-MOS_Predict)**2)
-        out.write('[UTTERANCE] Test error= %f' % MSE)
+        out.write('[UTTERANCE] Test error= %f' % MSE+"\n")
     elif reg_class_flag == "C":
         ACC = accuracy_score(MOS_true, MOS_Predict)
-        out.write('[UTTERANCE] Accuracy = %f' % ACC)
-        out.write(confusion_matrix(MOS_true, MOS_Predict))
+        out.write('[UTTERANCE] Accuracy = %f' % ACC+"\n")
+        out.write(confusion_matrix(MOS_true, MOS_Predict)+"\n")
 
 
     # Plotting scatter plot
@@ -146,11 +146,11 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         print(sys_true.shape)
         print(sys_predicted.shape)
         LCC=np.corrcoef(sys_true, sys_predicted)
-        out.write('[SYSTEM] Linear correlation coefficient= %f' % LCC[0][1])
+        out.write('[SYSTEM] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
         SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
-        out.write('[SYSTEM] Spearman rank correlation coefficient= %f' % SRCC[0])
+        out.write('[SYSTEM] Spearman rank correlation coefficient= %f' % SRCC[0]+"\n")
         MSE=np.mean((sys_true-sys_predicted)**2)
-        out.write('[SYSTEM] Test error= %f' % MSE)
+        out.write('[SYSTEM] Test error= %f' % MSE+"\n")
     elif reg_class_flag == "C":
         sys_true = sys_mer_df['mean'].round(0).astype(int)
         sys_predicted = sys_mer_df['predict_mos'].round(0).astype(int)
@@ -160,8 +160,8 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         print(sys_true.shape)
         print(sys_predicted.shape)
         ACC = accuracy_score(sys_true, sys_predicted)
-        out.write('[SYSTEM] Accuracy = %f' % ACC)
-        out.write(confusion_matrix(sys_true, sys_predicted))
+        out.write('[SYSTEM] Accuracy = %f' % ACC+"\n")
+        out.write(confusion_matrix(sys_true, sys_predicted)+"\n")
 
     # Plotting scatter plot
     M=np.max([np.max(sys_predicted),5])
@@ -185,7 +185,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
     
     if data == "LA":
-        spk_df = pd.read_csv(os.path.join(DATA_DIR,'LA_mos_speaker.csv'))
+        spk_df = pd.read_csv(os.path.join("data_LA",'LA_mos_speaker.csv'))
         spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
         spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                          
         spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
@@ -194,19 +194,19 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
             spk_true = spk_mer_df['mean']
             spk_predicted = spk_mer_df['predict_mos']
             LCC=np.corrcoef(spk_true, spk_predicted)
-            print('[SPEAKER] Linear correlation coefficient= %f' % LCC[0][1])
+            out.write('[SPEAKER] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
             SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
-            print('[SPEAKER] Spearman rank correlation coefficient= %f' % SRCC[0])
+            out.write('[SPEAKER] Spearman rank correlation coefficient= %f' % SRCC[0]+"\n")
             MSE=np.mean((spk_true-spk_predicted)**2)
-            print('[SPEAKER] Test error= %f' % MSE)
+            out.write('[SPEAKER] Test error= %f' % MSE+"\n")
         elif reg_class_flag == "C":
             spk_true = spk_mer_df['mean'].round(0).astype(int)
             spk_predicted = spk_mer_df['predict_mos'].round(0).astype(int)
             print(spk_true.shape)
             print(spk_predicted.shape)
             ACC = accuracy_score(spk_true, spk_predicted)
-            print('[SPEAKER] Accuracy = %f' % ACC)
-            print(confusion_matrix(spk_true, spk_predicted))
+            out.write('[SPEAKER] Accuracy = %f' % ACC+"\n")
+            out.write(confusion_matrix(spk_true, spk_predicted)+"\n")
            
     # Plotting scatter plot
     M=np.max([np.max(spk_predicted),5])
