@@ -190,7 +190,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                          
         spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
         spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                                                                                                                 
-        if eg_class_flag == "R":
+        if reg_class_flag == "R":
             spk_true = spk_mer_df['mean']
             spk_predicted = spk_mer_df['predict_mos']
             LCC=np.corrcoef(spk_true, spk_predicted)
