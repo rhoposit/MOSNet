@@ -1,5 +1,6 @@
 import glob, sys
 
+import os.path
 import os
 import time 
 import numpy as np
@@ -180,6 +181,10 @@ print(F)
 for folder in F:
     logname = "log."+folder
     results_file = folder+"/res_df.pkl"
+    if os.path.isfile(results_file):
+        print("Success")
+    else:
+        continue
     items = folder.split("_")
     data = items[3]
     if data == "LA":
