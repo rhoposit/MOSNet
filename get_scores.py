@@ -195,8 +195,6 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
 
         
-        
-    sys.exit()
     # Plotting scatter plot
     M=np.max([np.max(sys_predicted),5])
     # m=np.max([np.min(sys_predicted)-1,0.5])
