@@ -333,7 +333,7 @@ for folder in F:
     results_file = folder+"/res_df.pkl"
     if os.path.isfile(results_file):
         print("Success")
-    items = folder.split("/")[1].split("_")
+    items = folder.split("/")[2].split("_")
     data = items[3]
     if data == "LA":
 #        try:
