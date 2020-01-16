@@ -22,6 +22,56 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 from tensorflow.keras.models import load_model
 
+
+def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class_flag):
+
+    print('testing...', modelfile)
+    model = load_model(modelfile)
+    model.summary()
+    MOS_Predict=np.zeros([len(test_list),])
+    MOS_true   =np.zeros([len(test_list),])
+    df = pd.DataFrame(columns=['audio', 'true_mos','predict_mos','system_ID','speaker_ID'])
+
+    for i in tqdm(range(len(test_list))):
+
+        if data == "VC":
+            filepath=test_list[i].split(',')
+            filename=filepath[0].split('.')[0]
+            sysid = ""
+            speakerid = ""
+            mos=float(filepath[1])
+        elif data == "LA":
+            filepath=test_list[i].split(',')
+            filename=filepath[2].split('.')[0]
+            sysid = filepath[1]
+            speakerid = filepath[0]
+            mos=float(filepath[3])
+
+        _DS = utils.read_rep(os.path.join(BIN_DIR,filename+'.npy'))
+        
+        _DS = np.expand_dims(_DS, axis=3)
+        Average_score=model.predict(_DS, verbose=0, batch_size=1)
+        print(Average_score)
+
+        if reg_class_flag == "R":
+            MOS_Predict[i]=Average_score
+            MOS_true[i] =mos
+        elif reg_class_flag == "C":
+            MOS_Predict[i]=np.argmax(Average_score[0])
+            MOS_true[i] = mos
+            
+        df = df.append({'audio': filepath[0], 
+                        'true_mos': MOS_true[i], 
+                        'predict_mos': MOS_Predict[i], 
+                        'system_ID': sysid, 
+                        'speaker_ID': speakerid}, 
+                       ignore_index=True)
+        
+    df.to_pickle(results_file)
+    return
+
+
+
 def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
     print('scoring', resultsfile)
@@ -188,13 +238,19 @@ data = "LA"
 results_file = folder+"/res_df.pkl"
 logname = "log."+folder
 flag = "R"
-get_scores(folder, data, results_file, flag, logname)
+testfile = "data_LA/test_list.txt"
+model = folder+"/mosnet.h5"
+get_test_results(bin_dir, data, testlist, model, results_file, flag)
+#get_scores(folder, data, results_file, flag, logname)
 folder = 'output_CNN_64_LA_CNN_C_0.01_0.1_32_64'
 data = "LA"
 results_file = folder+"/res_df.pkl"
 logname = "log."+folder
 flag = "C"
-get_scores(folder, data, results_file, flag, logname)
+testfile = "data_LA/test_list.txt"
+model = folder+"/mosnet.h5"
+#get_test_results(bin_dir, data, testlist, model, results_file, flag)
+#get_scores(folder, data, results_file, flag, logname)
 
 sys.exit()
 
