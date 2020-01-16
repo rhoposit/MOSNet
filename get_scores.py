@@ -170,11 +170,8 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     sys_resultT = df[['system_ID', 'true_mos']].groupby(['system_ID'])
 
     for systemID,true in sys_resultT:
-        print(sys_resultT.get_group(systemID)['true_mos'].apply(list))
-        print(sys_resultP.get_group(systemID)['predict_mos'].apply(list))
-        sys.exit()
-#        sys_true = sys_resultT.get_group(systemID)['true_mos']
-#        sys_predicted = sys_resultP.get_group(systemID)['predict_mos']
+        sys_true = sys_resultT.groups([systemID])
+        sys_predicted = sys_resultP.get_group(systemID)['predict_mos']
         if reg_class_flag == "R":
             print(sys_true)
             print(sys_predicted)
