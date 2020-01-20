@@ -298,7 +298,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 
            
  
-folder = 'results_1/output_CNN_64_LA_CNN_R_0.01_0.1_32_64'
+folder = 'results_E/output_CNN_64_LA_CNN_R_0.01_0.1_32_64'
 data = "LA"
 results_file = folder+"/res_df.pkl"
 logname = "log."+folder[12:-1]
@@ -316,7 +316,7 @@ sys.exit()
 
 
 # move my orig folders somewhere else
-F = glob.glob("./results_1/output*/")
+F = glob.glob("./results_R/output*/")
 print(F)
 # output_CNN_16_LA_xvec_5_R_0.01_0.1_64_16
 # output, nn, batch, data, feats, reg/class, l2, dr, nodes, batch
