@@ -231,18 +231,18 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         out.write('\t[SPEAKER-%s] Mean True= %f' % (speakerID,spk_true_mean)+"\n")
         out.write('\t[SPEAKER-%s] Mean Predicted= %f' % (speakerID,spk_predicted_mean)+"\n")
         out.write('\t[SPEAKER-%s] Abs Diff= %f' % (speakerID,abs_diff)+"\n")
-        LCC=np.corrcoef(spk_true_mean, spk_predicted_mean)
+        LCC=np.corrcoef(spk_true, spk_predicted)
         out.write('\t[SPEAKER-%s] Linear correlation coefficient= %f' % (speakerID,LCC[0][1])+"\n")
-        SRCC=scipy.stats.spearmanr(spk_true_mean.T, spk_predicted_mean.T)
+        SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
         out.write('\t[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC[0])+"\n")
-        MSE=np.mean((spk_true_mean-spk_predicted_mean)**2)
+        MSE=np.mean((spk_true-spk_predicted)**2)
         out.write('\t[SPEAKER-%s] MSE error= %f' % (speakerID,MSE)+"\n")
-        MAE=np.mean(np.absolute(spk_true_mean-spk_predicted_mean))
+        MAE=np.mean(np.absolute(spk_true-spk_predicted))
         out.write('\t[SPEAKER-%s] MAE error= %f' % (speakerID,MAE)+"\n")
 
 
            
- 
+''' 
 folder = 'results_R/output_CNN_64_LA_CNN_R_0.01_0.1_32_64'
 data = "LA"
 results_file = folder+"/res_df.pkl"
@@ -257,7 +257,7 @@ bin_dir = "data_LA/CNN"
 get_test_results(bin_dir, data, testlist, model, results_file, flag)
 get_scores(folder, data, results_file, flag, logname)
 sys.exit()
-
+'''
 
 # move my orig folders somewhere else
 F = glob.glob("./results_R/output*/")
