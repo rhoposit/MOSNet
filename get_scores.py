@@ -273,8 +273,8 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 #        print(speakerID)
         print(spk_resultT.get_group(speakerID))
         print(spk_resultP.get_group(speakerID))
-        spk_true = spk_resultT.get_group(speakerID).apply(list)
-        spk_predicted = spk_resultP.get_group(speakerID).apply(list)
+        spk_true = spk_resultT.get_group(speakerID)
+        spk_predicted = spk_resultP.get_group(speakerID)
         if reg_class_flag == "R":
             print(spk_true)
             print(spk_predicted)
@@ -286,6 +286,8 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
             out.write('[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC[0])+"\n")
             MSE=np.mean((spk_true-spk_predicted)**2)
             out.write('[SPEAKER-%s] Test error= %f' % (speakerID,MSE)+"\n")
+            MAE=np.mean(np.absolute(spk_true-spk_predicted))
+            out.write('[SPEAKER-%s] Test error= %f' % (speakerID,MAE)+"\n")
         elif reg_class_flag == "C":
             print(spk_true)
             print(spk_predicted)
