@@ -148,7 +148,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         MSE=np.mean((sys_true-sys_predicted)**2)
         out.write('[SYSTEM-AGG] MSE error= %f' % MSE+"\n")
         MAE=np.mean(np.absolute(sys_true-sys_predicted))
-        out.write('[SYSTEM-%s] MAE error= %f' % (systemID,MAE)+"\n")
+        out.write('[SYSTEM-AGG] MAE error= %f' % (MAE)+"\n")
 
 
     sys_resultP = df[['system_ID', 'predict_mos']].groupby(['system_ID'])
