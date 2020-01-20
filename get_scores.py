@@ -200,13 +200,13 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         spk_true = spk_mer_df['mean']
         spk_predicted = spk_mer_df['predict_mos']
         LCC=np.corrcoef(spk_true, spk_predicted)
-        out.write('\t[SPEAKER-AGG] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
+        out.write('[SPEAKER-AGG] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
         SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
-        out.write('\t[SPEAKER-AGG] Spearman rank correlation coefficient= %f' % SRCC[0]+"\n")
+        out.write('[SPEAKER-AGG] Spearman rank correlation coefficient= %f' % SRCC[0]+"\n")
         MSE=np.mean((spk_true-spk_predicted)**2)
         MAE=np.mean(np.absolute(spk_true-spk_predicted))
-        out.write('\t[SPEAKER-AGG] MSE error= %f' % MSE+"\n")
-        out.write('\t[SPEAKER-AGG] MAE error= %f' % (MAE)+"\n")
+        out.write('[SPEAKER-AGG] MSE error= %f' % MSE+"\n")
+        out.write('[SPEAKER-AGG] MAE error= %f' % (MAE)+"\n")
         
     # Plotting scatter plot
     M=np.max([np.max(spk_predicted),5])
@@ -236,13 +236,13 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         spk_predicted = spk_resultP.get_group(speakerID)
         if reg_class_flag == "R":
             LCC=np.corrcoef(spk_true, spk_predicted)
-            out.write('[SPEAKER-%s] Linear correlation coefficient= %f' % (speakerID,LCC[0][1])+"\n")
+            out.write('\t[SPEAKER-%s] Linear correlation coefficient= %f' % (speakerID,LCC[0][1])+"\n")
             SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
-            out.write('[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC[0])+"\n")
+            out.write('\t[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC[0])+"\n")
             MSE=np.mean((spk_true-spk_predicted)**2)
-            out.write('[SPEAKER-%s] MSE error= %f' % (speakerID,MSE)+"\n")
+            out.write('\t[SPEAKER-%s] MSE error= %f' % (speakerID,MSE)+"\n")
             MAE=np.mean(np.absolute(spk_true-spk_predicted))
-            out.write('[SPEAKER-%s] MAE error= %f' % (speakerID,MAE)+"\n")
+            out.write('\t[SPEAKER-%s] MAE error= %f' % (speakerID,MAE)+"\n")
 
 
            
