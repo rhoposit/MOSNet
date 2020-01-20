@@ -273,8 +273,8 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 #        print(speakerID)
         print(spk_resultT.get_group(speakerID))
         print(spk_resultP.get_group(speakerID))
-        spk_true = spk_resultT.get_group(speakerID)
-        spk_predicted = spk_resultP.get_group(speakerID)
+        spk_true = spk_resultT.get_group(speakerID).apply(list)
+        spk_predicted = spk_resultP.get_group(speakerID).apply(list)
         if reg_class_flag == "R":
             print(spk_true)
             print(spk_predicted)
