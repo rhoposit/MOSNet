@@ -283,7 +283,7 @@ for folder in F:
             input = open(testfile, "r")
             testlist = input.read().split("\n")[:-1]
             input.close()
-            model = folder+"/mosnet2.h5"
+            model = folder+"/mosnet.h5"
             bin_dir = "data_"+data+"/"+feats
             # get the model name, pass to the test function
             get_test_results(bin_dir, data, testlist, model, results_file, flag)
