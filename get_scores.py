@@ -265,7 +265,7 @@ F = glob.glob("./results_R/output*LA_orig/")
 print(F)
 # output_CNN_16_LA_xvec_5_R_0.01_0.1_64_16
 # output, nn, batch, data, feats, reg/class, l2, dr, nodes, batch
-for folder in F[32:]:
+for folder in F:
     try:
         logname = "log."+folder[12:-1]
         results_file = folder+"/res_df.pkl"
