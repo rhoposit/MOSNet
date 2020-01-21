@@ -260,7 +260,8 @@ sys.exit()
 '''
 
 # move my orig folders somewhere else
-F = glob.glob("./results_R/output*/")
+F = glob.glob("./results_R/output*LA_orig/")
+#F = glob.glob("./results_R/output*/")
 print(F)
 # output_CNN_16_LA_xvec_5_R_0.01_0.1_64_16
 # output, nn, batch, data, feats, reg/class, l2, dr, nodes, batch
@@ -269,13 +270,16 @@ for folder in F[32:]:
         logname = "log."+folder[12:-1]
         results_file = folder+"/res_df.pkl"
         items = folder.split("/")[2].split("_")
-        data = items[3]
-        flag = items[6]
+#        data = items[3]
+#        flag = items[6]
+        data = "LA"
+        flag = "R"
         if data == "LA" and flag == "R":
-            testfile = "data_LA/test_list.txt"        
-            feats = items[4]
-            if feats == "xvec":
-                feats = feats + "_" + items[5]
+            testfile = "data_LA/test_list.txt"
+            feats = "orig"
+#            feats = items[4]
+#            if feats == "xvec":
+#                feats = feats + "_" + items[5]
             input = open(testfile, "r")
             testlist = input.read().split("\n")[:-1]
             input.close()
