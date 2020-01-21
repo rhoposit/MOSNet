@@ -266,7 +266,7 @@ print(F)
 # output_CNN_16_LA_xvec_5_R_0.01_0.1_64_16
 # output, nn, batch, data, feats, reg/class, l2, dr, nodes, batch
 for folder in F:
-    try:
+#    try:
         logname = "log."+folder[12:-1]
         results_file = folder+"/res_df.pkl"
         items = folder.split("/")[2].split("_")
@@ -288,7 +288,7 @@ for folder in F:
             # get the model name, pass to the test function
             get_test_results(bin_dir, data, testlist, model, results_file, flag)
             get_scores(folder, data, results_file, flag, logname)
-    except:
-        print("skipping: ", folder)
-        continue
+#    except:
+#        print("skipping: ", folder)
+#        continue
 
