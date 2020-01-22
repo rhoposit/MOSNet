@@ -276,8 +276,6 @@ for folder in F:
         logname = "log."+folder[12:-1]
         results_file = folder+"/res_df.pkl"
         items = folder.split("/")[2].split("_")
-        if len(items) < 11:
-            continue
         data = items[3]
         flag = items[5]
 #        data = "LA"
