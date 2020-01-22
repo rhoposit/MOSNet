@@ -266,8 +266,8 @@ sys.exit()
 '''
 
 # move my orig folders somewhere else
-F = glob.glob("./results_R/output*LA_orig/")
-#F = glob.glob("./results_R/output*/")
+#F = glob.glob("./results_R/output*LA_orig/")
+F = glob.glob("./results_R/output*/")
 print(F)
 # output_CNN_16_LA_xvec_5_R_0.01_0.1_64_16
 # output, nn, batch, data, feats, reg/class, l2, dr, nodes, batch
@@ -289,11 +289,12 @@ for folder in F:
             input = open(testfile, "r")
             testlist = input.read().split("\n")[:-1]
             input.close()
-            model = folder+"/mosnet.h5"
-            bin_dir = "data_"+data+"/"+feats
+            if feats == "CNN" or feats == "DS-image":
+                model = folder+"/mosnet.h5"
+                bin_dir = "data_"+data+"/"+feats
             # get the model name, pass to the test function
 #            get_test_results(bin_dir, data, testlist, model, results_file, flag)
-            get_scores(folder, data, results_file, flag, logname)
+                get_scores(folder, data, results_file, flag, logname)
 #    except:
 #        print("skipping: ", folder)
 #        continue
