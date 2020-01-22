@@ -47,7 +47,7 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class
             speakerid = filepath[0]
             mos=float(filepath[3])
 
-        _DS = utils.read_rep(os.path.join(BIN_DIR,filename+'.h5'))
+        _DS = utils.read(os.path.join(BIN_DIR,filename+'.h5'))
 #        _DS = utils.read_rep(os.path.join(BIN_DIR,filename+'.npy'))
         
         _DS = np.expand_dims(_DS, axis=3)
