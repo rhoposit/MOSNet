@@ -276,9 +276,8 @@ for folder in F:
         logname = "log."+folder[12:-1]
         results_file = folder+"/res_df.pkl"
         items = folder.split("/")[2].split("_")
-        if len(items) <  11:
+        if len(items) < 11:
             continue
-        print(items)
         data = items[3]
         flag = items[6]
 #        data = "LA"
@@ -289,10 +288,11 @@ for folder in F:
             feats = items[4]
 #            if feats == "xvec":
 #                feats = feats + "_" + items[5]
-            input = open(testfile, "r")
-            testlist = input.read().split("\n")[:-1]
-            input.close()
             if feats == "CNN" or feats == "DS-image":
+                input = open(testfile, "r")
+                testlist = input.read().split("\n")[:-1]
+                input.close()
+                print(items)
                 model = folder+"/mosnet.h5"
                 bin_dir = "data_"+data+"/"+feats
             # get the model name, pass to the test function
