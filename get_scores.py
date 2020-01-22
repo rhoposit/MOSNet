@@ -15,8 +15,8 @@ import matplotlib.pyplot as plt
 import argparse
 import tensorflow as tf
 from tensorflow import keras
-#import model_rep
-import model
+import model_rep
+#import model
 import utils
 import random
 from sklearn.metrics import accuracy_score
@@ -48,19 +48,18 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class
             speakerid = filepath[0]
             mos=float(filepath[3])
 
-        _feat = utils.read(os.path.join(BIN_DIR,filename+'.h5'))
-        _mag = _feat['mag_sgram']    
-        [Average_score, Frame_score]=model.predict(_mag, verbose=0, batch_size=1)
-        MOS_Predict[i]=Average_score
-        MOS_true[i]   =mos
+#        _feat = utils.read(os.path.join(BIN_DIR,filename+'.h5'))
+#        _mag = _feat['mag_sgram']    
+#        [Average_score, Frame_score]=model.predict(_mag, verbose=0, batch_size=1)
+#        MOS_Predict[i]=Average_score
+#        MOS_true[i]   =mos
 
 
-
-#        _DS = utils.read_rep(os.path.join(BIN_DIR,filename+'.npy'))
-#        _DS = np.expand_dims(_DS, axis=3)
-#        Average_score=model.predict(_DS, verbose=0, batch_size=1)
-#        MOS_Predict[i]=Average_score[0][0]
-#        MOS_true[i] =mos
+        _DS = utils.read_rep(os.path.join(BIN_DIR,filename+'.npy'))
+        _DS = np.expand_dims(_DS, axis=3)
+        Average_score=model.predict(_DS, verbose=0, batch_size=1)
+        MOS_Predict[i]=Average_score[0][0]
+        MOS_true[i] =mos
             
         df = df.append({'audio': filepath[0], 
                         'true_mos': MOS_true[i], 
@@ -277,14 +276,14 @@ for folder in F:
         logname = "log."+folder[12:-1]
         results_file = folder+"/res_df.pkl"
         items = folder.split("/")[2].split("_")
-#        data = items[3]
-#        flag = items[6]
-        data = "LA"
-        flag = "R"
+        data = items[3]
+        flag = items[6]
+#        data = "LA"
+#        flag = "R"
         if data == "LA" and flag == "R":
             testfile = "data_LA/test_list.txt"
-            feats = "orig"
-#            feats = items[4]
+#            feats = "orig"
+            feats = items[4]
 #            if feats == "xvec":
 #                feats = feats + "_" + items[5]
             input = open(testfile, "r")
@@ -293,7 +292,7 @@ for folder in F:
             model = folder+"/mosnet.h5"
             bin_dir = "data_"+data+"/"+feats
             # get the model name, pass to the test function
-            get_test_results(bin_dir, data, testlist, model, results_file, flag)
+#            get_test_results(bin_dir, data, testlist, model, results_file, flag)
             get_scores(folder, data, results_file, flag, logname)
 #    except:
 #        print("skipping: ", folder)
