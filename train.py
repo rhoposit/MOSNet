@@ -64,7 +64,7 @@ if gpus:
 # set dir
 DATA_DIR = './data_'+args.data
 BIN_DIR = os.path.join(DATA_DIR, args.feats)
-OUTPUT_DIR = '.results_O/output_'+args.model+"_"+str(args.batch_size)+"_"+args.data+"_"+args.feats
+OUTPUT_DIR = '.results_O_alpha/output_'+args.model+"_"+str(args.batch_size)+"_"+args.data+"_"+args.feats+"_"+str(alpha)
 results_file = OUTPUT_DIR+"results.pkl"
 
 EPOCHS = args.epoch

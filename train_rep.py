@@ -24,7 +24,6 @@ parser.add_argument("--epoch", type=int, default=100, help="number epochs")
 parser.add_argument("--data", help="data: VC, LA")
 parser.add_argument("--feats", help="feats: orig, DS-image, xvec_, or CNN")
 parser.add_argument("--seed", type=int, default=1984, help="specify a seed")
-parser.add_argument("--reg_class_flag", type=str, default="R", help="C or R")
 parser.add_argument("--test_only", type=bool, default=False, help="True for test only")
 
 
@@ -38,7 +37,6 @@ if not args.model:
 print('training with model architecture: {}'.format(args.model))   
 print('epochs: {}'.format(args.epoch))
 print('training with feature type: {}'.format(args.feats))   
-print('C/R: {}'.format(args.reg_class_flag))
 print('Test only: {}'.format(args.test_only))
 
 
@@ -64,11 +62,11 @@ if gpus:
         # Memory growth must be set before GPUs have been initialized
         print(e)
 
-def run(l2_val, dr, n, batch_size):
+def run(l2_val, dr, n, batch_size, bn):
     # set dir
     DATA_DIR = './data_'+args.data
     BIN_DIR = os.path.join(DATA_DIR, args.feats)
-    OUTPUT_DIR = './output_'+args.model+"_"+str(batch_size)+"_"+args.data+"_"+args.feats+"_"+args.reg_class_flag+"_"+str(l2_val)+"_"+str(dr)+"_"+str(n)+"_"+str(batch_size)
+    OUTPUT_DIR = '.results_R2/output_'+args.model+"_"+str(batch_size)+"_"+args.data+"_"+args.feats+"_"+str(l2_val)+"_"+str(dr)+"_"+str(n)+"_"+str(bn)
 
 
     EPOCHS = args.epoch
@@ -109,32 +107,19 @@ def run(l2_val, dr, n, batch_size):
     # init model
     if args.model == 'CNN':
         dim = rep_dims[args.feats]
-        MOSNet = model_rep.CNN(dim, l2_val, dr, n)
-    elif args.model == 'FFN':
-        dim = rep_dims[args.feats]
-        MOSNet = model_rep.FFN(dim, dr, n)
-    elif args.model == 'BLSTM':
-        sys.exit()
-    elif args.model == 'CNN-BLSTM':
-        sys.exit()
+        MOSNet = model_rep.CNN(dim, l2_val, dr, n, bn)
+#    elif args.model == 'FFN':
+#        dim = rep_dims[args.feats]
+#        MOSNet = model_rep.FFN(dim, dr, n, bn)
     else:
         raise ValueError('please specify model to train with, CNN, FFN')
+        sys.exit()
 
 
-
-    if args.reg_class_flag == "R":
-        model = MOSNet.build(False)
-        model.compile(
-            optimizer=tf.keras.optimizers.Adam(1e-4),metrics=["mean_absolute_error"],
-            loss="mse")
-
-    elif args.reg_class_flag == "C":
-        model = MOSNet.build(True)
-        model.compile(
-            optimizer=tf.keras.optimizers.Adam(1e-4),metrics=["accuracy"],
-            loss="categorical_crossentropy")
-        train_data_mos = keras.utils.to_categorical(train_data_mos, num_classes=10)
-        valid_data_mos = keras.utils.to_categorical(valid_data_mos, num_classes=10)
+    model = MOSNet.build(False)
+    model.compile(
+        optimizer=tf.keras.optimizers.Adam(1e-4),metrics=["mean_absolute_error"],
+        loss="mse")
 
     
     
@@ -197,12 +182,8 @@ def run(l2_val, dr, n, batch_size):
         _DS = np.expand_dims(_DS, axis=3)
         Average_score=model.predict(_DS, verbose=0, batch_size=1)
 
-        if args.reg_class_flag == "R":
-            MOS_Predict[i]=Average_score
-            MOS_true[i] =mos
-        elif args.reg_class_flag == "C":
-            MOS_Predict[i]=np.argmax(Average_score[0])
-            MOS_true[i] = mos
+        MOS_Predict[i]=Average_score
+        MOS_true[i] =mos
         
 
         
@@ -227,17 +208,12 @@ def run(l2_val, dr, n, batch_size):
     plt.savefig('./'+OUTPUT_DIR+'/MOSNet_distribution.png', dpi=150)
 
 
-    if args.reg_class_flag == "R":
-        LCC=np.corrcoef(MOS_true, MOS_Predict)
-        print('[UTTERANCE] Linear correlation coefficient= %f' % LCC[0][1])
-        SRCC=scipy.stats.spearmanr(MOS_true.T, MOS_Predict.T)
-        print('[UTTERANCE] Spearman rank correlation coefficient= %f' % SRCC[0])    
-        MSE=np.mean((MOS_true-MOS_Predict)**2)
-        print('[UTTERANCE] Test error= %f' % MSE)
-    elif args.reg_class_flag == "C":
-        ACC = accuracy_score(MOS_true, MOS_Predict)
-        print('[UTTERANCE] Accuracy = %f' % ACC)
-        print(confusion_matrix(MOS_true, MOS_Predict))
+    LCC=np.corrcoef(MOS_true, MOS_Predict)
+    print('[UTTERANCE] Linear correlation coefficient= %f' % LCC[0][1])
+    SRCC=scipy.stats.spearmanr(MOS_true.T, MOS_Predict.T)
+    print('[UTTERANCE] Spearman rank correlation coefficient= %f' % SRCC[0])    
+    MSE=np.mean((MOS_true-MOS_Predict)**2)
+    print('[UTTERANCE] Test error= %f' % MSE)
         
 
 
@@ -265,30 +241,18 @@ def run(l2_val, dr, n, batch_size):
     sys_result_mean = df[['system_ID', 'predict_mos']].groupby(['system_ID']).mean()
     sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')                                                                                                                 
 
-    if args.reg_class_flag == "R":
-        sys_true = sys_mer_df['mean']
-        sys_predicted = sys_mer_df['predict_mos']
-        print(sys_true)
-        print(sys_predicted)
-        print(sys_true.shape)
-        print(sys_predicted.shape)
-        LCC=np.corrcoef(sys_true, sys_predicted)
-        print('[SYSTEM] Linear correlation coefficient= %f' % LCC[0][1])
-        SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
-        print('[SYSTEM] Spearman rank correlation coefficient= %f' % SRCC[0])
-        MSE=np.mean((sys_true-sys_predicted)**2)
-        print('[SYSTEM] Test error= %f' % MSE)
-    elif args.reg_class_flag == "C":
-        sys_true = sys_mer_df['mean'].round(0).astype(int)
-        sys_predicted = sys_mer_df['predict_mos'].round(0).astype(int)
-
-        print(sys_true)
-        print(sys_predicted)
-        print(sys_true.shape)
-        print(sys_predicted.shape)
-        ACC = accuracy_score(sys_true, sys_predicted)
-        print('[SYSTEM] Accuracy = %f' % ACC)
-        print(confusion_matrix(sys_true, sys_predicted))
+    sys_true = sys_mer_df['mean']
+    sys_predicted = sys_mer_df['predict_mos']
+    print(sys_true)
+    print(sys_predicted)
+    print(sys_true.shape)
+    print(sys_predicted.shape)
+    LCC=np.corrcoef(sys_true, sys_predicted)
+    print('[SYSTEM] Linear correlation coefficient= %f' % LCC[0][1])
+    SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
+    print('[SYSTEM] Spearman rank correlation coefficient= %f' % SRCC[0])
+    MSE=np.mean((sys_true-sys_predicted)**2)
+    print('[SYSTEM] Test error= %f' % MSE)
         
 
     # Plotting scatter plot
@@ -318,23 +282,14 @@ def run(l2_val, dr, n, batch_size):
         spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                          
         spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
         spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')                                                                                                                 
-        if args.reg_class_flag == "R":
-            spk_true = spk_mer_df['mean']
-            spk_predicted = spk_mer_df['predict_mos']
-            LCC=np.corrcoef(spk_true, spk_predicted)
-            print('[SPEAKER] Linear correlation coefficient= %f' % LCC[0][1])
-            SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
-            print('[SPEAKER] Spearman rank correlation coefficient= %f' % SRCC[0])
-            MSE=np.mean((spk_true-spk_predicted)**2)
-            print('[SPEAKER] Test error= %f' % MSE)
-        elif args.reg_class_flag == "C":
-            spk_true = spk_mer_df['mean'].round(0).astype(int)
-            spk_predicted = spk_mer_df['predict_mos'].round(0).astype(int)
-            print(spk_true.shape)
-            print(spk_predicted.shape)
-            ACC = accuracy_score(spk_true, spk_predicted)
-            print('[SPEAKER] Accuracy = %f' % ACC)
-            print(confusion_matrix(spk_true, spk_predicted))
+        spk_true = spk_mer_df['mean']
+        spk_predicted = spk_mer_df['predict_mos']
+        LCC=np.corrcoef(spk_true, spk_predicted)
+        print('[SPEAKER] Linear correlation coefficient= %f' % LCC[0][1])
+        SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
+        print('[SPEAKER] Spearman rank correlation coefficient= %f' % SRCC[0])
+        MSE=np.mean((spk_true-spk_predicted)**2)
+        print('[SPEAKER] Test error= %f' % MSE)
             
     # Plotting scatter plot
     M=np.max([np.max(spk_predicted),5])
@@ -359,10 +314,11 @@ def run(l2_val, dr, n, batch_size):
 ##############################################################################
 
 # sweep these vals
-L2_VALS = [0.001, 0.01, 0.1]
+L2_VALS = [0.0001, 0.001, 0.01, 0.1]
 DRS = [0.1, 0.2, 0.3]
-N = [16, 32, 64]
-BATCH_SIZES = [16, 64, 128]
+N = [16, 32, 64, 128]
+BATCH_SIZES = [1, 16, 64, 128]
+BN = [True, False]
 
 # vals for testing
 #L2_VALS = [0.001]
@@ -373,5 +329,6 @@ BATCH_SIZES = [16, 64, 128]
 for l2_val in L2_VALS:
     for dr in DRS:
         for n in N:
-            for batch_size in BATCH_SIZES:
-                run(l2_val, dr, n, batch_size)
+            for bn in BN:
+                for batch_size in BATCH_SIZES:
+                    run(l2_val, dr, n, batch_size, bn)

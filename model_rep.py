@@ -9,30 +9,31 @@ from tensorflow.keras import regularizers
 
 class CNN(object):
     
-    def __init__(self, dims, l2_val, dr, f):
+    def __init__(self, dims, l2_val, dr, f, layers, bn):
         print('CNN init')
         self.dims = dims
         self.l2_val = l2_val
         self.dr = dr
         self.shape = (self.dims,1)
         self.f = f
+        self.layers = layers
+        self.bn - bn
         
-    def build(self, targets):
+    def build(self):
         k,m = 3,2
         model = Sequential()
-        model.add(layers.BatchNormalization(input_shape=self.shape))
-        model.add(Conv1D(filters=self.f, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
-        model.add(MaxPooling1D(m))
-        model.add(Conv1D(filters=self.f, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
-        model.add(MaxPooling1D(m))
-        model.add(Conv1D(filters=self.f, kernel_size=k,input_shape=(self.shape),activation='relu',kernel_regularizer=regularizers.l2(self.l2_val)))
-        model.add(MaxPooling1D(m))
-        model.add(layers.Flatten())
+        if self.bn:
+            model.add(layers.BatchNormalization(input_shape=self.shape))
 
-        if targets:
-            model.add(Dense(10, activation='softmax'))
-        else:
-            model.add(Dense(1, activation='relu'))            
+        #https://blog.goodaudience.com/introduction-to-1d-convolutional-neural-networks-in-keras-for-time-sequences-3a7ff801a2cf
+        model.add(Conv1D(self.f, 10, activation='relu', input_shape=self.shape))
+        model.add(Conv1D(self.f, 10, activation='relu'), kernel_regularizer=regularizers.l2(self.l2_val))
+        model.add(MaxPooling1D(3))
+        model.add(Conv1D(2*self.f, 10, activation='relu'), kernel_regularizer=regularizers.l2(self.l2_val))
+        model.add(Conv1D(2*self.f, 10, activation='relu'), kernel_regularizer=regularizers.l2(self.l2_val))
+        model.add(GlobalAveragePooling1D())
+        model.add(Dropout(self.dr))
+        model.add(Dense(1, activation='relu'))            
         vec = Input(shape=(self.shape))
         labels = model(vec)
         return Model(vec, labels)
