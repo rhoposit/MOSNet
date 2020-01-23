@@ -63,8 +63,8 @@ if gpus:
 # set dir
 DATA_DIR = './data_'+args.data
 BIN_DIR = os.path.join(DATA_DIR, args.feats)
-OUTPUT_DIR = './output_'+args.model+"_"+str(args.batch_size)+"_"+args.data+"_"+args.feats
-
+OUTPUT_DIR = '.results_OS/output_'+args.model+"_"+str(args.batch_size)+"_"+args.data+"_"+args.feats
+results_file = OUTPUT_DIR+"results.pkl"
 
 EPOCHS = args.epoch
 BATCH_SIZE = args.batch_size
@@ -198,6 +198,7 @@ for i in tqdm(range(len(test_list))):
                     'speaker_ID': speakerid}, 
                     ignore_index=True)
     
+df.to_pickle(results_file)
     
 
 plt.style.use('seaborn-deep')
