@@ -155,15 +155,15 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
         abs_diff = np.absolute(sys_true_mean - sys_predicted_mean)
         out.write('\t[SYSTEM-%s] Mean True= %f' % (systemID,sys_true_mean)+"\n")
         out.write('\t[SYSTEM-%s] Mean Predicted= %f' % (systemID,sys_predicted_mean)+"\n")
-        out.write('\t[SYSTEM-%s] Abs Diff= %f' % (systemID, abs_diff)+"\n")
-        LCC=np.corrcoef(sys_true, sys_predicted)
-        out.write('\t[SYSTEM-%s] Linear correlation coefficient= %f' % (systemID,LCC[0][1])+"\n")
-        SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
-        out.write('\t[SYSTEM-%s] Spearman rank correlation coefficient= %f' % (systemID,SRCC[0])+"\n")
-        MSE=np.mean((sys_true-sys_predicted)**2)
-        out.write('\t[SYSTEM-%s] MSE error= %f' % (systemID,MSE)+"\n")
-        MAE=np.mean(np.absolute(sys_true-sys_predicted))
-        out.write('\t[SYSTEM-%s] MAE error= %f' % (systemID,MAE)+"\n")
+#        out.write('\t[SYSTEM-%s] Abs Diff= %f' % (systemID, abs_diff)+"\n")
+#        LCC=np.corrcoef(sys_true, sys_predicted)
+#        out.write('\t[SYSTEM-%s] Linear correlation coefficient= %f' % (systemID,LCC[0][1])+"\n")
+#        SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
+#        out.write('\t[SYSTEM-%s] Spearman rank correlation coefficient= %f' % (systemID,SRCC[0])+"\n")
+#        MSE=np.mean((sys_true-sys_predicted)**2)
+#        out.write('\t[SYSTEM-%s] MSE error= %f' % (systemID,MSE)+"\n")
+#        MAE=np.mean(np.absolute(sys_true-sys_predicted))
+#        out.write('\t[SYSTEM-%s] MAE error= %f' % (systemID,MAE)+"\n")
 
 
         
@@ -228,24 +228,46 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     spk_resultP = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID'])['predict_mos']
     spk_resultT = df[['speaker_ID', 'true_mos']].groupby(['speaker_ID'])['true_mos']
     print(spk_resultP)
+    out.write("SYSTEM-AGG-SPEAKERS")
     for speakerID,true in spk_resultT:
         spk_true = spk_resultT.get_group(speakerID)
         spk_predicted = spk_resultP.get_group(speakerID)
         spk_true_mean = np.mean(spk_true)
         spk_predicted_mean = np.mean(spk_predicted)
         abs_diff = np.absolute(spk_true_mean - spk_predicted_mean)
-        out.write('\t[SPEAKER-%s] Mean True= %f' % (speakerID,spk_true_mean)+"\n")
-        out.write('\t[SPEAKER-%s] Mean Predicted= %f' % (speakerID,spk_predicted_mean)+"\n")
-        out.write('\t[SPEAKER-%s] Abs Diff= %f' % (speakerID,abs_diff)+"\n")
-        LCC=np.corrcoef(spk_true, spk_predicted)
-        out.write('\t[SPEAKER-%s] Linear correlation coefficient= %f' % (speakerID,LCC[0][1])+"\n")
-        SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
-        out.write('\t[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC[0])+"\n")
-        MSE=np.mean((spk_true-spk_predicted)**2)
-        out.write('\t[SPEAKER-%s] MSE error= %f' % (speakerID,MSE)+"\n")
-        MAE=np.mean(np.absolute(spk_true-spk_predicted))
-        out.write('\t[SPEAKER-%s] MAE error= %f' % (speakerID,MAE)+"\n")
+        out.write('\t[SPEAKER-%s] TRUE= %f' % (speakerID,spk_true_mean)+"\n")
+        out.write('\t[SPEAKER-%s] Predicted= %f' % (speakerID,spk_predicted_mean)+"\n")
+#        out.write('\t[SPEAKER-%s] Abs Diff= %f' % (speakerID,abs_diff)+"\n")
+#        LCC=np.corrcoef(spk_true, spk_predicted)
+#        out.write('\t[SPEAKER-%s] Linear correlation coefficient= %f' % (speakerID,LCC[0][1])+"\n")
+#        SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
+#        out.write('\t[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC[0])+"\n")
+#        MSE=np.mean((spk_true-spk_predicted)**2)
+#        out.write('\t[SPEAKER-%s] MSE error= %f' % (speakerID,MSE)+"\n")
+#        MAE=np.mean(np.absolute(spk_true-spk_predicted))
+#        out.write('\t[SPEAKER-%s] MAE error= %f' % (speakerID,MAE)+"\n")
 
+    spk_resultP = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID','system_ID'])['predict_mos']
+    spk_resultT = df[['speaker_ID', 'true_mos']].groupby(['speaker_ID','system_ID'])['true_mos']
+    print(spk_resultP)
+    out.write("SYSTEM-SPECIFIC-SPEAKERS")
+    for (systemID,speakerID),true in spk_resultT:
+        spk_true = spk_resultT.get_group((systemID,speakerID))
+        spk_predicted = spk_resultP.get_group((systemID,speakerID))
+        spk_true_mean = np.mean(spk_true)
+        spk_predicted_mean = np.mean(spk_predicted)
+        abs_diff = np.absolute(spk_true_mean - spk_predicted_mean)
+        out.write('\t[SYSTEM-%s, SPEAKER-%s] TRUE= %f' % (systemID, speakerID,spk_true_mean)+"\n")
+        out.write('\t[SYSTEM-%s, SPEAKER-%s] Predicted= %f' % (systemID, speakerID,spk_predicted_mean)+"\n")
+#        out.write('\t[SPEAKER-%s] Abs Diff= %f' % (speakerID,abs_diff)+"\n")
+#        LCC=np.corrcoef(spk_true, spk_predicted)
+#        out.write('\t[SPEAKER-%s] Linear correlation coefficient= %f' % (speakerID,LCC[0][1])+"\n")
+#        SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
+#        out.write('\t[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC[0])+"\n")
+#        MSE=np.mean((spk_true-spk_predicted)**2)
+#        out.write('\t[SPEAKER-%s] MSE error= %f' % (speakerID,MSE)+"\n")
+#        MAE=np.mean(np.absolute(spk_true-spk_predicted))
+#        out.write('\t[SPEAKER-%s] MAE error= %f' % (speakerID,MAE)+"\n")
 
            
 ''' 
@@ -267,7 +289,8 @@ sys.exit()
 
 # move my orig folders somewhere else
 #F = glob.glob("./results_R/output*LA_orig/")
-F = glob.glob("./results_O/output*/")
+#F = glob.glob("./results_O/output*/")
+F = ['./results_R/output_CNN_1_LA_orig/']
 print(F)
 # output_CNN_16_LA_xvec_5_R_0.01_0.1_64_16
 # output, nn, batch, data, feats, reg/class, l2, dr, nodes, batch
@@ -276,14 +299,14 @@ for folder in F:
         logname = "log."+folder[12:-1]
         results_file = folder+"/res_df.pkl"
         items = folder.split("/")[2].split("_")
-        data = items[3]
-        flag = items[5]
-#        data = "LA"
-#        flag = "R"
+#        data = items[3]
+#        flag = items[5]
+        data = "LA"
+        flag = "R"
         if data == "LA" and flag == "R":
             testfile = "data_LA/test_list.txt"
-#            feats = "orig"
-            feats = items[4]
+            feats = "orig"
+#            feats = items[4]
 #            if feats == "xvec":
 #                feats = feats + "_" + items[5]
             input = open(testfile, "r")
@@ -293,7 +316,7 @@ for folder in F:
             model = folder+"/mosnet.h5"
             bin_dir = "data_"+data+"/"+feats
             # get the model name, pass to the test function
-            get_test_results(bin_dir, data, testlist, model, results_file, flag)
+#            get_test_results(bin_dir, data, testlist, model, results_file, flag)
             get_scores(folder, data, results_file, flag, logname)
 #    except:
 #        print("skipping: ", folder)
