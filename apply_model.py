@@ -35,18 +35,11 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class
 
     for i in tqdm(range(len(test_list))):
 
-        if data == "VC":
-            filepath=test_list[i].split(',')
-            filename=filepath[0].split('.')[0]
-            sysid = ""
-            speakerid = ""
-            mos=float(filepath[1])
-        elif data == "LA":
-            filepath=test_list[i].split(',')
-            filename=filepath[2].split('.')[0]
-            sysid = filepath[1]
-            speakerid = filepath[0]
-            mos=float(filepath[3])
+        filepath=test_list[i].split(',')
+        speakerid = filepath[0]
+        sysid = filepath[1]
+        filename=filepath[2].split('.')[0]
+        mos=float(filepath[3])
 
         _feat = utils.read(os.path.join(BIN_DIR,filename+'.h5'))
         _mag = _feat['mag_sgram']    
@@ -61,7 +54,7 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class
 #        MOS_Predict[i]=Average_score[0][0]
 #        MOS_true[i] =mos
             
-        df = df.append({'audio': filepath[0], 
+        df = df.append({'audio': filename, 
                         'true_mos': MOS_true[i], 
                         'predict_mos': MOS_Predict[i], 
                         'system_ID': sysid, 
@@ -121,81 +114,13 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     plt.savefig('./'+OUTPUT_DIR+'/MOSNet_scatter_plot.png', dpi=150)
 
 
-    if data == "VC":
-        # load vcc2018_system
-        sys_df = pd.read_csv(os.path.join("data_VC",'vcc2018_system.csv'))
-        df['system_ID'] = df['audio'].str.split('_').str[-1].str.split('.').str[0] + '_' + df['audio'].str.split('_').str[0]
-    elif data == "LA":
-        # load LA 2019 system
-        sys_df = pd.read_csv(os.path.join("data_LA",'LA_mos_system.csv'))
-     
-    sys_result_mean = df[['system_ID', 'predict_mos']].groupby(['system_ID']).mean()
-    sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')                          
-
-    sys_true = sys_mer_df['mean']
-    sys_predicted = sys_mer_df['predict_mos']
-    LCC=np.corrcoef(sys_true, sys_predicted)
-    out.write('[SYSTEM-AGG] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
-    SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
-    out.write('[SYSTEM-AGG] Spearman rank correlation coefficient= %f' % SRCC[0]+"\n")
-    MSE=np.mean((sys_true-sys_predicted)**2)
-    out.write('[SYSTEM-AGG] MSE error= %f' % MSE+"\n")
-    MAE=np.mean(np.absolute(sys_true-sys_predicted))
-    out.write('[SYSTEM-AGG] MAE error= %f' % (MAE)+"\n")
-
-
-    sys_resultP = df[['system_ID', 'predict_mos']].groupby(['system_ID'])
-    sys_resultT = df[['system_ID', 'true_mos']].groupby(['system_ID'])
-
-    for systemID,true in sys_resultT:
-        sys_true = sys_resultT.get_group(systemID)['true_mos']
-        sys_predicted = sys_resultP.get_group(systemID)['predict_mos']
-        sys_true_mean = np.mean(sys_true)
-        sys_predicted_mean = np.mean(sys_predicted)
-        abs_diff = np.absolute(sys_true_mean - sys_predicted_mean)
-        out.write('\t[SYSTEM-%s] Mean True= %f' % (systemID,sys_true_mean)+"\n")
-        out.write('\t[SYSTEM-%s] Mean Predicted= %f' % (systemID,sys_predicted_mean)+"\n")
-#        out.write('\t[SYSTEM-%s] Abs Diff= %f' % (systemID, abs_diff)+"\n")
-#        LCC=np.corrcoef(sys_true, sys_predicted)
-#        out.write('\t[SYSTEM-%s] Linear correlation coefficient= %f' % (systemID,LCC[0][1])+"\n")
-#        SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
-#        out.write('\t[SYSTEM-%s] Spearman rank correlation coefficient= %f' % (systemID,SRCC[0])+"\n")
-#        MSE=np.mean((sys_true-sys_predicted)**2)
-#        out.write('\t[SYSTEM-%s] MSE error= %f' % (systemID,MSE)+"\n")
-#        MAE=np.mean(np.absolute(sys_true-sys_predicted))
-#        out.write('\t[SYSTEM-%s] MAE error= %f' % (systemID,MAE)+"\n")
-
-
-        
-    # Plotting scatter plot
-    M=np.max([np.max(sys_predicted),5])
-    # m=np.max([np.min(sys_predicted)-1,0.5])
-    plt.figure(4)
-    plt.scatter(sys_true, sys_predicted, s =25, color='b',  marker='o', edgecolors='b')
-    plt.xlim([1,M])
-    plt.ylim([1,M])
-    plt.xlabel('True MOS')
-    plt.ylabel('Predicted MOS')
-    plt.title('System-Level')
-
-    # # add system id
-    # for i in range(len(sys_mer_df)):
-    #     sys_ID = mer_df['system_ID'][i]
-    #     x = mer_df['mean'][i]
-    #     y = mer_df['predict_mos'][i]
-    #     plt.text(x-0.05, y+0.1, sys_ID, fontsize=8)
-    plt.savefig('./'+OUTPUT_DIR+'/MOSNet_system_scatter_plot.png', dpi=150)
-
-
-    
-    spk_df = pd.read_csv(os.path.join("data_LA",'LA_mos_speaker.csv'))
-    spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
-    spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')
+    spk_df = pd.read_csv(os.path.join("data_harvard100",'speaker_mos.csv'))
     spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
     spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')
 
     spk_true = spk_mer_df['mean']
     spk_predicted = spk_mer_df['predict_mos']
+    print(spk_true)
     LCC=np.corrcoef(spk_true, spk_predicted)
     out.write('[SPEAKER-AGG] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
     SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
