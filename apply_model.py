@@ -114,12 +114,10 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     plt.savefig('./'+OUTPUT_DIR+'/MOSNet_scatter_plot.png', dpi=150)
 
 
-    spk_df = pd.read_csv(os.path.join("data_harvard100",'speaker_mos.csv'))
-    spk_result_mean = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID']).mean()
-    spk_mer_df = pd.merge(spk_result_mean, spk_df, on='speaker_ID')
+    spk_result_mean = df[['speaker_ID', 'predict_mos', 'true_mos']].groupby(['speaker_ID']).mean()
 
-    spk_true = spk_mer_df['mean']
-    spk_predicted = spk_mer_df['predict_mos']
+    spk_true = spk_result_mean['true_mos']
+    spk_predicted = spk_result_mean['predict_mos']
     print(spk_true)
     LCC=np.corrcoef(spk_true, spk_predicted)
     out.write('[SPEAKER-AGG] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
@@ -172,71 +170,24 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 #        MAE=np.mean(np.absolute(spk_true-spk_predicted))
 #        out.write('\t[SPEAKER-%s] MAE error= %f' % (speakerID,MAE)+"\n")
 
-    spk_resultP = df[['system_ID', 'speaker_ID', 'predict_mos']].groupby(['speaker_ID','system_ID'])['predict_mos']
-    spk_resultT = df[['system_ID','speaker_ID', 'true_mos']].groupby(['speaker_ID','system_ID'])['true_mos']
-    print(spk_resultP)
-    out.write("SYSTEM-SPECIFIC-SPEAKERS\n")
-    for (speakerID,systemID),true in spk_resultT:
-        spk_true = spk_resultT.get_group((speakerID,systemID))
-        spk_predicted = spk_resultP.get_group((speakerID,systemID))
-        spk_true_mean = np.mean(spk_true)
-        spk_predicted_mean = np.mean(spk_predicted)
-        abs_diff = np.absolute(spk_true_mean - spk_predicted_mean)
-        out.write('\t[SYSTEM-%s, SPEAKER-%s] TRUE= %f' % (systemID, speakerID,spk_true_mean)+"\n")
-        out.write('\t[SYSTEM-%s, SPEAKER-%s] Predicted= %f' % (systemID, speakerID,spk_predicted_mean)+"\n")
-#        out.write('\t[SPEAKER-%s] Abs Diff= %f' % (speakerID,abs_diff)+"\n")
-#        LCC=np.corrcoef(spk_true, spk_predicted)
-#        out.write('\t[SPEAKER-%s] Linear correlation coefficient= %f' % (speakerID,LCC[0][1])+"\n")
-#        SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
-#        out.write('\t[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC[0])+"\n")
-#        MSE=np.mean((spk_true-spk_predicted)**2)
-#        out.write('\t[SPEAKER-%s] MSE error= %f' % (speakerID,MSE)+"\n")
-#        MAE=np.mean(np.absolute(spk_true-spk_predicted))
-#        out.write('\t[SPEAKER-%s] MAE error= %f' % (speakerID,MAE)+"\n")
-
            
-''' 
-folder = 'results_R/output_CNN_64_LA_CNN_R_0.01_0.1_32_64'
+
+folder = './results_R/output_CNN_1_LA_orig/'
+logname = "log."+folder[12:-1]
+results_file = folder+"/harvard100.pkl"
+items = folder.split("/")[2].split("_")
 data = "LA"
-results_file = folder+"/res_df.pkl"
-logname = "log."+folder[10:-1]
 flag = "R"
-testfile = "data_LA/test_list.txt"
+testfile = "data_harvard100/test_list.txt"
+feats = "orig"
 input = open(testfile, "r")
 testlist = input.read().split("\n")[:-1]
 input.close()
+print(items)
 model = folder+"/mosnet.h5"
-bin_dir = "data_LA/CNN"
-get_test_results(bin_dir, data, testlist, model, results_file, flag)
+bin_dir = "data_harvard100/"+feats
+# get the model name, pass to the test function
+#get_test_results(bin_dir, data, testlist, model, results_file, flag)
 get_scores(folder, data, results_file, flag, logname)
-sys.exit()
-'''
 
-F = ['./results_R/output_CNN_1_LA_orig/']
-print(F)
-# output_CNN_16_LA_xvec_5_R_0.01_0.1_64_16
-# output, nn, batch, data, feats, reg/class, l2, dr, nodes, batch
-for folder in F:
-    logname = "log."+folder[12:-1]
-    results_file = folder+"/harvard100.pkl"
-    items = folder.split("/")[2].split("_")
-    #        data = items[3]
-    #        flag = items[5]
-    data = "LA"
-    flag = "R"
-    if data == "LA" and flag == "R":
-        testfile = "data_harvard100/test_list.txt"
-        feats = "orig"
-        #            feats = items[4]
-        #            if feats == "xvec":
-        #                feats = feats + "_" + items[5]
-        input = open(testfile, "r")
-        testlist = input.read().split("\n")[:-1]
-        input.close()
-        print(items)
-        model = folder+"/mosnet.h5"
-        bin_dir = "data_harvard100/"+feats
-        # get the model name, pass to the test function
-        get_test_results(bin_dir, data, testlist, model, results_file, flag)
-        get_scores(folder, data, results_file, flag, logname)
 
