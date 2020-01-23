@@ -119,6 +119,12 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
     spk_true = spk_result_mean['true_mos']
     spk_predicted = spk_result_mean['predict_mos']
     print(spk_true)
+
+    spk_true_mean = np.mean(spk_true)
+    spk_predicted_mean = np.mean(spk_predicted)
+    out.write('\t[SPEAKER-AGG] TRUE= %f' % (spk_true_mean)+"\n")
+    out.write('\t[SPEAKER-AGG] Predicted= %f' % (spk_predicted_mean)+"\n")
+
     LCC=np.corrcoef(spk_true, spk_predicted)
     out.write('[SPEAKER-AGG] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
     SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
