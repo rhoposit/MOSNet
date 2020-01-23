@@ -247,8 +247,8 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 #        MAE=np.mean(np.absolute(spk_true-spk_predicted))
 #        out.write('\t[SPEAKER-%s] MAE error= %f' % (speakerID,MAE)+"\n")
 
-    spk_resultP = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID','system_ID'])['predict_mos']
-    spk_resultT = df[['speaker_ID', 'true_mos']].groupby(['speaker_ID','system_ID'])['true_mos']
+    spk_resultP = df[['system_ID', 'speaker_ID', 'predict_mos']].groupby(['speaker_ID','system_ID'])['predict_mos']
+    spk_resultT = df[['system_ID','speaker_ID', 'true_mos']].groupby(['speaker_ID','system_ID'])['true_mos']
     print(spk_resultP)
     out.write("SYSTEM-SPECIFIC-SPEAKERS")
     for (systemID,speakerID),true in spk_resultT:
