@@ -23,12 +23,13 @@ parser.add_argument("--batch_size", type=int, default=8, help="number batch_size
 parser.add_argument("--data", help="data: VC, LA")
 parser.add_argument("--feats", help="feats: orig, DS-image, xvec_, or CNN")
 parser.add_argument("--seed", type=int, default=1984, help="specify a seed")
-
+parser.add_argument("--alpha", type=float, default=1.0, help="specify an alpha value")
 args = parser.parse_args()
 
 
 random.seed(args.seed)
 
+alpha = args.alpha
 
 if not args.model:
     raise ValueError('please specify model to train with, CNN, BLSTM or CNN-BLSTM')
@@ -63,7 +64,7 @@ if gpus:
 # set dir
 DATA_DIR = './data_'+args.data
 BIN_DIR = os.path.join(DATA_DIR, args.feats)
-OUTPUT_DIR = '.results_OS/output_'+args.model+"_"+str(args.batch_size)+"_"+args.data+"_"+args.feats
+OUTPUT_DIR = '.results_O/output_'+args.model+"_"+str(args.batch_size)+"_"+args.data+"_"+args.feats
 results_file = OUTPUT_DIR+"results.pkl"
 
 EPOCHS = args.epoch
@@ -115,7 +116,8 @@ model = MOSNet.build()
 model.compile(
     optimizer=tf.keras.optimizers.Adam(1e-4),
     loss={'avg':'mse',
-          'frame':'mse'},)
+          'frame':'mse'},
+    loss_weights=[1,alpha],)
     
 CALLBACKS = [
     keras.callbacks.ModelCheckpoint(
@@ -151,14 +153,14 @@ val_steps = int(NUM_VALID/BATCH_SIZE)
 
 
 ## start fitting model
-#hist = model.fit_generator(train_data,
-#                           steps_per_epoch=tr_steps,
-#                           epochs=EPOCHS,
-#                           callbacks=CALLBACKS,
-#                           validation_data=valid_data,
-#                           validation_steps=val_steps,
-#                           verbose=1,)
-#    
+hist = model.fit_generator(train_data,
+                           steps_per_epoch=tr_steps,
+                           epochs=EPOCHS,
+                           callbacks=CALLBACKS,
+                           validation_data=valid_data,
+                           validation_steps=val_steps,
+                           verbose=1,)
+    
 
 # plot testing result
 model.load_weights(os.path.join(OUTPUT_DIR,'mosnet.h5'),)   # Load the best model   
