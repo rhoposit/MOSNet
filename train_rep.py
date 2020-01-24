@@ -66,8 +66,8 @@ def run(l2_val, dr, n, batch_size, bn):
     # set dir
     DATA_DIR = './data_'+args.data
     BIN_DIR = os.path.join(DATA_DIR, args.feats)
-    OUTPUT_DIR = '.results_R2/output_'+args.model+"_"+str(batch_size)+"_"+args.data+"_"+args.feats+"_"+str(l2_val)+"_"+str(dr)+"_"+str(n)+"_"+str(bn)
-
+    OUTPUT_DIR = './results_R2/output_'+args.model+"_"+str(batch_size)+"_"+args.data+"_"+args.feats+"_"+str(l2_val)+"_"+str(dr)+"_"+str(n)+"_"+str(bn)
+    results_file = OUTPUT_DIR+"/results.pkl"
 
     EPOCHS = args.epoch
     BATCH_SIZE = batch_size
@@ -194,7 +194,7 @@ def run(l2_val, dr, n, batch_size, bn):
                         'speaker_ID': speakerid}, 
                        ignore_index=True)
     
-    
+    df.to_pickle(results_file)
 
     plt.style.use('seaborn-deep')
     x = df['true_mos']
