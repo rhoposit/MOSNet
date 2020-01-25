@@ -26,10 +26,10 @@ class CNN(object):
 
         #https://blog.goodaudience.com/introduction-to-1d-convolutional-neural-networks-in-keras-for-time-sequences-3a7ff801a2cf
         model.add(Conv1D(self.f, 10, activation='relu', input_shape=self.shape))
-        model.add(Conv1D(self.f, 10, activation='relu'), kernel_regularizer=regularizers.l2(self.l2_val))
+        model.add(Conv1D(self.f, 10, activation='relu', kernel_regularizer=regularizers.l2(self.l2_val)))
         model.add(MaxPooling1D(3))
-        model.add(Conv1D(2*self.f, 10, activation='relu'), kernel_regularizer=regularizers.l2(self.l2_val))
-        model.add(Conv1D(2*self.f, 10, activation='relu'), kernel_regularizer=regularizers.l2(self.l2_val))
+        model.add(Conv1D(2*self.f, 10, activation='relu', kernel_regularizer=regularizers.l2(self.l2_val)))
+        model.add(Conv1D(2*self.f, 10, activation='relu', kernel_regularizer=regularizers.l2(self.l2_val)))
         model.add(GlobalAveragePooling1D())
         model.add(Dropout(self.dr))
         model.add(Dense(1, activation='relu'))            
