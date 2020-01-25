@@ -331,11 +331,12 @@ for folder in F:
         testlist = input.read().split("\n")[:-1]
         input.close()
         print(items)
+        data = "LA"
         model = folder+"/mosnet.h5"
         bin_dir = "data_"+data+"/"+feats
         # get the model name, pass to the test function
 #        get_test_results(bin_dir, data, testlist, model, results_file, flag)
-        get_scores(folder, "LA", results_file, logname)
+        get_scores(folder, data, results_file, logname)
 #    except:
 #        print("skipping: ", folder)
 #        continue
