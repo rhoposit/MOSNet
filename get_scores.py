@@ -216,7 +216,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
     MAE=np.mean(np.absolute(spk_true-spk_predicted))
     out.write('[SPEAKER-AGG] MSE error= %f' % MSE+"\n")
     out.write('[SPEAKER-AGG] MAE error= %f' % (MAE)+"\n")
-    tup = [LCC, SRCC, MSE, MAE,spk_true_mean, spk_pedicted_mean]
+    tup = [LCC, SRCC, MSE, MAE,spk_true_mean, spk_predicted_mean]
     SPEAKER_SCORES["agg"].append(tup)
     MASTER_SORT_DICT[logname].append(tup)
         
@@ -261,7 +261,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
 #        out.write('\t[SPEAKER-%s] MSE error= %f' % (speakerID,MSE)+"\n")
         MAE=np.mean(np.absolute(spk_true-spk_predicted))
 #        out.write('\t[SPEAKER-%s] MAE error= %f' % (speakerID,MAE)+"\n")
-        tup = [LCC, SRCC, MSE, MAE, spk_true_mean, spk_pedicted_mean]
+        tup = [LCC, SRCC, MSE, MAE, spk_true_mean, spk_predicted_mean]
         SPEAKER_SCORES[speakerID].append(tup)
 
     spk_resultP = df[['system_ID', 'speaker_ID', 'predict_mos']].groupby(['speaker_ID','system_ID'])['predict_mos']
@@ -285,7 +285,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
 #        out.write('\t[SPEAKER-%s] MSE error= %f' % (speakerID,MSE)+"\n")
         MAE=np.mean(np.absolute(spk_true-spk_predicted))
 #        out.write('\t[SPEAKER-%s] MAE error= %f' % (speakerID,MAE)+"\n")
-        tup = [LCC, SRCC, MSE, MAE, spk_true_mean, spk_pedicted_mean]
+        tup = [LCC, SRCC, MSE, MAE, spk_true_mean, spk_predicted_mean]
         SPEAKER_SYSTEM_SCORES[systemID+":"+speakerID].append(tup)
 
 
