@@ -116,7 +116,7 @@ def run(l2_val, dr, n, batch_size, bn):
         sys.exit()
 
 
-    model = MOSNet.build(False)
+    model = MOSNet.build()
     model.compile(
         optimizer=tf.keras.optimizers.Adam(1e-4),metrics=["mean_absolute_error"],
         loss="mse")
