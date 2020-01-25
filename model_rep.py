@@ -16,7 +16,7 @@ class CNN(object):
         self.dr = dr
         self.shape = (self.dims,1)
         self.f = f
-        self.bn - bn
+        self.bn = bn
         
     def build(self):
         k,m = 3,2
