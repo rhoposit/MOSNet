@@ -9,14 +9,13 @@ from tensorflow.keras import regularizers
 
 class CNN(object):
     
-    def __init__(self, dims, l2_val, dr, f, layers, bn):
+    def __init__(self, dims, l2_val, dr, f,  bn):
         print('CNN init')
         self.dims = dims
         self.l2_val = l2_val
         self.dr = dr
         self.shape = (self.dims,1)
         self.f = f
-        self.layers = layers
         self.bn - bn
         
     def build(self):
