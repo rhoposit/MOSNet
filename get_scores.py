@@ -105,10 +105,10 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
     plt.savefig('./'+OUTPUT_DIR+'/MOSNet_distribution.png', dpi=150)
 
 
-    LCC=np.corrcoef(MOS_true, MOS_Predict)
-    out.write('[UTTERANCE] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
-    SRCC=scipy.stats.spearmanr(MOS_true.T, MOS_Predict.T)
-    out.write('[UTTERANCE] Spearman rank correlation coefficient= %f' % SRCC[0]+"\n")    
+    LCC=np.corrcoef(MOS_true, MOS_Predict)[0][1]
+    out.write('[UTTERANCE] Linear correlation coefficient= %f' % LCC+"\n")
+    SRCC=scipy.stats.spearmanr(MOS_true.T, MOS_Predict.T)[0]
+    out.write('[UTTERANCE] Spearman rank correlation coefficient= %f' % SRCC+"\n")    
     MSE=np.mean((MOS_true-MOS_Predict)**2)
     out.write('[UTTERANCE] Test error= %f' % MSE+"\n")
 
@@ -139,10 +139,10 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
 
     sys_true = sys_mer_df['mean']
     sys_predicted = sys_mer_df['predict_mos']
-    LCC=np.corrcoef(sys_true, sys_predicted)
-    out.write('[SYSTEM-AGG] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
-    SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
-    out.write('[SYSTEM-AGG] Spearman rank correlation coefficient= %f' % SRCC[0]+"\n")
+    LCC=np.corrcoef(sys_true, sys_predicted)[0][1]
+    out.write('[SYSTEM-AGG] Linear correlation coefficient= %f' % LCC+"\n")
+    SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)[0]
+    out.write('[SYSTEM-AGG] Spearman rank correlation coefficient= %f' % SRCC+"\n")
     MSE=np.mean((sys_true-sys_predicted)**2)
     out.write('[SYSTEM-AGG] MSE error= %f' % MSE+"\n")
     MAE=np.mean(np.absolute(sys_true-sys_predicted))
@@ -163,10 +163,10 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
         out.write('\t[SYSTEM-%s] Mean True= %f' % (systemID,sys_true_mean)+"\n")
         out.write('\t[SYSTEM-%s] Mean Predicted= %f' % (systemID,sys_predicted_mean)+"\n")
 #        out.write('\t[SYSTEM-%s] Abs Diff= %f' % (systemID, abs_diff)+"\n")
-        LCC=np.corrcoef(sys_true, sys_predicted)
-#        out.write('\t[SYSTEM-%s] Linear correlation coefficient= %f' % (systemID,LCC[0][1])+"\n")
-        SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)
-#        out.write('\t[SYSTEM-%s] Spearman rank correlation coefficient= %f' % (systemID,SRCC[0])+"\n")
+        LCC=np.corrcoef(sys_true, sys_predicted)[0][1]
+#        out.write('\t[SYSTEM-%s] Linear correlation coefficient= %f' % (systemID,LCC)+"\n")
+        SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)[0]
+#        out.write('\t[SYSTEM-%s] Spearman rank correlation coefficient= %f' % (systemID,SRCC)+"\n")
         MSE=np.mean((sys_true-sys_predicted)**2)
 #        out.write('\t[SYSTEM-%s] MSE error= %f' % (systemID,MSE)+"\n")
         MAE=np.mean(np.absolute(sys_true-sys_predicted))
@@ -208,10 +208,10 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
     spk_true_mean = np.mean(spk_true)
     spk_predicted_mean = np.mean(spk_predicted)
 
-    LCC=np.corrcoef(spk_true, spk_predicted)
-    out.write('[SPEAKER-AGG] Linear correlation coefficient= %f' % LCC[0][1]+"\n")
-    SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
-    out.write('[SPEAKER-AGG] Spearman rank correlation coefficient= %f' % SRCC[0]+"\n")
+    LCC=np.corrcoef(spk_true, spk_predicted)[0][1]
+    out.write('[SPEAKER-AGG] Linear correlation coefficient= %f' % LCC+"\n")
+    SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)[0]
+    out.write('[SPEAKER-AGG] Spearman rank correlation coefficient= %f' % SRCC+"\n")
     MSE=np.mean((spk_true-spk_predicted)**2)
     MAE=np.mean(np.absolute(spk_true-spk_predicted))
     out.write('[SPEAKER-AGG] MSE error= %f' % MSE+"\n")
@@ -253,10 +253,10 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
         out.write('\t[SPEAKER-%s] TRUE= %f' % (speakerID,spk_true_mean)+"\n")
         out.write('\t[SPEAKER-%s] Predicted= %f' % (speakerID,spk_predicted_mean)+"\n")
 #        out.write('\t[SPEAKER-%s] Abs Diff= %f' % (speakerID,abs_diff)+"\n")
-        LCC=np.corrcoef(spk_true, spk_predicted)
-#        out.write('\t[SPEAKER-%s] Linear correlation coefficient= %f' % (speakerID,LCC[0][1])+"\n")
-        SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
-#        out.write('\t[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC[0])+"\n")
+        LCC=np.corrcoef(spk_true, spk_predicted)[0][1]
+#        out.write('\t[SPEAKER-%s] Linear correlation coefficient= %f' % (speakerID,LCC)+"\n")
+        SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)[0]
+#        out.write('\t[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC)+"\n")
         MSE=np.mean((spk_true-spk_predicted)**2)
 #        out.write('\t[SPEAKER-%s] MSE error= %f' % (speakerID,MSE)+"\n")
         MAE=np.mean(np.absolute(spk_true-spk_predicted))
@@ -277,10 +277,10 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
         out.write('\t[SYSTEM-%s, SPEAKER-%s] TRUE= %f' % (systemID, speakerID,spk_true_mean)+"\n")
         out.write('\t[SYSTEM-%s, SPEAKER-%s] Predicted= %f' % (systemID, speakerID,spk_predicted_mean)+"\n")
 #        out.write('\t[SPEAKER-%s] Abs Diff= %f' % (speakerID,abs_diff)+"\n")
-        LCC=np.corrcoef(spk_true, spk_predicted)
-#        out.write('\t[SPEAKER-%s] Linear correlation coefficient= %f' % (speakerID,LCC[0][1])+"\n")
-        SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)
-#        out.write('\t[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC[0])+"\n")
+        LCC=np.corrcoef(spk_true, spk_predicted)[0][1]
+#        out.write('\t[SPEAKER-%s] Linear correlation coefficient= %f' % (speakerID,LCC)+"\n")
+        SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)[0]
+#        out.write('\t[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC)+"\n")
         MSE=np.mean((spk_true-spk_predicted)**2)
 #        out.write('\t[SPEAKER-%s] MSE error= %f' % (speakerID,MSE)+"\n")
         MAE=np.mean(np.absolute(spk_true-spk_predicted))
