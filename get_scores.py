@@ -78,7 +78,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
     global MASTER_SORT_DICT
     SYSTEM_SCORES = defaultdict(list)
     SPEAKER_SCORES = defaultdict(list)
-    SYSTEM_SPEAKER_SCORES = defaultdict(list)
+    SPEAKER_SYSTEM_SCORES = defaultdict(list)
 
     out = open(logname, "w")
     print('scoring', resultsfile)
