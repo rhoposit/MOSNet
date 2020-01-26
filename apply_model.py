@@ -224,18 +224,18 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
 
 # this is the best LA model for the DS-image feature
 # REF logs_DS/log.output_CNN_1_LA_DS-image_0.0001_0.1_32_False ** more results coming
-#folder = './results_R2/output_CNN_1_LA_DS-image_0.0001_0.1_32_False/'
-#results_file = "harvard100_scored/LA_DS-image.pkl"
-#feats = "DS-image"
-#logname = "data_harvard100/log.LA_DS-image_feats"
+folder = './results_R2/output_CNN_1_LA_DS-image_0.0001_0.1_32_False/'
+results_file = "harvard100_scored/LA_DS-image.pkl"
+feats = "DS-image"
+logname = "data_harvard100/log.LA_DS-image_feats"
 
 # this is the best LA model for the CNN feature
-# REF log.utput_CNN_128_LA_DS-image_R_0.001_0.2_64_128 *** redo new NN
-folder = './results_O/output_CNN_128_LA_CNN_R_0.001_0.2_16_128/'
-model = folder+"mosnet.h5"
-results_file = "harvard100_scored/LA_CNN.pkl"
-feats = "CNN"
-logname = "data_harvard100/log.LA_CNN_feats"
+# REF logs_CNN/log.utput_CNN_128_LA_CNN_R_0.001_0.2_16_128  *** redo new NN
+#folder = './results_O/output_CNN_128_LA_CNN_R_0.001_0.2_16_128/'
+#model = folder+"mosnet.h5"
+#results_file = "harvard100_scored/LA_CNN.pkl"
+#feats = "CNN"
+#logname = "data_harvard100/log.LA_CNN_feats"
 
 # this is the best LA model for the orig feature
 # REF
