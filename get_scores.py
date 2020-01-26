@@ -307,7 +307,7 @@ sys.exit()
 # move my orig folders somewhere else
 #F = glob.glob("./results_O2/output*/")
 #F = glob.glob("./results_R2/output*DS-image*/")
-F = glob.glob("./pre-trained/*")
+F = glob.glob("./pre_trained/*")
 #F = ['./results_R/output_CNN_1_LA_orig/']
 print(F)
 MASTER_SORT_DICT = defaultdict(list)
@@ -317,7 +317,7 @@ MASTER_SORT_DICT = defaultdict(list)
 
 for folder in F:
 #    try:
-        logname = "logs_pretrained/"+"log."+folder[14:-1]
+        logname = "logs_pretrained/"+"log."+folder.split("/")[-1]
         results_file = folder+"/results.pkl"
         items = folder.split("/")[2].split("_")
         testfile = "data_LA/test_list.txt"
@@ -330,7 +330,8 @@ for folder in F:
         input.close()
         print(items)
         data = "LA"
-        model = folder+"/mosnet.h5"
+        model = folder
+#        model = folder+"/mosnet.h5"
         bin_dir = "data_"+data+"/"+feats
         # get the model name, pass to the test function
         get_test_results(bin_dir, data, testlist, model, results_file)
