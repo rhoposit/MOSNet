@@ -214,19 +214,19 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
 
 # this is the best LA model for the xvec4 feature
 # REF log.output_CNN_16_LA_xvec_4_0.0001_0.1_64_True
-folder = './results_R2/output_CNN_16_LA_xvec_4_0.0001_0.1_64_True/'
-model = folder+"mosnet.h5"
-results_file = "harvard100_scored/LA_xvec4.pkl"
-feats = "xvec_4"
-logname = "data_harvard100/log.LA_xvec4"
+#folder = './results_R2/output_CNN_16_LA_xvec_4_0.0001_0.1_64_True/'
+#model = folder+"mosnet.h5"
+#results_file = "harvard100_scored/LA_xvec4.pkl"
+#feats = "xvec_4"
+#logname = "data_harvard100/log.LA_xvec4"
 
 # this is the best LA model for the xvec5 feature
 # REF log.output_CNN_1_LA_xvec_5_0.0001_0.1_64_True
-#folder = './results_R2/output_CNN_1_LA_xvec_5_0.0001_0.1_64_True/'
-#model = folder+"mosnet.h5"
-#results_file = "harvard100_scored/LA_xvec5.pkl"
-#feats = "xvec_5"
-#logname = "data_harvard100/log.LA_xvec5"
+folder = './results_R2/output_CNN_1_LA_xvec_5_0.0001_0.1_64_True/'
+model = folder+"mosnet.h5"
+results_file = "harvard100_scored/LA_xvec5.pkl"
+feats = "xvec_5"
+logname = "data_harvard100/log.LA_xvec5"
 
 # this is the best LA model for the DS-image feature
 # REF logs_DS/log.output_CNN_1_LA_DS-image_0.0001_0.1_32_False ** more results coming
