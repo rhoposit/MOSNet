@@ -245,11 +245,11 @@ logname = "data_harvard100/log.LA_xvec3"
 #logname = "data_harvard100/log.LA_CNN_feats"
 
 # this is the best LA model for the orig feature
-# REF
-#folder = './results_R2/output_CNN_1_LA_orig/'
-#results_file = "harvard100_scored/LA_orig.pkl"
-#feats = "orig"
-#logname = "data_harvard100/log.LA_orig_CNN"
+# REF log.output_BLSTM_64_LA_orig
+folder = './results_O2/output_BLSTM_64_LA_orig'
+results_file = "harvard100_scored/LA_orig.pkl"
+feats = "orig"
+logname = "data_harvard100/log.LA_orig_CNN"
 
 # these are the best VC models from the paper
 #folder = './pre_trained/'
