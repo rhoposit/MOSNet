@@ -129,9 +129,6 @@ def run(l2_val, dr, n, batch_size, bn):
             save_best_only=True,
             monitor='val_loss',
             verbose=1),
-        keras.callbacks.TensorBoard(
-            log_dir=os.path.join(OUTPUT_DIR,'tensorboard.log'),
-            update_freq='epoch'), 
         keras.callbacks.EarlyStopping(
             monitor='val_loss',
             mode='min',
@@ -155,6 +152,7 @@ def run(l2_val, dr, n, batch_size, bn):
                      verbose=1)
 
     # plot testing result
+    
     model.load_weights(os.path.join(OUTPUT_DIR,'mosnet.h5'),)   # Load the best model   
 
     print('testing...')
@@ -317,7 +315,7 @@ def run(l2_val, dr, n, batch_size, bn):
 L2_VALS = [0.0001, 0.001, 0.01, 0.1]
 DRS = [0.1, 0.2, 0.3]
 N = [16, 32, 64, 128]
-BATCH_SIZES = [1, 16, 64, 128]
+BATCH_SIZES = [16, 64, 128]
 BN = [True, False]
 
 # vals for testing
