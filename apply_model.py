@@ -24,7 +24,7 @@ from sklearn.metrics import confusion_matrix
 from tensorflow.keras.models import load_model
 
 
-def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class_flag):
+def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile):
 
     print('testing...', modelfile)
     model = load_model(modelfile)
