@@ -247,6 +247,7 @@ logname = "data_harvard100/log.LA_xvec3"
 # this is the best LA model for the orig feature
 # REF log.output_BLSTM_64_LA_orig
 folder = './results_O2/output_BLSTM_64_LA_orig'
+model = folder+"mosnet.h5"
 results_file = "harvard100_scored/LA_orig.pkl"
 feats = "orig"
 logname = "data_harvard100/log.LA_orig_CNN"
