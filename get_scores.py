@@ -25,7 +25,7 @@ from sklearn.metrics import confusion_matrix
 from tensorflow.keras.models import load_model
 
 
-def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class_flag):
+def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile):
 
     print('testing...', modelfile)
     model = load_model(modelfile)
@@ -293,15 +293,14 @@ folder = 'results_R/output_CNN_64_LA_CNN_R_0.01_0.1_32_64'
 data = "LA"
 results_file = folder+"/res_df.pkl"
 logname = "log."+folder[10:-1]
-flag = "R"
 testfile = "data_LA/test_list.txt"
 input = open(testfile, "r")
 testlist = input.read().split("\n")[:-1]
 input.close()
 model = folder+"/mosnet.h5"
 bin_dir = "data_LA/CNN"
-get_test_results(bin_dir, data, testlist, model, results_file, flag)
-get_scores(folder, data, results_file, flag, logname)
+get_test_results(bin_dir, data, testlist, model, results_file)
+get_scores(folder, data, results_file, logname)
 sys.exit()
 '''
 
@@ -333,7 +332,7 @@ for folder in F:
         model = folder+"/mosnet.h5"
         bin_dir = "data_"+data+"/"+feats
         # get the model name, pass to the test function
-        get_test_results(bin_dir, data, testlist, model, results_file, flag)
+        get_test_results(bin_dir, data, testlist, model, results_file)
         get_scores(folder, data, results_file, logname)
 #    except:
 #        print("skipping: ", folder)
