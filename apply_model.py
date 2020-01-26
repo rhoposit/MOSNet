@@ -232,17 +232,17 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
 #feats = "orig"
 #logname = "data_harvard100/log.pre-trained_VC_blstm"
 
-folder = './pre_trained/'
-model = folder+"/cnn.h5"
-results_file = "harvard100_scored/VC_cnn.pkl"
-feats = "orig"
-logname = "data_harvard100/log.pre-trained_VC_cnn"
-
 #folder = './pre_trained/'
-#model = folder+"/cnn_blstm.h5"
-#results_file = "harvard100_scored/VC_cnn_blstm.pkl"
+#model = folder+"/cnn.h5"
+#results_file = "harvard100_scored/VC_cnn.pkl"
 #feats = "orig"
-#logname = "data_harvard100/log.pre-trained_VC_cnn_blstm"
+#logname = "data_harvard100/log.pre-trained_VC_cnn"
+
+folder = './pre_trained/'
+model = folder+"/cnn_blstm.h5"
+results_file = "harvard100_scored/VC_cnn_blstm.pkl"
+feats = "orig"
+logname = "data_harvard100/log.pre-trained_VC_cnn_blstm"
 
 
 ##################################################
