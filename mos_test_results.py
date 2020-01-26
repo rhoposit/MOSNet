@@ -22,13 +22,14 @@ for f in F:
     print(len(data))
     for line in data:
         items = line.split(",")
+        ann = items[0]
         spk = items[1].split("-")[0]
         mos = int(items[2].split(" ")[1])
         fname = items[1]
         SPK_MOS[spk].append(mos)
         ANN_MOS[ann].append(mos)
 
-        newline = spk+",ophelia,"+fname+","+str(mos)
+        newline = ann+","+spk+",ophelia,"+fname+","+str(mos)
         AGG.append(newline)
 
 output = open(agg_out_file, "w")

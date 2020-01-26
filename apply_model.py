@@ -190,7 +190,7 @@ if big_switch == "xvec0":
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_xvec0.pkl"
     feats = "xvec_0"
-    logname = "data_harvard100/log.LA_xvec0"
+    logname = "harvard100_scored/log.LA_xvec0"
 
 if big_switch == "xvec1":
     # this is the best LA model for the xvec1 feature
@@ -199,7 +199,7 @@ if big_switch == "xvec1":
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_xvec1.pkl"
     feats = "xvec_1"
-    logname = "data_harvard100/log.LA_xvec1"
+    logname = "harvard100_scored/log.LA_xvec1"
 
 if big_switch == "xvec2":
     # this is the best LA model for the xvec2 feature
@@ -208,7 +208,7 @@ if big_switch == "xvec2":
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_xvec2.pkl"
     feats = "xvec_2"
-    logname = "data_harvard100/log.LA_xvec2"
+    logname = "harvard100_scored/log.LA_xvec2"
 
 if big_switch == "xvec3":
     # this is the best LA model for the xvec3 feature
@@ -217,7 +217,7 @@ if big_switch == "xvec3":
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_xvec3.pkl"
     feats = "xvec_3"
-    logname = "data_harvard100/log.LA_xvec3"
+    logname = "harvard100_scored/log.LA_xvec3"
 
 if big_switch == "xvec4":
     # this is the best LA model for the xvec4 feature
@@ -226,7 +226,7 @@ if big_switch == "xvec4":
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_xvec4.pkl"
     feats = "xvec_4"
-    logname = "data_harvard100/log.LA_xvec4"
+    logname = "harvard100_scored/log.LA_xvec4"
 
 if big_switch == "xvec5":
     # this is the best LA model for the xvec5 feature
@@ -235,7 +235,7 @@ if big_switch == "xvec5":
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_xvec5.pkl"
     feats = "xvec_5"
-    logname = "data_harvard100/log.LA_xvec5"
+    logname = "harvard100_scored/log.LA_xvec5"
 
 if big_switch == "DS-image":
     # this is the best LA model for the DS-image feature
@@ -244,7 +244,7 @@ if big_switch == "DS-image":
     results_file = "harvard100_scored/LA_DS-image.pkl"
     model = folder+"mosnet.h5"
     feats = "DS-image"
-    logname = "data_harvard100/log.LA_DS-image"
+    logname = "harvard100_scored/log.LA_DS-image"
 
 if big_switch == "CNN":
     # this is the best LA model for the CNN feature
@@ -253,7 +253,7 @@ if big_switch == "CNN":
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_CNN.pkl"
     feats = "CNN"
-    logname = "data_harvard100/log.LA_CNN"
+    logname = "harvard100_scored/log.LA_CNN"
 
 if big_switch == "LA_orig":
     # this is the best LA model for the orig feature
@@ -262,7 +262,7 @@ if big_switch == "LA_orig":
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_orig.pkl"
     feats = "orig"
-    logname = "data_harvard100/log.LA_orig_CNN"
+    logname = "harvard100_scored/log.LA_orig_CNN"
 
 if big_switch == "VC_blstm":
     # these are the best VC models from the paper
@@ -270,21 +270,21 @@ if big_switch == "VC_blstm":
     model = folder+"/blstm.h5"
     results_file = "harvard100_scored/VC_blstm.pkl"
     feats = "orig"
-    logname = "data_harvard100/log.pre-trained_VC_blstm"
+    logname = "harvard100_scored/log.pre-trained_VC_blstm"
 
 if big_switch == "VC_cnn":
     folder = './pre_trained/'
     model = folder+"/cnn.h5"
     results_file = "harvard100_scored/VC_cnn.pkl"
     feats = "orig"
-    logname = "data_harvard100/log.pre-trained_VC_cnn"
+    logname = "harvard100_scored/log.pre-trained_VC_cnn"
 
 if big_switch == "VC_cnn_blstm":
     folder = './pre_trained/'
     model = folder+"/cnn_blstm.h5"
     results_file = "harvard100_scored/VC_cnn_blstm.pkl"
     feats = "orig"
-    logname = "data_harvard100/log.pre-trained_VC_cnn_blstm"
+    logname = "harvard100_scored/log.pre-trained_VC_cnn_blstm"
 
 
 ##################################################

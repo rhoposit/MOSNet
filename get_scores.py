@@ -16,8 +16,8 @@ from collections import defaultdict
 import argparse
 import tensorflow as tf
 from tensorflow import keras
-import model_rep
-#import model
+#import model_rep
+import model
 import utils
 import random
 from sklearn.metrics import accuracy_score
