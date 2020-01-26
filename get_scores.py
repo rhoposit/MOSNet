@@ -113,16 +113,16 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
     out.write('[UTTERANCE] Test error= %f' % MSE+"\n")
 
 
-    # Plotting scatter plot
-    M=np.max([np.max(MOS_Predict),5])
-    plt.figure(3)
-    plt.scatter(MOS_true, MOS_Predict, s =15, color='b',  marker='o', edgecolors='b', alpha=.20)
-    plt.xlim([0.5,M])
-    plt.ylim([0.5,M])
-    plt.xlabel('True MOS')
-    plt.ylabel('Predicted MOS')
-    plt.title('Utterance-Level')
-    plt.savefig('./'+OUTPUT_DIR+'/MOSNet_scatter_plot.png', dpi=150)
+#    # Plotting scatter plot
+#    M=np.max([np.max(MOS_Predict),5])
+#    plt.figure(3)
+#    plt.scatter(MOS_true, MOS_Predict, s =15, color='b',  marker='o', edgecolors='b', alpha=.20)
+#    plt.xlim([0.5,M])
+#    plt.ylim([0.5,M])
+#    plt.xlabel('True MOS')
+#    plt.ylabel('Predicted MOS')
+#    plt.title('Utterance-Level')
+#    plt.savefig('./'+OUTPUT_DIR+'/MOSNet_scatter_plot.png', dpi=150)
 
 
     if data == "VC":
@@ -174,24 +174,24 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
 
 
         
-    # Plotting scatter plot
-    M=np.max([np.max(sys_predicted),5])
-    # m=np.max([np.min(sys_predicted)-1,0.5])
-    plt.figure(4)
-    plt.scatter(sys_true, sys_predicted, s =25, color='b',  marker='o', edgecolors='b')
-    plt.xlim([1,M])
-    plt.ylim([1,M])
-    plt.xlabel('True MOS')
-    plt.ylabel('Predicted MOS')
-    plt.title('System-Level')
-
-    # # add system id
-    # for i in range(len(sys_mer_df)):
-    #     sys_ID = mer_df['system_ID'][i]
-    #     x = mer_df['mean'][i]
-    #     y = mer_df['predict_mos'][i]
-    #     plt.text(x-0.05, y+0.1, sys_ID, fontsize=8)
-    plt.savefig('./'+OUTPUT_DIR+'/MOSNet_system_scatter_plot.png', dpi=150)
+#    # Plotting scatter plot
+#    M=np.max([np.max(sys_predicted),5])
+#    # m=np.max([np.min(sys_predicted)-1,0.5])
+#    plt.figure(4)
+#    plt.scatter(sys_true, sys_predicted, s =25, color='b',  marker='o', edgecolors='b')
+#    plt.xlim([1,M])
+#    plt.ylim([1,M])
+#    plt.xlabel('True MOS')
+#    plt.ylabel('Predicted MOS')
+#    plt.title('System-Level')#
+#
+#    # # add system id
+#    # for i in range(len(sys_mer_df)):
+#    #     sys_ID = mer_df['system_ID'][i]
+#    #     x = mer_df['mean'][i]
+#    #     y = mer_df['predict_mos'][i]
+#    #     plt.text(x-0.05, y+0.1, sys_ID, fontsize=8)
+#    plt.savefig('./'+OUTPUT_DIR+'/MOSNet_system_scatter_plot.png', dpi=150)
 
 
     
@@ -218,24 +218,24 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
     SPEAKER_SCORES["agg"].append(tup)
     MASTER_SORT_DICT[logname].append(tup)
         
-    # Plotting scatter plot
-    M=np.max([np.max(spk_predicted),5])
-    # m=np.max([np.min(spk_predicted)-1,0.5])
-    plt.figure(4)
-    plt.scatter(spk_true, spk_predicted, s =25, color='b',  marker='o', edgecolors='b')
-    plt.xlim([1,M])
-    plt.ylim([1,M])
-    plt.xlabel('True MOS')
-    plt.ylabel('Predicted MOS')
-    plt.title('Speaker-Level')
-    
-    # # add system id
-    # for i in range(len(spk_mer_df)):
-    #     spk_ID = mer_df['speaker_ID'][i]
-    #     x = mer_df['mean'][i]
-    #     y = mer_df['predict_mos'][i]
-    #     plt.text(x-0.05, y+0.1, spk_ID, fontsize=8)
-    plt.savefig('./'+OUTPUT_DIR+'/MOSNet_speaker_scatter_plot.png', dpi=150)
+#    # Plotting scatter plot
+#    M=np.max([np.max(spk_predicted),5])
+#    # m=np.max([np.min(spk_predicted)-1,0.5])
+#    plt.figure(4)
+#    plt.scatter(spk_true, spk_predicted, s =25, color='b',  marker='o', edgecolors='b')
+#    plt.xlim([1,M])
+#    plt.ylim([1,M])
+#    plt.xlabel('True MOS')
+#    plt.ylabel('Predicted MOS')
+#    plt.title('Speaker-Level')
+#    
+#    # # add system id
+#    # for i in range(len(spk_mer_df)):
+#    #     spk_ID = mer_df['speaker_ID'][i]
+#    #     x = mer_df['mean'][i]
+#    #     y = mer_df['predict_mos'][i]
+#    #     plt.text(x-0.05, y+0.1, spk_ID, fontsize=8)
+#    plt.savefig('./'+OUTPUT_DIR+'/MOSNet_speaker_scatter_plot.png', dpi=150)
 
 
     spk_resultP = df[['speaker_ID', 'predict_mos']].groupby(['speaker_ID'])['predict_mos']
