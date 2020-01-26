@@ -93,16 +93,16 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
     MOS_true = np.array(x)
     MOS_Predict = np.array(y)
 
-    plt.style.use('seaborn-deep')
-    x = df['true_mos']
-    y = df['predict_mos']
-    bins = np.linspace(1, 5, 40)
-    plt.figure(2)
-    plt.hist([x, y], bins, label=['true_mos', 'predict_mos'])
-    plt.legend(loc='upper right')
-    plt.xlabel('MOS')
-    plt.ylabel('number') 
-    plt.savefig('./'+OUTPUT_DIR+'/MOSNet_distribution.png', dpi=150)
+#    plt.style.use('seaborn-deep')
+#    x = df['true_mos']
+#    y = df['predict_mos']
+#    bins = np.linspace(1, 5, 40)
+#    plt.figure(2)
+#    plt.hist([x, y], bins, label=['true_mos', 'predict_mos'])
+#    plt.legend(loc='upper right')
+#    plt.xlabel('MOS')
+#    plt.ylabel('number') 
+#    plt.savefig('./'+OUTPUT_DIR+'/MOSNet_distribution.png', dpi=150)
 
 
     LCC=np.corrcoef(MOS_true, MOS_Predict)[0][1]
