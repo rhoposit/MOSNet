@@ -316,8 +316,8 @@ MASTER_SORT_DICT = defaultdict(list)
 # output, nn, batch, data, feats, reg/class, l2, dr, nodes, batch
 
 for folder in F:
-    try:
-        logname = "logs_xvec5"+"log."+folder[13:-1]
+#    try:
+        logname = "logs_xvec5/"+"log."+folder[13:-1]
         results_file = folder+"/results.pkl"
         items = folder.split("/")[2].split("_")
         testfile = "data_LA/test_list.txt"
@@ -335,9 +335,9 @@ for folder in F:
         # get the model name, pass to the test function
         get_test_results(bin_dir, data, testlist, model, results_file, flag)
         get_scores(folder, data, results_file, logname)
-    except:
-        print("skipping: ", folder)
-        continue
+#    except:
+#        print("skipping: ", folder)
+#        continue
 
 for k,v in MASTER_SORT_DICT.items():
     print(k, v)
