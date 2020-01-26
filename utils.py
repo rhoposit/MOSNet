@@ -27,7 +27,7 @@ WIN_LENGTH=512
 
 # dir
 #DATA_DIR = './data_'+args.data
-DATA_DIR = './data'
+DATA_DIR = './data_harvard100'
 AUDIO_DIR = join(DATA_DIR, 'wav')
 BIN_DIR = join(DATA_DIR, 'orig')
 
