@@ -135,8 +135,6 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
      
     sys_result_mean = df[['system_ID', 'predict_mos']].groupby(['system_ID']).mean()
     sys_mer_df = pd.merge(sys_result_mean, sys_df, on='system_ID')                          
-
-
     sys_true = sys_mer_df['mean']
     sys_predicted = sys_mer_df['predict_mos']
     LCC=np.corrcoef(sys_true, sys_predicted)[0][1]
@@ -309,7 +307,7 @@ sys.exit()
 
 # move my orig folders somewhere else
 #F = glob.glob("./results_O2/output*/")
-F = glob.glob("./results_R2/output*/")
+F = glob.glob("./results_R2/output*xvec_5*/")
 #F = ['./results_R/output_CNN_1_LA_orig/']
 print(F)
 MASTER_SORT_DICT = defaultdict(list)
@@ -319,7 +317,7 @@ MASTER_SORT_DICT = defaultdict(list)
 
 for folder in F:
     try:
-        logname = "log."+folder[13:-1]
+        logname = "logs_xvec5"+"log."+folder[13:-1]
         results_file = folder+"/results.pkl"
         items = folder.split("/")[2].split("_")
         testfile = "data_LA/test_list.txt"
