@@ -317,8 +317,11 @@ MASTER_SORT_DICT = defaultdict(list)
 
 for folder in F:
 #    try:
+#        logname = "logs_pretrained/"+"log."+folder[13:-1]
+#        results_file = folder+"/results.pkl"
         logname = "logs_pretrained/"+"log."+folder.split("/")[-1]
-        results_file = folder+"/results.pkl"
+        results_file = "./pre_trained/"+folder.split("/")[-1]+"_results.pkl"
+        print(results_file)
         items = folder.split("/")[2].split("_")
         testfile = "data_LA/test_list.txt"
         feats = "orig"
