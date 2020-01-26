@@ -66,7 +66,7 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile, reg_class
 
 
 
-def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
+def get_scores(OUTPUT_DIR, data, resultsfile, logname):
 
 
     out = open(logname, "w")
@@ -176,24 +176,78 @@ def get_scores(OUTPUT_DIR, data, resultsfile, reg_class_flag, logname):
 #        MAE=np.mean(np.absolute(spk_true-spk_predicted))
 #        out.write('\t[SPEAKER-%s] MAE error= %f' % (speakerID,MAE)+"\n")
 
-           
 
-folder = './results_R/output_CNN_1_LA_orig/'
-logname = "log."+folder[12:-1]
-results_file = folder+"/harvard100.pkl"
+
+##################################################
+
+# this is the best LA model for the xvec0 feature
+#folder = './results_R2/output_/'
+#results_file = "harvard100_scored/LA_xvec0.pkl"
+#feats = "xvec_0"
+
+# this is the best LA model for the xvec1 feature
+#folder = './results_R2/output_/'
+#results_file = "harvard100_scored/LA_xvec1.pkl"
+#feats = "xvec_1"
+
+# this is the best LA model for the xvec2 feature
+#folder = './results_R2/output_/'
+#results_file = "harvard100_scored/LA_xvec2.pkl"
+#feats = "xvec_2"
+
+# this is the best LA model for the xvec3 feature
+#folder = './results_R2/output_/'
+#results_file = "harvard100_scored/LA_xvec3.pkl"
+#feats = "xvec_3"
+
+# this is the best LA model for the xvec4 feature
+#folder = './results_R2/output_/'
+#results_file = "harvard100_scored/LA_xvec4.pkl"
+#feats = "xvec_4"
+
+# this is the best LA model for the xvec5 feature
+#folder = './results_R2/output_/'
+#results_file = "harvard100_scored/LA_xvec5.pkl"
+#feats = "xvec_5"
+
+# this is the best LA model for the DS-image feature
+#folder = './results_R2/output_/'
+#results_file = "harvard100_scored/LA_DS-image.pkl"
+#feats = "DS-image"
+
+# this is the best LA model for the CNN feature
+#folder = './results_R2/output_/'
+#results_file = "harvard100_scored/LA_CNN.pkl"
+#feats = "CNN"
+
+# this is the best LA model for the orig feature
+#folder = './results_R2/output_CNN_1_LA_orig/'
+#results_file = "harvard100_scored/LA_orig.pkl"
+#feats = "orig"
+
+# this is the best VC model from the paper
+folder = './results_O2/output_CNN-BLSTM_16_VC_orig/'
+results_file = "harvard100_scored/VC_paper.pkl"
+feats = "orig"
+
+##################################################
+
+logname = "log."+folder[13:-1]
 items = folder.split("/")[2].split("_")
 data = "LA"
 flag = "R"
 testfile = "data_harvard100/test_list.txt"
-feats = "orig"
 input = open(testfile, "r")
 testlist = input.read().split("\n")[:-1]
 input.close()
 print(items)
 model = folder+"/mosnet.h5"
 bin_dir = "data_harvard100/"+feats
-# get the model name, pass to the test function
-#get_test_results(bin_dir, data, testlist, model, results_file, flag)
+
+# apply the trained model to harvard and save results
+get_test_results(bin_dir, data, testlist, model, results_file)
+
+# get results and analyze to obtain scores
 get_scores(folder, data, results_file, flag, logname)
 
 
