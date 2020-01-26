@@ -225,29 +225,29 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
 #results_file = "harvard100_scored/LA_orig.pkl"
 #feats = "orig"
 
-# this is the best VC model from the paper
-folder = './results_O2/output_CNN-BLSTM_16_VC_orig/'
-results_file = "harvard100_scored/VC_paper.pkl"
+# these are the best VC models from the paper
+folder = './pre-trained/'
+model = folder+"/blstm.h5"
+results_file = "harvard100_scored/VC_blstm.pkl"
 feats = "orig"
+logname = "data_harvard100/log."+folder[14:-1]
 
 ##################################################
 
-logname = "log."+folder[13:-1]
+#logname = "log."+folder[13:-1]
 items = folder.split("/")[2].split("_")
 data = "LA"
-flag = "R"
 testfile = "data_harvard100/test_list.txt"
 input = open(testfile, "r")
 testlist = input.read().split("\n")[:-1]
 input.close()
 print(items)
-model = folder+"/mosnet.h5"
 bin_dir = "data_harvard100/"+feats
 
 # apply the trained model to harvard and save results
 get_test_results(bin_dir, data, testlist, model, results_file)
 
 # get results and analyze to obtain scores
-get_scores(folder, data, results_file, flag, logname)
+get_scores(folder, data, results_file, logname)
 
 
