@@ -305,8 +305,8 @@ sys.exit()
 '''
 
 # move my orig folders somewhere else
-F = glob.glob("./results_O2/output*/")
-#F = glob.glob("./results_R2/output*xvec_5*/")
+#F = glob.glob("./results_O2/output*/")
+F = glob.glob("./results_R2/output*DS-image*/")
 #F = ['./results_R/output_CNN_1_LA_orig/']
 print(F)
 MASTER_SORT_DICT = defaultdict(list)
@@ -316,14 +316,14 @@ MASTER_SORT_DICT = defaultdict(list)
 
 for folder in F:
 #    try:
-        logname = "logs_orig/"+"log."+folder[13:-1]
+        logname = "logs_DS/"+"log."+folder[13:-1]
         results_file = folder+"/results.pkl"
         items = folder.split("/")[2].split("_")
         testfile = "data_LA/test_list.txt"
-        feats = "orig"
-#        feats = items[4]
-#        if feats == "xvec":
-#            feats = feats + "_" + items[5]
+#        feats = "orig"
+        feats = items[4]
+        if feats == "xvec":
+            feats = feats + "_" + items[5]
         input = open(testfile, "r")
         testlist = input.read().split("\n")[:-1]
         input.close()
