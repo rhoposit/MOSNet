@@ -231,7 +231,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
 
 # this is the best LA model for the CNN feature
 # REF log.utput_CNN_128_LA_DS-image_R_0.001_0.2_64_128 *** redo new NN
-folder = './results_O/output_CNN_128_LA_DS-image_R_0.001_0.2_64_128/'
+folder = './results_O/output_CNN_128_LA_CNN_R_0.001_0.2_16_128/'
 model = folder+"mosnet.h5"
 results_file = "harvard100_scored/LA_CNN.pkl"
 feats = "CNN"
