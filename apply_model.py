@@ -41,18 +41,18 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile):
         filename=filepath[2].split('.')[0]
         mos=float(filepath[3])
 
-        _feat = utils.read(os.path.join(BIN_DIR,filename+'.h5'))
-        _mag = _feat['mag_sgram']    
-        [Average_score, Frame_score]=model.predict(_mag, verbose=0, batch_size=1)
-        MOS_Predict[i]=Average_score
-        MOS_true[i]   =mos
+#        _feat = utils.read(os.path.join(BIN_DIR,filename+'.h5'))
+#        _mag = _feat['mag_sgram']    
+#        [Average_score, Frame_score]=model.predict(_mag, verbose=0, batch_size=1)
+#        MOS_Predict[i]=Average_score
+#        MOS_true[i]   =mos
 
 
-#        _DS = utils.read_rep(os.path.join(BIN_DIR,filename+'.npy'))
-#        _DS = np.expand_dims(_DS, axis=3)
-#        Average_score=model.predict(_DS, verbose=0, batch_size=1)
-#        MOS_Predict[i]=Average_score[0][0]
-#        MOS_true[i] =mos
+        _DS = utils.read_rep(os.path.join(BIN_DIR,filename+'.npy'))
+        _DS = np.expand_dims(_DS, axis=3)
+        Average_score=model.predict(_DS, verbose=0, batch_size=1)
+        MOS_Predict[i]=Average_score[0][0]
+        MOS_true[i] =mos
             
         df = df.append({'audio': filename, 
                         'true_mos': MOS_true[i], 
@@ -181,49 +181,68 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
 ##################################################
 
 # this is the best LA model for the xvec0 feature
-#folder = './results_R2/output_/'
+# REF logs_xvec0/log.output_CNN_16_LA_xvec_0_0.0001_0.1_16_True
+#folder = './results_R2/output_CNN_16_LA_xvec_0_0.0001_0.1_16_True/'
 #results_file = "harvard100_scored/LA_xvec0.pkl"
 #feats = "xvec_0"
+#logname = "data_harvard100/log.LA_xvec0"
 
 # this is the best LA model for the xvec1 feature
-#folder = './results_R2/output_/'
+# REF logs_xvec1/log.output_CNN_1_LA_xvec_1_0.0001_0.1_32_True
+#folder = './results_R2/output_CNN_1_LA_xvec_1_0.0001_0.1_32_True/'
 #results_file = "harvard100_scored/LA_xvec1.pkl"
 #feats = "xvec_1"
+#logname = "data_harvard100/log.LA_xvec1"
 
 # this is the best LA model for the xvec2 feature
-#folder = './results_R2/output_/'
+# REF log.output_CNN_1_LA_xvec_2_0.0001_0.2_16_True
+#folder = './results_R2/output_CNN_1_LA_xvec_2_0.0001_0.2_16_True/'
 #results_file = "harvard100_scored/LA_xvec2.pkl"
 #feats = "xvec_2"
+#logname = "data_harvard100/log.LA_xvec2"
 
 # this is the best LA model for the xvec3 feature
-#folder = './results_R2/output_/'
+# REF log.output_CNN_16_LA_xvec_3_0.0001_0.2_16_False
+#folder = './results_R2/output_CNN_16_LA_xvec_3_0.0001_0.2_16_False/'
 #results_file = "harvard100_scored/LA_xvec3.pkl"
 #feats = "xvec_3"
+#logname = "data_harvard100/log.LA_xvec3"
 
 # this is the best LA model for the xvec4 feature
-#folder = './results_R2/output_/'
+# REF log.output_CNN_16_LA_xvec_4_0.0001_0.1_64_True
+#folder = './results_R2/output_CNN_16_LA_xvec_4_0.0001_0.1_64_True/'
 #results_file = "harvard100_scored/LA_xvec4.pkl"
 #feats = "xvec_4"
+#logname = "data_harvard100/log.LA_xvec4"
 
 # this is the best LA model for the xvec5 feature
-#folder = './results_R2/output_/'
+# REF log.output_CNN_1_LA_xvec_5_0.0001_0.1_64_True
+#folder = './results_R2/output_CNN_1_LA_xvec_5_0.0001_0.1_64_True/'
 #results_file = "harvard100_scored/LA_xvec5.pkl"
 #feats = "xvec_5"
+#logname = "data_harvard100/log.LA_xvec5"
 
 # this is the best LA model for the DS-image feature
-#folder = './results_R2/output_/'
+# REF logs_DS/log.output_CNN_1_LA_DS-image_0.0001_0.1_32_False ** more results coming
+#folder = './results_R2/output_CNN_1_LA_DS-image_0.0001_0.1_32_False/'
 #results_file = "harvard100_scored/LA_DS-image.pkl"
 #feats = "DS-image"
+#logname = "data_harvard100/log.LA_DS-image_feats"
 
 # this is the best LA model for the CNN feature
-#folder = './results_R2/output_/'
-#results_file = "harvard100_scored/LA_CNN.pkl"
-#feats = "CNN"
+# REF log.utput_CNN_128_LA_DS-image_R_0.001_0.2_64_128 *** redo new NN
+folder = './results_R2/output_CNN_128_LA_DS-image_R_0.001_0.2_64_12/'
+model = folder+"mosnet.h5"
+results_file = "harvard100_scored/LA_CNN.pkl"
+feats = "CNN"
+logname = "data_harvard100/log.LA_CNN_feats"
 
 # this is the best LA model for the orig feature
+# REF
 #folder = './results_R2/output_CNN_1_LA_orig/'
 #results_file = "harvard100_scored/LA_orig.pkl"
 #feats = "orig"
+#logname = "data_harvard100/log.LA_orig_CNN"
 
 # these are the best VC models from the paper
 #folder = './pre_trained/'
@@ -238,11 +257,11 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
 #feats = "orig"
 #logname = "data_harvard100/log.pre-trained_VC_cnn"
 
-folder = './pre_trained/'
-model = folder+"/cnn_blstm.h5"
-results_file = "harvard100_scored/VC_cnn_blstm.pkl"
-feats = "orig"
-logname = "data_harvard100/log.pre-trained_VC_cnn_blstm"
+#folder = './pre_trained/'
+#model = folder+"/cnn_blstm.h5"
+#results_file = "harvard100_scored/VC_cnn_blstm.pkl"
+#feats = "orig"
+#logname = "data_harvard100/log.pre-trained_VC_cnn_blstm"
 
 
 ##################################################
@@ -261,6 +280,6 @@ bin_dir = "data_harvard100/"+feats
 get_test_results(bin_dir, data, testlist, model, results_file)
 
 # get results and analyze to obtain scores
-get_scores(folder, data, results_file, logname)
+#get_scores(folder, data, results_file, logname)
 
 
