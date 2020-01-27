@@ -185,8 +185,10 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
 
 if big_switch == "xvec0":
     # this is the best LA model for the xvec0 feature
+    # ref2 logs_xvec0/log.output_CNN_1_LA_xvec_0_0.0001_0.3_16_False
     # REF logs_xvec0/log.output_CNN_16_LA_xvec_0_0.0001_0.1_16_True
-    folder = './results_R2/output_CNN_16_LA_xvec_0_0.0001_0.1_16_True/'
+#    folder = './results_R2/output_CNN_16_LA_xvec_0_0.0001_0.1_16_True/'
+    folder = './results_R2/output_CNN_1_LA_xvec_0_0.0001_0.3_16_False/'
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_xvec0.pkl"
     feats = "xvec_0"
@@ -194,8 +196,10 @@ if big_switch == "xvec0":
 
 if big_switch == "xvec1":
     # this is the best LA model for the xvec1 feature
+    # ref2
     # REF logs_xvec1/log.output_CNN_1_LA_xvec_1_0.0001_0.1_32_True
-    folder = './results_R2/output_CNN_1_LA_xvec_1_0.0001_0.1_32_True/'
+#    folder = './results_R2/output_CNN_1_LA_xvec_1_0.0001_0.1_32_True/'
+    folder = './results_R2//'
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_xvec1.pkl"
     feats = "xvec_1"
@@ -203,8 +207,10 @@ if big_switch == "xvec1":
 
 if big_switch == "xvec2":
     # this is the best LA model for the xvec2 feature
+    # ref2 logs_xvec2/log.output_CNN_128_LA_xvec_2_0.0001_0.2_64_False
     # REF log.output_CNN_1_LA_xvec_2_0.0001_0.2_16_True
-    folder = './results_R2/output_CNN_1_LA_xvec_2_0.0001_0.2_16_True/'
+#    folder = './results_R2/output_CNN_1_LA_xvec_2_0.0001_0.2_16_True/'
+    folder = './results_R2/output_CNN_128_LA_xvec_2_0.0001_0.2_64_False/'
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_xvec2.pkl"
     feats = "xvec_2"
@@ -212,8 +218,10 @@ if big_switch == "xvec2":
 
 if big_switch == "xvec3":
     # this is the best LA model for the xvec3 feature
+    # ref2 logs_xvec3/log.output_CNN_1_LA_xvec_3_0.0001_0.1_128_True
     # REF log.output_CNN_16_LA_xvec_3_0.0001_0.2_16_False
-    folder = './results_R2/output_CNN_16_LA_xvec_3_0.0001_0.2_16_False/'
+#    folder = './results_R2/output_CNN_16_LA_xvec_3_0.0001_0.2_16_False/'
+    folder = './results_R2/output_CNN_1_LA_xvec_3_0.0001_0.1_128_True/'
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_xvec3.pkl"
     feats = "xvec_3"
@@ -221,8 +229,10 @@ if big_switch == "xvec3":
 
 if big_switch == "xvec4":
     # this is the best LA model for the xvec4 feature
+    # ref2 logs_xvec4/log.output_CNN_1_LA_xvec_4_0.0001_0.1_128_True
     # REF log.output_CNN_16_LA_xvec_4_0.0001_0.1_64_True
-    folder = './results_R2/output_CNN_16_LA_xvec_4_0.0001_0.1_64_True/'
+#    folder = './results_R2/output_CNN_16_LA_xvec_4_0.0001_0.1_64_True/'
+    folder = './results_R2/output_CNN_1_LA_xvec_4_0.0001_0.1_128_True/'
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_xvec4.pkl"
     feats = "xvec_4"
@@ -230,8 +240,10 @@ if big_switch == "xvec4":
 
 if big_switch == "xvec5":
     # this is the best LA model for the xvec5 feature
+    # ref2 logs_xvec5/log.output_CNN_1_LA_xvec_5_0.0001_0.2_16_False
     # REF log.output_CNN_1_LA_xvec_5_0.0001_0.1_64_True
-    folder = './results_R2/output_CNN_1_LA_xvec_5_0.0001_0.1_64_True/'
+#    folder = './results_R2/output_CNN_1_LA_xvec_5_0.0001_0.1_64_True/'
+    folder = './results_R2/output_CNN_1_LA_xvec_5_0.0001_0.2_16_False/'
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_xvec5.pkl"
     feats = "xvec_5"
@@ -239,8 +251,10 @@ if big_switch == "xvec5":
 
 if big_switch == "DS-image":
     # this is the best LA model for the DS-image feature
+    # ref2 logs_DS/log.output_CNN_1_LA_DS-image_0.0001_0.1_32_False
     # REF logs_DS/log.output_CNN_1_LA_DS-image_0.0001_0.1_32_False ** more results coming
-    folder = './results_R2/output_CNN_1_LA_DS-image_0.0001_0.1_32_False/'
+#    folder = './results_R2/output_CNN_1_LA_DS-image_0.0001_0.1_32_False/'
+    folder = './results_R2/output_CNN_1_LA_DS-image_0.0001_0.1_32_False'
     results_file = "harvard100_scored/LA_DS-image.pkl"
     model = folder+"mosnet.h5"
     feats = "DS-image"
@@ -248,8 +262,10 @@ if big_switch == "DS-image":
 
 if big_switch == "CNN":
     # this is the best LA model for the CNN feature
-    # REF logs_CNN/log.utput_CNN_128_LA_CNN_R_0.001_0.2_16_128  *** redo new NN
-    folder = './results_R2/output_CNN_1_LA_CNN_0.0001_0.2_32_False/'
+    # ref2: logs_CNN/log.output_CNN_64_LA_CNN_0.0001_0.1_128_True
+    # REF logs_CNN/output_CNN_1_LA_CNN_0.0001_0.2_32_False  *** redo new NN
+#    folder = './results_R2/output_CNN_1_LA_CNN_0.0001_0.2_32_False/'
+    folder = './results_R2/output_CNN_64_LA_CNN_0.0001_0.1_128_True/'
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_CNN.pkl"
     feats = "CNN"
@@ -257,8 +273,10 @@ if big_switch == "CNN":
 
 if big_switch == "LA_orig":
     # this is the best LA model for the orig feature
+    # ref2
     # REF log.output_BLSTM_64_LA_orig
-    folder = './results_O2/output_BLSTM_64_LA_orig/'
+#    folder = './results_O2/output_BLSTM_64_LA_orig/'
+    folder = './results_O2//'
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_orig.pkl"
     feats = "orig"
