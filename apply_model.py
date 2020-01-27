@@ -297,7 +297,7 @@ input.close()
 bin_dir = "data_harvard100/"+feats
 
 # apply the trained model to harvard and save results
-#get_test_results(bin_dir, data, testlist, model, results_file)
+get_test_results(bin_dir, data, testlist, model, results_file)
 
 # get results and analyze to obtain scores
 get_scores(folder, data, results_file, logname)

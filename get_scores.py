@@ -252,13 +252,13 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
         out.write('\t[SPEAKER-%s] Predicted= %f' % (speakerID,spk_predicted_mean)+"\n")
 #        out.write('\t[SPEAKER-%s] Abs Diff= %f' % (speakerID,abs_diff)+"\n")
         LCC=np.corrcoef(spk_true, spk_predicted)[0][1]
-#        out.write('\t[SPEAKER-%s] Linear correlation coefficient= %f' % (speakerID,LCC)+"\n")
+        out.write('\t[SPEAKER-%s] Linear correlation coefficient= %f' % (speakerID,LCC)+"\n")
         SRCC=scipy.stats.spearmanr(spk_true.T, spk_predicted.T)[0]
-#        out.write('\t[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC)+"\n")
+        out.write('\t[SPEAKER-%s] Spearman rank correlation coefficient= %f' % (speakerID,SRCC)+"\n")
         MSE=np.mean((spk_true-spk_predicted)**2)
-#        out.write('\t[SPEAKER-%s] MSE error= %f' % (speakerID,MSE)+"\n")
+        out.write('\t[SPEAKER-%s] MSE error= %f' % (speakerID,MSE)+"\n")
         MAE=np.mean(np.absolute(spk_true-spk_predicted))
-#        out.write('\t[SPEAKER-%s] MAE error= %f' % (speakerID,MAE)+"\n")
+        out.write('\t[SPEAKER-%s] MAE error= %f' % (speakerID,MAE)+"\n")
         tup = [LCC, SRCC, MSE, MAE, spk_true_mean, spk_predicted_mean]
         SPEAKER_SCORES[speakerID].append(tup)
 
