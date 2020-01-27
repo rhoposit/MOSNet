@@ -249,7 +249,7 @@ if big_switch == "DS-image":
 if big_switch == "CNN":
     # this is the best LA model for the CNN feature
     # REF logs_CNN/log.utput_CNN_128_LA_CNN_R_0.001_0.2_16_128  *** redo new NN
-    folder = './results_O/output_CNN_128_LA_CNN_R_0.001_0.2_16_128/'
+    folder = './results_R2/output_CNN_1_LA_CNN_0.0001_0.2_32_False/'
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_CNN.pkl"
     feats = "CNN"
