@@ -273,10 +273,10 @@ if big_switch == "CNN":
 
 if big_switch == "LA_orig":
     # this is the best LA model for the orig feature
-    # ref2
+    # ref2 logs_orig/log.output_CNN_16_LA_orig
     # REF log.output_BLSTM_64_LA_orig
 #    folder = './results_O2/output_BLSTM_64_LA_orig/'
-    folder = './results_O2//'
+    folder = './results_O2/output_CNN_16_LA_orig/'
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_orig.pkl"
     feats = "orig"
