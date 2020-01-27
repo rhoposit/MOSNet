@@ -337,7 +337,7 @@ for folder in F:
         model = folder+"/mosnet.h5"
         bin_dir = "data_"+data+"/"+feats
         # get the model name, pass to the test function
-#        get_test_results(bin_dir, data, testlist, model, results_file)
+        get_test_results(bin_dir, data, testlist, model, results_file)
         get_scores(folder, data, results_file, logname)
 #    except:
 #        print("skipping: ", folder)
