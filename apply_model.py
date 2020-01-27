@@ -15,8 +15,8 @@ import matplotlib.pyplot as plt
 import argparse
 import tensorflow as tf
 from tensorflow import keras
-#import model_rep
-import model
+import model_rep
+#import model
 import utils
 import random
 from sklearn.metrics import accuracy_score
@@ -44,18 +44,18 @@ def get_test_results(BIN_DIR, data, test_list, modelfile, resultsfile):
         filename=filepath[2].split('.')[0]
         mos=float(filepath[3])
 
-        _feat = utils.read(os.path.join(BIN_DIR,filename+'.h5'))
-        _mag = _feat['mag_sgram']    
-        [Average_score, Frame_score]=model.predict(_mag, verbose=0, batch_size=1)
-        MOS_Predict[i]=Average_score
-        MOS_true[i]   =mos
+#        _feat = utils.read(os.path.join(BIN_DIR,filename+'.h5'))
+#        _mag = _feat['mag_sgram']    
+#        [Average_score, Frame_score]=model.predict(_mag, verbose=0, batch_size=1)
+#        MOS_Predict[i]=Average_score
+#        MOS_true[i]   =mos
 
 
-#        _DS = utils.read_rep(os.path.join(BIN_DIR,filename+'.npy'))
-#        _DS = np.expand_dims(_DS, axis=3)
-#        Average_score=model.predict(_DS, verbose=0, batch_size=1)
-#        MOS_Predict[i]=Average_score[0][0]
-#        MOS_true[i] =mos
+        _DS = utils.read_rep(os.path.join(BIN_DIR,filename+'.npy'))
+        _DS = np.expand_dims(_DS, axis=3)
+        Average_score=model.predict(_DS, verbose=0, batch_size=1)
+        MOS_Predict[i]=Average_score[0][0]
+        MOS_true[i] =mos
             
         df = df.append({'audio': filename, 
                         'true_mos': MOS_true[i], 
