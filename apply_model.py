@@ -280,7 +280,7 @@ if big_switch == "LA_orig":
     model = folder+"mosnet.h5"
     results_file = "harvard100_scored/LA_orig.pkl"
     feats = "orig"
-    logname = "harvard100_scored/log.LA_orig_BLSTM"
+    logname = "harvard100_scored/log.LA_orig_CNN"
 
 if big_switch == "VC_blstm":
     # these are the best VC models from the paper
