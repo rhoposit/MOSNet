@@ -148,6 +148,8 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
 
     tup = [LCC, SRCC, MSE, MAE]
     SYSTEM_SCORES["agg"].append(tup)
+    MASTER_SORT_DICT[logname].append(tup)
+
 
     sys_resultP = df[['system_ID', 'predict_mos']].groupby(['system_ID'])
     sys_resultT = df[['system_ID', 'true_mos']].groupby(['system_ID'])
@@ -216,7 +218,7 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
     out.write('[SPEAKER-AGG] MAE error= %f' % (MAE)+"\n")
     tup = [LCC, SRCC, MSE, MAE,spk_true_mean, spk_predicted_mean]
     SPEAKER_SCORES["agg"].append(tup)
-    MASTER_SORT_DICT[logname].append(tup)
+#    MASTER_SORT_DICT[logname].append(tup)
         
 #    # Plotting scatter plot
 #    M=np.max([np.max(spk_predicted),5])
@@ -337,7 +339,7 @@ for folder in F:
         model = folder+"/mosnet.h5"
         bin_dir = "data_"+data+"/"+feats
         # get the model name, pass to the test function
-        get_test_results(bin_dir, data, testlist, model, results_file)
+#        get_test_results(bin_dir, data, testlist, model, results_file)
         get_scores(folder, data, results_file, logname)
 #    except:
 #        print("skipping: ", folder)
