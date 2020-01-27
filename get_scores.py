@@ -308,7 +308,7 @@ sys.exit()
 
 # move my orig folders somewhere else
 #F = glob.glob("./results_O2/output*/")
-F = glob.glob("./results_R2/output*LA_CNN*/")
+F = glob.glob("./results_R2/output*LA_DS-image*/")
 #F = glob.glob("./pre_trained/*.h5")
 print(F)
 MASTER_SORT_DICT = defaultdict(list)
@@ -318,7 +318,7 @@ MASTER_SORT_DICT = defaultdict(list)
 
 for folder in F:
 #    try:
-        logname = "logs_CNN/"+"log."+folder[13:-1]
+        logname = "logs_DS/"+"log."+folder[13:-1]
         results_file = folder+"/results.pkl"
 #        logname = "logs_pretrained/"+"log."+folder.split("/")[-1]
 #        results_file = "./pre_trained/"+folder.split("/")[-1]+"_results.pkl"
