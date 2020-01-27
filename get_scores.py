@@ -16,8 +16,8 @@ from collections import defaultdict
 import argparse
 import tensorflow as tf
 from tensorflow import keras
-import model_rep
-#import model
+#import model_rep
+import model
 import utils
 import random
 from sklearn.metrics import accuracy_score
@@ -307,7 +307,7 @@ sys.exit()
 # move my orig folders somewhere else
 #F = glob.glob("./results_O2/output*/")
 #F = glob.glob("./results_R2/output*DS-image*/")
-F = glob.glob("./pre_trained/*.h5")
+WF = glob.glob("./pre_trained/*.h5")
 #F = ['./results_R/output_CNN_1_LA_orig/']
 print(F)
 MASTER_SORT_DICT = defaultdict(list)
