@@ -307,7 +307,7 @@ sys.exit()
 # move my orig folders somewhere else
 #F = glob.glob("./results_O2/output*/")
 #F = glob.glob("./results_R2/output*DS-image*/")
-WF = glob.glob("./pre_trained/*.h5")
+F = glob.glob("./pre_trained/*.h5")
 #F = ['./results_R/output_CNN_1_LA_orig/']
 print(F)
 MASTER_SORT_DICT = defaultdict(list)
