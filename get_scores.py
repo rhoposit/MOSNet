@@ -308,7 +308,7 @@ sys.exit()
 
 # move my orig folders somewhere else
 #F = glob.glob("./results_O2/output*/")
-F = glob.glob("./results_R2/output*LA_xvec_5*/")
+F = glob.glob("./results_R2/output*LA_xvec_1*/")
 #F = glob.glob("./pre_trained/*.h5")
 print(F)
 MASTER_SORT_DICT = defaultdict(list)
@@ -317,8 +317,8 @@ MASTER_SORT_DICT = defaultdict(list)
 # output, nn, batch, data, feats, reg/class, l2, dr, nodes, batch
 
 for folder in F:
-#    try:
-        logname = "logs_xvec5/"+"log."+folder[13:-1]
+    try:
+        logname = "logs_xvec1/"+"log."+folder[13:-1]
         results_file = folder+"/results.pkl"
 #        logname = "logs_pretrained/"+"log."+folder.split("/")[-1]
 #        results_file = "./pre_trained/"+folder.split("/")[-1]+"_results.pkl"
@@ -340,9 +340,9 @@ for folder in F:
         # get the model name, pass to the test function
         get_test_results(bin_dir, data, testlist, model, results_file)
         get_scores(folder, data, results_file, logname)
-#    except:
-#        print("skipping: ", folder)
-#        continue
+    except:
+        print("skipping: ", folder)
+        continue
 
 for k,v in MASTER_SORT_DICT.items():
     print(k, v)
