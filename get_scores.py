@@ -160,15 +160,15 @@ def get_scores(OUTPUT_DIR, data, resultsfile, logname):
         abs_diff = np.absolute(sys_true_mean - sys_predicted_mean)
         out.write('\t[SYSTEM-%s] Mean True= %f' % (systemID,sys_true_mean)+"\n")
         out.write('\t[SYSTEM-%s] Mean Predicted= %f' % (systemID,sys_predicted_mean)+"\n")
-#        out.write('\t[SYSTEM-%s] Abs Diff= %f' % (systemID, abs_diff)+"\n")
+        out.write('\t[SYSTEM-%s] Abs Diff= %f' % (systemID, abs_diff)+"\n")
         LCC=np.corrcoef(sys_true, sys_predicted)[0][1]
-#        out.write('\t[SYSTEM-%s] Linear correlation coefficient= %f' % (systemID,LCC)+"\n")
+        out.write('\t[SYSTEM-%s] Linear correlation coefficient= %f' % (systemID,LCC)+"\n")
         SRCC=scipy.stats.spearmanr(sys_true.T, sys_predicted.T)[0]
-#        out.write('\t[SYSTEM-%s] Spearman rank correlation coefficient= %f' % (systemID,SRCC)+"\n")
+        out.write('\t[SYSTEM-%s] Spearman rank correlation coefficient= %f' % (systemID,SRCC)+"\n")
         MSE=np.mean((sys_true-sys_predicted)**2)
-#        out.write('\t[SYSTEM-%s] MSE error= %f' % (systemID,MSE)+"\n")
+        out.write('\t[SYSTEM-%s] MSE error= %f' % (systemID,MSE)+"\n")
         MAE=np.mean(np.absolute(sys_true-sys_predicted))
-#        out.write('\t[SYSTEM-%s] MAE error= %f' % (systemID,MAE)+"\n")
+        out.write('\t[SYSTEM-%s] MAE error= %f' % (systemID,MAE)+"\n")
         tup = [LCC, SRCC, MSE, MAE, sys_true_mean, sys_predicted_mean]
         SYSTEM_SCORES[systemID].append(tup)
 
