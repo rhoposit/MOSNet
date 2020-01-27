@@ -317,7 +317,7 @@ MASTER_SORT_DICT = defaultdict(list)
 # output, nn, batch, data, feats, reg/class, l2, dr, nodes, batch
 
 for folder in F:
-    try:
+#    try:
         logname = "logs_orig/"+"log."+folder[13:-1]
         results_file = folder+"/results.pkl"
 #        logname = "logs_pretrained/"+"log."+folder.split("/")[-1]
