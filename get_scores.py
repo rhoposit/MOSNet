@@ -318,7 +318,7 @@ for folder in F:
 #    try:
 #        logname = "logs_orig/"+"log."+folder[13:-1]
 #        results_file = folder+"/results.pkl"
-        logname = "logs_pretrained/"+"log."+folder.split("/")[-1]
+        logname = "speaker_agg/logs_pretrained/"+"log."+folder.split("/")[-1]
         results_file = "./speaker_agg/LA_scored/"+folder.split("/")[-1]+"_results.pkl"
         print(results_file)
         items = folder.split("/")[2].split("_")
