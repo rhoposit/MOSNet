@@ -138,8 +138,8 @@ def run(l2_val, dr, n, batch_size, bn):
     ]
 
 
-    train_data_feat = np.expand_dims(train_data_feat, axis=3)
-    valid_data_feat = np.expand_dims(valid_data_feat, axis=3)
+#    train_data_feat = np.expand_dims(train_data_feat, axis=3)
+#    valid_data_feat = np.expand_dims(valid_data_feat, axis=3)
     print(train_data_feat.shape)
     print(train_data_mos.shape)
     # start fitting model
