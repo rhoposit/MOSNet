@@ -100,8 +100,10 @@ def run(l2_val, dr, n, batch_size, bn):
         os.makedirs(OUTPUT_DIR)
             
 
-    print('{} for training; {} for valid; {} for testing'.format(NUM_TRAIN, NUM_TEST, NUM_VALID))        
-    rep_dims = {'DS-image':4096, 'CNN':512, 'xvec_0':512, 'xvec_1':512, 'xvec_2':512, 'xvec_3':512, 'xvec_4':512, 'xvec_5':512}
+    print('{} for training; {} for valid; {} for testing'.format(NUM_TRAIN, NUM_TEST, NUM_VALID))
+
+    # CNN-LDA has 100, and CNN-PCA has 512 ?? 
+    rep_dims = {'DS-image':4096, 'CNN':100, 'xvec_0':512, 'xvec_1':512, 'xvec_2':512, 'xvec_3':512, 'xvec_4':512, 'xvec_5':512}
     
 
     # init model
@@ -138,8 +140,8 @@ def run(l2_val, dr, n, batch_size, bn):
     ]
 
 
-#    train_data_feat = np.expand_dims(train_data_feat, axis=3)
-#    valid_data_feat = np.expand_dims(valid_data_feat, axis=3)
+    train_data_feat = np.expand_dims(train_data_feat, axis=3)
+    valid_data_feat = np.expand_dims(valid_data_feat, axis=3)
     print(train_data_feat.shape)
     print(train_data_mos.shape)
     # start fitting model
