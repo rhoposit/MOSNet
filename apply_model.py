@@ -271,6 +271,20 @@ if big_switch == "CNN":
     feats = "CNN"
     logname = "harvard100_scored/log.LA_CNN"
 
+
+# this is the new CNN-LDA, only use apply model if results on LA were better
+# than the original CNN-PCA representations
+if big_switch == "CNN2":
+    # this is the best LA model for the CNN feature
+    # ref2: 
+    # REF 
+    folder = './results_R3//'
+    model = folder+"mosnet.h5"
+    results_file = "harvard100_scored/LA_CNN2.pkl"
+    feats = "CNN"
+    logname = "harvard100_scored/log.LA_CNN2"
+
+
 if big_switch == "LA_orig":
     # this is the best LA model for the orig feature
     # ref2 logs_orig/log.output_CNN_16_LA_orig
